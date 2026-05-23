@@ -42,7 +42,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
 .preview-card{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:1.5rem;margin-bottom:1.5rem;display:none}
 .preview-card.show{display:block;animation:fadeIn 0.3s ease}
 .preview-card h3{color:#6366f1;font-size:1rem;margin-bottom:1rem}
-.preview-img{width:100%;border-radius:16px;margin-bottom:1rem;background:#0f172a;object-fit:cover}
+.preview-img{width:100%;border-radius:16px;margin-bottom:1rem;background:#0f172a;object-fit:cover;max-height:300px}
 .preview-title{font-size:1.3rem;font-weight:700;margin-bottom:0.5rem}
 .preview-desc{color:#94a3b8;font-size:0.9rem;line-height:1.5}
 .preview-tags{display:flex;gap:0.5rem;margin-top:0.8rem;flex-wrap:wrap}
@@ -148,7 +148,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
     <div class="form-group">
       <label>Imagem do App <span>*</span></label>
       <input type="file" id="imagem" accept="image/*" style="padding:0.6rem">
-      <small>Imagem grande será adaptada automaticamente (max 5MB)</small>
+      <small id="imgStatus">Nenhuma imagem selecionada</small>
     </div>
 
     <!-- BOTAO -->
@@ -186,30 +186,50 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== VARIAVEIS =====
+// ===== VARIAVEIS GLOBAIS =====
 var DB_KEY = 'encurtador_v2';
 var SESS_PREFIX = 'enc_';
 var imgBase64 = null;
 
+console.log('=== PAINEL CARREGADO v2.2 ===');
+
 // ===== GERAR LINK =====
 function gerarLink() {
-  console.log('=== GERAR LINK CHAMADO ===');
+  console.log('=== BOTAO GERAR LINK CLICADO ===');
 
   var titulo = document.getElementById('titulo').value.trim();
   var descricao = document.getElementById('descricao').value.trim();
   var linkDestino = document.getElementById('linkDestino').value.trim();
 
-  console.log('Titulo:', titulo);
-  console.log('Descricao:', descricao);
-  console.log('Link:', linkDestino);
-  console.log('Tem imagem:', !!imgBase64);
+  console.log('Validando campos...');
+  console.log('- Titulo:', titulo ? 'OK' : 'VAZIO');
+  console.log('- Descricao:', descricao ? 'OK' : 'VAZIO');
+  console.log('- Link:', linkDestino ? 'OK' : 'VAZIO');
+  console.log('- Imagem:', imgBase64 ? 'OK (' + imgBase64.length + ' chars)' : 'VAZIO');
 
-  // VALIDACAO
-  if(!titulo) { mostrarToast('❌ Digite o título!'); return; }
-  if(!descricao) { mostrarToast('❌ Digite a descrição!'); return; }
-  if(!linkDestino) { mostrarToast('❌ Cole o link de download!'); return; }
-  if(linkDestino.indexOf('http') !== 0) { mostrarToast('❌ Link deve começar com http:// ou https://'); return; }
-  if(!imgBase64) { mostrarToast('❌ Adicione uma imagem!'); return; }
+  // VALIDACAO COM MENSAGENS ESPECIFICAS
+  if(!titulo) { 
+    mostrarToast('❌ Digite o título!'); 
+    return; 
+  }
+  if(!descricao) { 
+    mostrarToast('❌ Digite a descrição!'); 
+    return; 
+  }
+  if(!linkDestino) { 
+    mostrarToast('❌ Cole o link de download!'); 
+    return; 
+  }
+  if(linkDestino.indexOf('http') !== 0) { 
+    mostrarToast('❌ Link deve começar com http:// ou https://'); 
+    return; 
+  }
+  if(!imgBase64) { 
+    mostrarToast('❌ Adicione uma imagem! Clique em "Escolher arquivo"'); 
+    return; 
+  }
+
+  console.log('✓ Todos os campos validados!');
 
   var btn = document.getElementById('btnGerar');
   var btnIcon = document.getElementById('btnIcon');
@@ -219,10 +239,13 @@ function gerarLink() {
   btnIcon.textContent = '⏳';
   btnText.textContent = 'Gerando...';
 
+  // Usar setTimeout para dar feedback visual
   setTimeout(function() {
     try {
+      console.log('Criando ID...');
       var id = 'lnk' + Date.now().toString(36) + Math.random().toString(36).substr(2, 4);
 
+      console.log('Montando dados...');
       var dados = {
         t: titulo,
         d: descricao,
@@ -238,19 +261,32 @@ function gerarLink() {
         tel: document.getElementById('linkTelegram').value.trim()
       };
 
-      console.log('Dados completos:', dados);
-
+      console.log('Salvando dados...');
       var json = JSON.stringify(dados);
-      sessionStorage.setItem(SESS_PREFIX + id, json);
-      try { localStorage.setItem(SESS_PREFIX + id, json); } catch(e) { console.log('localStorage cheio'); }
 
+      // Tentar salvar em ambos
+      sessionStorage.setItem(SESS_PREFIX + id, json);
+      try { 
+        localStorage.setItem(SESS_PREFIX + id, json); 
+        console.log('✓ Salvo em localStorage e sessionStorage');
+      } catch(e) { 
+        console.log('⚠ localStorage cheio, usando sessionStorage apenas'); 
+      }
+
+      // Criar link
+      console.log('Criando link curto...');
       var base = window.location.href;
       base = base.replace('encurtador.html', 'index.html');
       base = base.split('?')[0];
       var linkFinal = base + '?id=' + id;
 
+      console.log('Link:', linkFinal);
+
+      // Historico
       var historico = [];
-      try { historico = JSON.parse(localStorage.getItem(DB_KEY)) || []; } catch(e) {}
+      try { 
+        historico = JSON.parse(localStorage.getItem(DB_KEY)) || []; 
+      } catch(e) {}
       historico.unshift({
         id: id,
         titulo: titulo,
@@ -259,20 +295,27 @@ function gerarLink() {
         data: new Date().toLocaleString('pt-BR'),
         temImg: !!imgBase64
       });
-      try { localStorage.setItem(DB_KEY, JSON.stringify(historico)); } catch(e) {}
+      try { 
+        localStorage.setItem(DB_KEY, JSON.stringify(historico)); 
+      } catch(e) {}
 
+      // MOSTRAR RESULTADO
       document.getElementById('linkGerado').value = linkFinal;
       document.getElementById('resultBox').classList.add('show');
 
+      // Restaurar botao
       btn.disabled = false;
       btnIcon.textContent = '🔐';
       btnText.textContent = 'GERAR LINK';
 
       mostrarToast('✅ Link gerado com sucesso!');
-      setTimeout(copiarLink, 600);
-      carregarHistorico();
+      console.log('=== SUCESSO ===');
 
-      console.log('=== SUCESSO ===', linkFinal);
+      // Copiar automaticamente
+      setTimeout(copiarLink, 600);
+
+      // Atualizar historico
+      carregarHistorico();
 
     } catch(erro) {
       console.error('ERRO:', erro);
@@ -284,37 +327,86 @@ function gerarLink() {
   }, 500);
 }
 
-// ===== IMAGEM =====
-document.getElementById('imagem').addEventListener('change', function(e) {
-  var file = e.target.files[0];
-  if(!file) return;
-  if(file.size > 5 * 1024 * 1024) { mostrarToast('❌ Imagem muito grande! Max 5MB'); return; }
+// ===== IMAGEM - VERSAO ULTRA CORRIGIDA =====
+(function() {
+  var imagemInput = document.getElementById('imagem');
+  var imgStatus = document.getElementById('imgStatus');
 
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    imgBase64 = e.target.result;
-    mostrarToast('✅ Imagem carregada!');
+  console.log('Setup do input de imagem...');
 
-    var previewImg = document.getElementById('previewImg');
-    previewImg.src = imgBase64;
-    previewImg.style.display = 'block';
-    document.getElementById('previewTitle').textContent = document.getElementById('titulo').value || 'Preview';
-    document.getElementById('previewDesc').textContent = document.getElementById('descricao').value || '';
+  if(!imagemInput) {
+    console.error('ERRO CRITICO: Input #imagem nao encontrado!');
+    return;
+  }
 
-    var tagsHtml = '';
-    var t1 = document.getElementById('tag1').value.trim();
-    var t2 = document.getElementById('tag2').value.trim();
-    if(t1) tagsHtml += '<span class="preview-tag">' + escapeHtml(t1) + '</span>';
-    if(t2) tagsHtml += '<span class="preview-tag">' + escapeHtml(t2) + '</span>';
-    document.getElementById('previewTags').innerHTML = tagsHtml;
+  imagemInput.addEventListener('change', function(e) {
+    console.log('=== IMAGEM SELECIONADA ===');
 
-    document.getElementById('previewCard').classList.add('show');
-  };
-  reader.onerror = function() {
-    mostrarToast('❌ Erro ao ler imagem');
-  };
-  reader.readAsDataURL(file);
-});
+    var file = e.target.files[0];
+
+    if(!file) {
+      console.log('Nenhum arquivo');
+      imgStatus.textContent = 'Nenhuma imagem selecionada';
+      imgStatus.style.color = '#64748b';
+      return;
+    }
+
+    console.log('Arquivo:', file.name, 'Tamanho:', (file.size/1024).toFixed(1), 'KB');
+
+    if(file.size > 5 * 1024 * 1024) { 
+      mostrarToast('❌ Imagem muito grande! Max 5MB'); 
+      imgStatus.textContent = '❌ Imagem muito grande! Max 5MB';
+      imgStatus.style.color = '#ef4444';
+      return; 
+    }
+
+    imgStatus.textContent = '⏳ Carregando...';
+    imgStatus.style.color = '#f59e0b';
+
+    var reader = new FileReader();
+
+    reader.onload = function(evt) {
+      console.log('✓ Imagem carregada no FileReader');
+      imgBase64 = evt.target.result;
+
+      console.log('imgBase64 definido! Tamanho:', imgBase64.length, 'chars');
+
+      imgStatus.textContent = '✅ ' + file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)';
+      imgStatus.style.color = '#10b981';
+
+      mostrarToast('✅ Imagem carregada!');
+
+      // Preview
+      var previewImg = document.getElementById('previewImg');
+      previewImg.src = imgBase64;
+      previewImg.style.display = 'block';
+
+      var tituloVal = document.getElementById('titulo').value || 'Preview';
+      var descVal = document.getElementById('descricao').value || '';
+      document.getElementById('previewTitle').textContent = tituloVal;
+      document.getElementById('previewDesc').textContent = descVal;
+
+      var tagsHtml = '';
+      var t1 = document.getElementById('tag1').value.trim();
+      var t2 = document.getElementById('tag2').value.trim();
+      if(t1) tagsHtml += '<span class="preview-tag">' + escapeHtml(t1) + '</span>';
+      if(t2) tagsHtml += '<span class="preview-tag">' + escapeHtml(t2) + '</span>';
+      document.getElementById('previewTags').innerHTML = tagsHtml;
+
+      document.getElementById('previewCard').classList.add('show');
+      console.log('✓ Preview atualizado');
+    };
+
+    reader.onerror = function(err) {
+      console.error('FileReader ERRO:', err);
+      imgStatus.textContent = '❌ Erro ao carregar imagem';
+      imgStatus.style.color = '#ef4444';
+      mostrarToast('❌ Erro ao ler imagem');
+    };
+
+    reader.readAsDataURL(file);
+  });
+})();
 
 // ===== COPIAR =====
 function copiarLink() {
@@ -363,7 +455,14 @@ function mostrarToast(msg) {
   setTimeout(function() { t.classList.remove('show'); }, 2500);
 }
 
-// ===== HISTORICO =====
+function escapeHtml(text) {
+  if(!text) return '';
+  var div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ===== HISTORICO - CORRIGIDO (aspas duplas) =====
 function carregarHistorico() {
   var historico = [];
   try { historico = JSON.parse(localStorage.getItem(DB_KEY)) || []; } catch(e) {}
@@ -377,6 +476,9 @@ function carregarHistorico() {
   var html = '';
 
   historico.slice(0, 10).forEach(function(item) {
+    // CORRECAO: Usar aspas duplas escapadas ao inves de aspas simples duplas
+    var urlEscaped = item.url.replace(/"/g, '&quot;');
+
     html += '<div class="history-item">';
     html += '<div style="width:45px;height:45px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0">📱</div>';
     html += '<div class="info">';
@@ -384,19 +486,14 @@ function carregarHistorico() {
     html += '<div class="url">' + escapeHtml(item.url) + '</div>';
     html += '</div>';
     html += '<div class="actions">';
-    html += '<button onclick="copiarUrl('' + escapeHtml(item.url) + '')">📋</button>';
-    html += '<button onclick="abrirUrl('' + escapeHtml(item.url) + '')">🔗</button>';
+    // CORRECAO: onclick com aspas duplas escapadas
+    html += '<button onclick="copiarUrl('' + urlEscaped + '')">📋</button>';
+    html += '<button onclick="abrirUrl('' + urlEscaped + '')">🔗</button>';
     html += '</div>';
     html += '</div>';
   });
 
   document.getElementById('historyList').innerHTML = html;
-}
-
-function escapeHtml(text) {
-  var div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
 }
 
 function copiarUrl(url) {
@@ -411,7 +508,8 @@ function abrirUrl(url) {
 
 // ===== INIT =====
 carregarHistorico();
-console.log('Encurtador Pro Painel v2.1 carregado - Pronto para uso');
+console.log('=== PAINEL PRONTO v2.2 ===');
+console.log('Todos os sistemas operacionais');
 </script>
 
 </body>
