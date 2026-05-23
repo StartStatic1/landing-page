@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>TechZone - Download Premium</title>
-
-    <!-- MONETAG MULTI TAG -->
+    <title>TechZone - Download</title>
     <script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
-
     <style>
         :root {
             --primary: #6366f1; --primary-dark: #4f46e5; --secondary: #06b6d4;
@@ -22,7 +19,6 @@
             font-family: 'Segoe UI', system-ui, sans-serif;
             background: var(--darker); color: var(--text); line-height: 1.6;
         }
-
         .header {
             background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
             border-bottom: 1px solid var(--border); padding: 1rem 0;
@@ -39,7 +35,7 @@
             display: flex; align-items: center; gap: 0.5rem;
         }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; }
         .nav-links a:hover { color: var(--primary); }
 
         .container {
@@ -50,14 +46,12 @@
             .container { grid-template-columns: 1fr 300px; }
         }
 
-        /* AD SLOTS MONETAG - estrutura limpa */
         .ad-slot {
             background: var(--dark); border: 1px dashed var(--border);
             border-radius: 12px; min-height: 90px; margin: 1rem 0;
             display: flex; align-items: center; justify-content: center;
             color: var(--text-muted); font-size: 0.75rem;
-            position: relative; overflow: hidden;
-            max-width: 100%;
+            position: relative; overflow: hidden; max-width: 100%;
         }
         .ad-slot::before { content: "AD"; position: absolute; top: 5px; right: 8px; font-size: 0.6rem; background: var(--border); padding: 2px 6px; border-radius: 4px; }
         .ad-inline { min-height: 90px; }
@@ -72,7 +66,6 @@
             font-size: 0.75rem; color: var(--text-muted);
         }
 
-        /* ARTICLE */
         .article-header { margin-bottom: 2rem; }
         .breadcrumb { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; word-break: break-word; }
         .breadcrumb a { color: var(--primary); text-decoration: none; }
@@ -82,9 +75,7 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             word-break: break-word;
         }
-        @media (min-width: 768px) {
-            .article-title { font-size: 2.5rem; }
-        }
+        @media (min-width: 768px) { .article-title { font-size: 2.5rem; } }
         .article-meta { display: flex; gap: 1.5rem; color: var(--text-muted); font-size: 0.9rem; flex-wrap: wrap; }
         .meta-item { display: flex; align-items: center; gap: 0.4rem; }
         .author-avatar {
@@ -93,9 +84,9 @@
             display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;
         }
 
-        /* HERO IMAGE 9:16 */
+        /* HERO IMAGE - qualquer proporção, não força 9:16 */
         .hero-img-container {
-            width: 100%; max-width: 420px;
+            width: 100%; max-width: 100%;
             margin: 0 auto 1.5rem auto;
             border-radius: 16px; overflow: hidden;
             border: 1px solid var(--border);
@@ -104,10 +95,10 @@
         }
         .hero-img {
             width: 100%;
-            aspect-ratio: 9 / 16;
-            object-fit: cover;
+            height: auto;
+            max-height: 80vh;
+            object-fit: contain;
             display: block;
-            max-height: 70vh;
         }
         .hero-img-badge {
             position: absolute; top: 12px; right: 12px;
@@ -116,7 +107,6 @@
             border-radius: 50px; font-size: 0.75rem; font-weight: 700;
         }
 
-        /* VIDEO */
         .video-section {
             width: 100%; margin-bottom: 2rem; border-radius: 16px;
             overflow: hidden; border: 1px solid var(--border); background: var(--card);
@@ -139,9 +129,8 @@
             50% { transform: scale(1.1); box-shadow: 0 0 50px rgba(99,102,241,0.8); }
         }
 
-        /* ARTICLE CONTENT */
         .article-content { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem; }
-        .article-content p { margin-bottom: 1.5rem; word-wrap: break-word; }
+        .article-content p { margin-bottom: 1.5rem; word-wrap: break-word; white-space: pre-wrap; }
         .article-content h2 { color: var(--text); font-size: 1.8rem; margin: 2rem 0 1rem; font-weight: 700; }
         .article-content h3 { color: var(--text); font-size: 1.4rem; margin: 1.5rem 0 0.8rem; }
         .highlight-box {
@@ -158,7 +147,6 @@
         .stat-num { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
         .stat-label { font-size: 0.75rem; color: var(--text-muted); }
 
-        /* DOWNLOAD SECTION */
         .download-section {
             background: var(--card); border: 1px solid var(--border);
             border-radius: 20px; padding: 2.5rem 1.5rem; margin: 2rem 0;
@@ -188,7 +176,6 @@
             display: flex; align-items: center; gap: 0.4rem;
         }
 
-        /* BOTÃO PRINCIPAL */
         .btn-download {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white; border: none; padding: 1.2rem 2rem; font-size: 1.1rem;
@@ -198,6 +185,8 @@
             animation: glow-btn 2s ease-in-out infinite;
             text-transform: uppercase; letter-spacing: 1px;
             max-width: 100%; text-wrap: balance;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
         @keyframes glow-btn {
             0%, 100% { box-shadow: 0 6px 20px rgba(99,102,241,0.4); }
@@ -228,7 +217,6 @@
             50% { opacity: 0.3; }
         }
 
-        /* SIDEBAR */
         .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
         .sidebar-widget {
             background: var(--card); border: 1px solid var(--border);
@@ -262,7 +250,6 @@
         .news-api-content h4 { font-size: 0.9rem; margin-bottom: 0.2rem; line-height: 1.3; }
         .news-api-content small { color: var(--text-muted); font-size: 0.75rem; }
 
-        /* FOOTER */
         .footer {
             background: var(--dark); border-top: 1px solid var(--border);
             padding: 3rem 1.5rem; margin-top: 4rem; text-align: center; color: var(--text-muted);
@@ -271,7 +258,6 @@
         .footer-links a { color: var(--text-muted); text-decoration: none; }
         .footer-links a:hover { color: var(--primary); }
 
-        /* LAYERS */
         .layer-overlay {
             position: fixed; inset: 0; background: rgba(2, 6, 23, 0.97);
             backdrop-filter: blur(10px); z-index: 9999; display: none;
@@ -330,13 +316,11 @@
             background: var(--dark); border-radius: 12px; padding: 1rem;
             margin-bottom: 1.5rem; border: 1px solid var(--border);
         }
-        .status-erro { color: var(--danger) !important; font-weight: bold; }
         .auto-redirect-msg {
             color: var(--success); font-size: 0.95rem; margin-top: 1rem;
             min-height: 1.5rem;
         }
 
-        /* TOAST */
         .toast {
             position: fixed; bottom: 2rem; right: 2rem;
             background: var(--card); border: 1px solid var(--border);
@@ -352,7 +336,6 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* RESPONSIVE */
         @media (max-width: 700px) {
             .nav-links { display: none; }
             .article-title { font-size: 1.6rem; }
@@ -361,7 +344,6 @@
             .file-info-item { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
             .layer-box { padding: 1.5rem 1rem; }
             .timer-display { font-size: 2.8rem; }
-            .hero-img-container { max-width: 280px; }
         }
 
         .fade-in { animation: fadeIn 0.5s ease; }
@@ -369,6 +351,9 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Pre-wrap para descrição com quebras de linha */
+        #descMain { white-space: pre-wrap; }
     </style>
 </head>
 <body>
@@ -386,7 +371,6 @@
         </div>
     </header>
 
-    <!-- AD SLOT 1: Topo -->
     <div style="max-width: 1200px; margin: 1rem auto; padding: 0 1.5rem;">
         <div class="ad-slot ad-inline"></div>
     </div>
@@ -399,10 +383,10 @@
                     <a href="/">Início</a> / <span id="breadcrumbCat">📱 Apps</span> / <span id="breadcrumbApp">Notion Mod Pro</span>
                 </div>
 
-                <!-- IMAGEM 9:16 ENVIADA DO PAINEL -->
+                <!-- IMAGEM DO PAINEL - qualquer proporção -->
                 <div id="heroImageContainer" style="display:none;">
                     <div class="hero-img-container">
-                        <img id="heroImage" class="hero-img" src="" alt="App Preview">
+                        <img id="heroImage" class="hero-img" src="" alt="Preview">
                         <div class="hero-img-badge">📱 PREVIEW</div>
                     </div>
                 </div>
@@ -417,10 +401,8 @@
                 </div>
             </div>
 
-            <!-- AD SLOT: Native Banner (meio superior) -->
             <div class="ad-slot ad-native"></div>
 
-            <!-- VIDEO -->
             <div class="video-section">
                 <div class="video-wrapper">
                     <div class="video-placeholder" id="videoPlaceholder" onclick="loadVideo()">
@@ -431,16 +413,13 @@
                 </div>
             </div>
 
-            <!-- AD SLOT 2: Entre conteúdo -->
             <div class="ad-slot ad-between"></div>
 
             <div class="article-content" id="articleContent">
                 <p id="descMain">
-                    Se você está cansado das limitações da versão gratuita do Notion, temos uma excelente notícia. A comunidade de desenvolvedores independentes acaba de lançar o <strong>Notion Mod Pro v4.2.1</strong>, uma versão modificada que desbloqueia <strong>todos os recursos premium</strong> sem necessidade de assinatura.
-                </p>
+Se você está cansado das limitações da versão gratuita do Notion, temos uma excelente notícia. A comunidade de desenvolvedores independentes acaba de lançar o <strong>Notion Mod Pro v4.2.1</strong>, uma versão modificada que desbloqueia <strong>todos os recursos premium</strong> sem necessidade de assinatura.
 
-                <p>
-                    Neste artigo completo, vamos explorar todas as funcionalidades exclusivas desta versão, comparar com a original e, claro, disponibilizar o link seguro para download via nosso canal oficial no Telegram.
+Neste artigo completo, vamos explorar todas as funcionalidades exclusivas desta versão, comparar com a original e, claro, disponibilizar o link seguro para download via nosso canal oficial no Telegram.
                 </p>
 
                 <div class="highlight-box">
@@ -481,10 +460,8 @@
                 <p><em>"Uso há 3 meses. Zero problemas, todas as integrações funcionando."</em> — <strong>Ana, RJ</strong></p>
             </div>
 
-            <!-- AD SLOT 3: Antes do download -->
             <div class="ad-slot ad-between"></div>
 
-            <!-- DOWNLOAD SECTION -->
             <div class="download-section" id="downloadSection">
                 <div class="download-icon">📦</div>
                 <div class="download-title" id="dlTitle">Notion Mod Pro v4.2.1</div>
@@ -507,10 +484,8 @@
                 </div>
             </div>
 
-            <!-- AD SLOT 4: Depois do download -->
             <div class="ad-slot ad-between"></div>
 
-            <!-- Comentários -->
             <div style="background: var(--card); border-radius: 16px; padding: 2rem; margin-top: 2rem; border: 1px solid var(--border);">
                 <h3 style="margin-bottom: 1.5rem;">💬 Comentários (128)</h3>
                 <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
@@ -532,9 +507,7 @@
             </div>
         </main>
 
-        <!-- SIDEBAR -->
         <aside class="sidebar">
-            <!-- AD SLOT 5: Sidebar top -->
             <div class="ad-slot ad-sidebar"></div>
 
             <div class="sidebar-widget">
@@ -546,27 +519,21 @@
                 <div class="trending-item"><div class="trending-num">5</div><div>Telegram Premium<small>✈️ 38K downloads</small></div></div>
             </div>
 
-            <!-- AD SLOT: Sidebar meio -->
             <div class="ad-slot ad-sidebar" style="min-height:160px;"></div>
 
             <div class="sidebar-widget">
                 <div class="widget-title">📰 Notícias Tech</div>
-                <div id="newsContainer">
-                    <!-- Notícias reais via TheNewsAPI -->
-                </div>
+                <div id="newsContainer"></div>
             </div>
 
-            <!-- AD SLOT 6: Sidebar bottom -->
             <div class="ad-slot ad-sidebar"></div>
         </aside>
     </div>
 
-    <!-- AD SLOT 7: Footer top -->
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
         <div class="ad-slot ad-inline" style="margin-bottom: 0;"></div>
     </div>
 
-    <!-- STICKY FOOTER MOBILE -->
     <div class="ad-sticky-footer" id="stickyFooter" style="display:none;"></div>
 
     <footer class="footer">
@@ -595,7 +562,6 @@
             <div class="timer-display" id="timerDisplay">15</div>
             <p style="color: var(--text-muted); margin-bottom: 1rem;">segundos restantes</p>
 
-            <!-- AD SLOT 8: Dentro do timer -->
             <div style="background: var(--dark); border: 1px dashed var(--border); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; min-height: 100px; display:flex;align-items:center;justify-content:center;color:var(--text-muted);"></div>
 
             <a href="https://omg10.com/4/11044679" target="_blank" class="btn-isca" id="btnIsca1" onclick="handleIscaClick(1)">
@@ -636,69 +602,120 @@
         </div>
     </div>
 
-    <!-- TOAST -->
     <div class="toast" id="toast">
         <div class="toast-icon">✅</div>
         <div class="toast-text" id="toastText">Operação realizada!</div>
     </div>
 
     <script>
-        // ========== DIRECT LINKS MONETAG ==========
+        // ========== CONFIGURAÇÃO ==========
         const MONETAG_LINKS = [
             'https://omg10.com/4/11044679',
             'https://omg10.com/4/11047687',
             'https://omg10.com/4/11047689'
         ];
 
-        // ========== DECODE DADOS DO PAINEL ==========
+        // ========== DECODE ROBUSTO DOS DADOS DO PAINEL ==========
+        let destUrl = null;
+        let appData = {};
+
         function loadAppData() {
-            const params = new URLSearchParams(window.location.search);
-            const b64 = params.get('d');
-            if (!b64) return false;
-
             try {
-                const jsonStr = atob(b64);
-                const data = JSON.parse(jsonStr);
-
-                if (data.n) {
-                    document.getElementById('pageTitle').textContent = data.n + ' ' + (data.v || '') + ': Download Premium';
-                    document.getElementById('dlTitle').textContent = data.n + ' ' + (data.v || '');
-                    document.title = data.n + ' - TechZone Download';
+                const params = new URLSearchParams(window.location.search);
+                const b64 = params.get('d');
+                if (!b64) {
+                    console.log('Nenhum parametro d encontrado');
+                    return false;
                 }
-                if (data.v) document.getElementById('statVer').textContent = data.v;
+
+                // Decode Base64 seguro (suporta UTF-8)
+                let jsonStr;
+                try {
+                    jsonStr = decodeURIComponent(escape(atob(b64)));
+                } catch(e) {
+                    jsonStr = atob(b64);
+                }
+
+                const data = JSON.parse(jsonStr);
+                appData = data;
+                console.log('Dados do painel:', data);
+
+                // TÍTULO
+                if (data.n) {
+                    const titleText = data.n + (data.v ? ' ' + data.v : '');
+                    document.getElementById('pageTitle').textContent = titleText + ': Download Premium';
+                    document.getElementById('dlTitle').textContent = titleText;
+                    document.title = data.n + ' - TechZone';
+                    document.getElementById('breadcrumbApp').textContent = data.n;
+                }
+
+                // VERSÃO
+                if (data.v) {
+                    document.getElementById('statVer').textContent = data.v;
+                }
+
+                // TAMANHO
                 if (data.s) {
                     document.getElementById('statSize').textContent = data.s;
                     document.getElementById('dlSize').textContent = data.s;
                 }
+
+                // CATEGORIA
                 if (data.c) {
                     document.getElementById('breadcrumbCat').textContent = data.c;
                 }
-                if (data.d) {
-                    document.getElementById('descMain').innerHTML = data.d + ' Baixe agora a versão mais recente com todos os recursos desbloqueados.';
+
+                // DESCRIÇÃO - substitui o texto padrão completamente
+                if (data.d && data.d.trim()) {
+                    const descEl = document.getElementById('descMain');
+                    // Converte quebras de linha em <br> e mantém HTML permitido
+                    const formatted = data.d
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/
+/g, '<br>');
+                    descEl.innerHTML = formatted;
                 }
 
-                // IMAGEM 9:16 DO PAINEL
+                // IMAGEM - aceita URL externa ou Base64
                 if (data.img) {
                     const heroContainer = document.getElementById('heroImageContainer');
                     const heroImg = document.getElementById('heroImage');
                     heroImg.src = data.img;
-                    heroContainer.style.display = 'block';
+                    heroImg.onerror = function() {
+                        // Se a imagem falhar, esconde o container
+                        heroContainer.style.display = 'none';
+                    };
+                    heroImg.onload = function() {
+                        heroContainer.style.display = 'block';
+                    };
+                    // Tenta mostrar imediatamente (se já estiver em cache)
+                    if (heroImg.complete && heroImg.naturalWidth > 0) {
+                        heroContainer.style.display = 'block';
+                    }
                 }
 
-                return data.u || null;
+                // LINK FINAL
+                destUrl = data.u || null;
+                console.log('Link destino:', destUrl);
+                return destUrl;
+
             } catch(e) {
-                console.error('Erro ao decodificar:', e);
+                console.error('Erro ao decodificar dados do painel:', e);
                 return null;
             }
         }
 
-        const destUrl = loadAppData();
+        // Executa imediatamente
+        loadAppData();
 
-        // ========== LAYER 1: START DOWNLOAD ==========
+        // ========== DOWNLOAD ==========
         function startDownload() {
+            console.log('startDownload chamado, destUrl:', destUrl);
             const btn = document.getElementById('btnDownload');
 
-            if (!destUrl) {
+            if (!destUrl || destUrl === 'null' || destUrl === 'undefined') {
                 showToast('❌ Link inválido! Use o painel para gerar.');
                 btn.style.animation = 'shake 0.5s';
                 setTimeout(() => btn.style.animation = '', 500);
@@ -720,7 +737,7 @@
             }, 2200);
         }
 
-        // ========== TIMER COM REDIRECIONAMENTO AUTOMÁTICO ==========
+        // ========== TIMER ==========
         let tempo = 15;
         let timerInterval;
         let redirectTimeout;
@@ -731,7 +748,6 @@
             const fillEl = document.getElementById('progressFill');
             const statusTxt = document.getElementById('statusTxt');
 
-            // Rotaciona os botões isca a cada 5 segundos
             rotateIsca();
             const iscaInterval = setInterval(rotateIsca, 5000);
 
@@ -767,7 +783,6 @@
             const btnVip = document.getElementById('btnVip');
             const autoMsg = document.getElementById('autoRedirectMsg');
 
-            // Esconde todos os iscas
             for (let i = 1; i <= 3; i++) {
                 document.getElementById('btnIsca' + i).style.display = 'none';
             }
@@ -779,7 +794,6 @@
 
             showToast('🎉 Download liberado!');
 
-            // REDIRECIONAMENTO AUTOMÁTICO
             let seg = 3;
             autoMsg.textContent = 'Abrindo link automaticamente em ' + seg + 's...';
 
@@ -790,7 +804,7 @@
                 } else {
                     clearInterval(redirectTimeout);
                     autoMsg.textContent = 'Redirecionando...';
-                    if (destUrl) {
+                    if (destUrl && destUrl !== 'null') {
                         window.location.href = destUrl;
                     }
                 }
@@ -801,9 +815,8 @@
             showToast('⏳ Abrindo servidor alternativo ' + num + '...');
         }
 
-        // ========== FINAL (fallback manual) ==========
         function goToFinal() {
-            if (!destUrl) { showToast('❌ Erro no link'); return; }
+            if (!destUrl || destUrl === 'null') { showToast('❌ Erro no link'); return; }
             if (redirectTimeout) clearInterval(redirectTimeout);
 
             document.getElementById('layer2').classList.remove('active');
@@ -826,8 +839,7 @@
                 </iframe>`;
         }
 
-        // ========== THENEWSAPI REAL (CORS LIBERADO NO FREE) ==========
-        const THENEWSAPI_KEY = '7glPdv5Lnp7gOgl-6wC_1p7oc1lOvc-Ew1fgkv83Ay8yRuPc';
+        // ========== NEWS ==========
         const FALLBACK_NEWS = [
             { icon: '🍎', title: 'iOS 19 Beta vaza com IA nativa', source: 'TechCrunch', time: '2h atrás' },
             { icon: '🧠', title: 'Gemini 2.5 supera GPT-5 em benchmarks', source: 'The Verge', time: '4h atrás' },
@@ -835,36 +847,6 @@
             { icon: '📱', title: 'Samsung Galaxy S30 com tela enrolável', source: 'GSM Arena', time: '8h atrás' },
             { icon: '💻', title: 'Windows 12 chega em 2027 com IA integrada', source: 'Windows Central', time: '10h atrás' }
         ];
-
-        async function loadNews() {
-            const container = document.getElementById('newsContainer');
-            try {
-                // TheNewsAPI: CORS liberado no free tier, 100 req/dia
-                const res = await fetch(`https://api.thenewsapi.com/v1/news/all?api_token=${THENEWSAPI_KEY}&language=pt&limit=5&search=tecnologia+android+ios`);
-                const data = await res.json();
-
-                if (data.data && data.data.length > 0) {
-                    container.innerHTML = data.data.slice(0, 5).map(article => {
-                        const emoji = getEmojiForNews(article.title);
-                        const time = formatTime(article.published_at);
-                        return `
-                            <div class="news-api-item" onclick="window.open('${article.url}', '_blank')">
-                                <div class="news-api-thumb">${emoji}</div>
-                                <div class="news-api-content">
-                                    <h4>${article.title.substring(0, 55)}${article.title.length > 55 ? '...' : ''}</h4>
-                                    <small>${article.source} • ${time}</small>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                } else {
-                    renderFallbackNews();
-                }
-            } catch (e) {
-                console.log('TheNewsAPI falhou, usando fallback:', e);
-                renderFallbackNews();
-            }
-        }
 
         function renderFallbackNews() {
             const container = document.getElementById('newsContainer');
@@ -878,27 +860,7 @@
                 </div>
             `).join('');
         }
-
-        function getEmojiForNews(title) {
-            const t = (title || '').toLowerCase();
-            if (t.includes('apple') || t.includes('ios') || t.includes('iphone')) return '🍎';
-            if (t.includes('android') || t.includes('samsung') || t.includes('google')) return '🤖';
-            if (t.includes('game') || t.includes('playstation') || t.includes('xbox') || t.includes('gta')) return '🎮';
-            if (t.includes('ai') || t.includes('inteligência') || t.includes('gpt') || t.includes('gemini')) return '🧠';
-            if (t.includes('windows') || t.includes('microsoft')) return '💻';
-            if (t.includes('tesla') || t.includes('carro') || t.includes('elétrico')) return '🚗';
-            if (t.includes('crypto') || t.includes('bitcoin')) return '₿';
-            return '📰';
-        }
-
-        function formatTime(isoDate) {
-            if (!isoDate) return 'agora';
-            const diff = Date.now() - new Date(isoDate).getTime();
-            const hours = Math.floor(diff / 3600000);
-            if (hours < 1) return 'agora';
-            if (hours < 24) return hours + 'h atrás';
-            return Math.floor(hours / 24) + 'd atrás';
-        }
+        renderFallbackNews();
 
         // ========== UTILITIES ==========
         function showToast(msg) {
@@ -908,7 +870,6 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // Live counters
         setInterval(() => {
             const el = document.getElementById('liveCounter');
             if (el && !document.getElementById('layer2').classList.contains('active')) {
@@ -921,29 +882,18 @@
             if (el) el.textContent = (47200 + Math.floor(Math.random() * 100)).toLocaleString('pt-BR') + 'K';
         }, 30000);
 
-        // Sticky footer mobile
         function checkSticky() {
             const sticky = document.getElementById('stickyFooter');
-            if (window.innerWidth <= 768) {
-                sticky.style.display = 'flex';
-            } else {
-                sticky.style.display = 'none';
-            }
+            sticky.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
         }
         window.addEventListener('resize', checkSticky);
         checkSticky();
 
-        // Shake animation
-        const style = document.createElement('style');
-        style.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }`;
-        document.head.appendChild(style);
-
-        // Inicializa notícias
-        loadNews();
+        const shakeStyle = document.createElement('style');
+        shakeStyle.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }`;
+        document.head.appendChild(shakeStyle);
     </script>
 
-    <!-- MONETAG REFORÇO -->
     <script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
-
 </body>
 </html>
