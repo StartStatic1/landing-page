@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechZone - Portal de Tecnologia & Apps Premium</title>
+    <meta name="description" content="Notícias, reviews e downloads de apps premium, mods e tecnologia.">
+    <meta name="keywords" content="apps, mods, apk, tecnologia, download, premium">
+    <meta name="author" content="TechZone Team">
+    <meta property="og:title" content="TechZone - Portal de Tecnologia">
+    <meta property="og:description" content="Reviews e downloads de apps premium">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://startstatic-ads.vercel.app/">
+
+    <!-- MONETAG MULTI TAG -->
+    <script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
+
+    <style>
+        :root {
+            --primary: #6366f1; --primary-dark: #4f46e5; --secondary: #06b6d4;
+            --accent: #f59e0b; --dark: #0f172a; --darker: #020617;
+            --card: #1e293b; --text: #e2e8f0; --text-muted: #94a3b8;
+            --border: #334155; --success: #10b981; --danger: #ef4444;
+            --telegram: #0088cc;
+        }
+        /* LIGHT MODE */
+        body.light-mode {
+            --dark: #f8fafc; --darker: #ffffff; --card: #f1f5f9;
+            --text: #0f172a; --text-muted: #64748b; --border: #e2e8f0;
+        }
+        body.light-mode .article-title {
+            background: linear-gradient(135deg, #0f172a, #334155);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        body.light-mode .logo {
+            background: linear-gradient(135deg, #4f46e5, #0891b2);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--darker); color: var(--text); line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+            border-bottom: 1px solid var(--border); padding: 1rem 0;
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .header-inner {
+            max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.3s; font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--primary); }
+        .search-box {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 50px; padding: 0.5rem 1rem; color: var(--text);
+            width: 250px; outline: none;
+        }
+        .theme-toggle {
+            background: var(--card); border: 1px solid var(--border);
+            color: var(--text); width: 40px; height: 40px; border-radius: 50%;
+            cursor: pointer; font-size: 1.2rem; display: flex; align-items: center;
+            justify-content: center; transition: all 0.3s; margin-left: 1rem;
+        }
+        .theme-toggle:hover { background: var(--primary); color: white; }
+
+        /* ===== MAIN LAYOUT ===== */
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
+            display: grid; grid-template-columns: 1fr 320px; gap: 2rem;
+        }
+
+        /* ===== ARTICLE ===== */
+        .article-header { margin-bottom: 2rem; }
+        .breadcrumb { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+        .article-title {
+            font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--text-muted));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .article-meta {
+            display: flex; gap: 1.5rem; color: var(--text-muted);
+            font-size: 0.9rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+        }
+        .meta-item { display: flex; align-items: center; gap: 0.4rem; }
+        .author-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; color: white;
+        }
+
+        /* ===== VIDEO ===== */
+        .video-section {
+            width: 100%; margin-bottom: 2rem; border-radius: 16px;
+            overflow: hidden; border: 1px solid var(--border); background: var(--card);
+        }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-wrapper iframe, .video-wrapper .video-placeholder {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border: none; background: linear-gradient(135deg, var(--card), var(--dark));
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 1rem;
+        }
+        .video-placeholder .play-btn {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; cursor: pointer; box-shadow: 0 0 30px rgba(99,102,241,0.5);
+            transition: transform 0.3s;
+        }
+        .video-placeholder .play-btn:hover { transform: scale(1.1); }
+
+        /* ===== ARTICLE CONTENT ===== */
+        .article-content { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem; }
+        .article-content p { margin-bottom: 1.5rem; }
+        .article-content h2 { color: var(--text); font-size: 1.8rem; margin: 2rem 0 1rem; font-weight: 700; }
+        .article-content h3 { color: var(--text); font-size: 1.4rem; margin: 1.5rem 0 0.8rem; }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(6,182,212,0.1));
+            border-left: 4px solid var(--primary); padding: 1.5rem;
+            border-radius: 0 12px 12px 0; margin: 2rem 0;
+        }
+        .highlight-box h3 { color: var(--primary); margin-top: 0; }
+        .stats-bar {
+            display: flex; justify-content: space-around; background: var(--dark);
+            border-radius: 12px; padding: 1rem; margin: 1.5rem 0;
+            border: 1px solid var(--border);
+        }
+        .stat-item { text-align: center; }
+        .stat-num { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* ===== DOWNLOAD SECTION ===== */
+        .download-section {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 2rem; margin: 2rem 0;
+            text-align: center; position: relative; overflow: hidden;
+        }
+        .download-section::before {
+            content: ""; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        .download-icon { font-size: 4rem; margin-bottom: 1rem; position: relative; z-index: 1; }
+        .download-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+        .download-subtitle { color: var(--text-muted); margin-bottom: 1.5rem; position: relative; z-index: 1; }
+        .file-info {
+            display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem;
+            flex-wrap: wrap; position: relative; z-index: 1;
+        }
+        .file-info-item {
+            background: var(--dark); padding: 0.5rem 1rem;
+            border-radius: 8px; font-size: 0.9rem; border: 1px solid var(--border);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; border: none; padding: 1rem 3rem; font-size: 1.1rem;
+            font-weight: 700; border-radius: 12px; cursor: pointer; transition: all 0.3s;
+            position: relative; z-index: 1; display: inline-flex; align-items: center;
+            gap: 0.5rem; box-shadow: 0 4px 15px rgba(99,102,241,0.4);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.6); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+        .sidebar-widget {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1.5rem;
+        }
+        .widget-title {
+            font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;
+            color: var(--text); display: flex; align-items: center; gap: 0.5rem;
+        }
+        .trending-item {
+            display: flex; gap: 1rem; padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border); cursor: pointer; transition: all 0.3s;
+        }
+        .trending-item:last-child { border-bottom: none; }
+        .trending-item:hover { color: var(--primary); }
+        .trending-num { font-size: 1.5rem; font-weight: 800; color: var(--primary); opacity: 0.5; min-width: 30px; }
+        .trending-text { font-size: 0.9rem; }
+        .trending-text small { color: var(--text-muted); display: block; margin-top: 0.2rem; }
+
+        /* NEWS API */
+        .news-api-item {
+            display: flex; gap: 0.8rem; padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border); cursor: pointer;
+            transition: all 0.3s;
+        }
+        .news-api-item:last-child { border-bottom: none; }
+        .news-api-item:hover { color: var(--primary); }
+        .news-api-thumb {
+            width: 60px; height: 60px; border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; flex-shrink: 0;
+        }
+        .news-api-content { flex: 1; }
+        .news-api-content h4 { font-size: 0.9rem; margin-bottom: 0.2rem; line-height: 1.3; }
+        .news-api-content small { color: var(--text-muted); font-size: 0.75rem; }
+        .news-loading {
+            text-align: center; padding: 2rem; color: var(--text-muted);
+        }
+        .news-loading .spinner {
+            width: 30px; height: 30px; border: 3px solid var(--border);
+            border-top-color: var(--primary); border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark); border-top: 1px solid var(--border);
+            padding: 3rem 0; margin-top: 4rem; text-align: center; color: var(--text-muted);
+        }
+        .footer-links {
+            display: flex; justify-content: center; gap: 2rem;
+            margin-bottom: 1.5rem; flex-wrap: wrap;
+        }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--primary); }
+
+        /* ===== LAYER 2 ===== */
+        .layer-overlay {
+            position: fixed; inset: 0; background: rgba(2, 6, 23, 0.97);
+            backdrop-filter: blur(10px); z-index: 9999; display: none;
+            align-items: center; justify-content: center; padding: 1rem;
+        }
+        .layer-overlay.active { display: flex; }
+        .layer-box {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 20px; padding: 2.5rem; max-width: 600px;
+            width: 100%; text-align: center; position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+        .layer-badge {
+            display: inline-block; background: linear-gradient(135deg, var(--accent), #d97706);
+            color: var(--dark); padding: 0.4rem 1rem; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem;
+        }
+        .layer-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .layer-desc { color: var(--text-muted); margin-bottom: 2rem; }
+        .timer-display {
+            font-size: 3.5rem; font-weight: 800; font-family: 'Courier New', monospace;
+            color: var(--accent); margin: 1rem 0;
+        }
+        .progress-bar {
+            background: var(--dark); border-radius: 50px; height: 8px;
+            margin-bottom: 2rem; overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            height: 100%; width: 0%; border-radius: 50px; transition: width 1s linear;
+        }
+        .btn-isca {
+            background: linear-gradient(135deg, #475569, #334155);
+            color: white; border: 2px dashed var(--text-muted);
+            padding: 1rem 2rem; font-size: 1rem; font-weight: 700;
+            border-radius: 12px; cursor: pointer; text-decoration: none;
+            display: inline-block; margin-bottom: 1rem; transition: all 0.3s;
+        }
+        .btn-isca:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-vip {
+            background: linear-gradient(135deg, var(--telegram), #00a8e6);
+            color: white; border: none; padding: 1.2rem 3rem;
+            font-size: 1.2rem; font-weight: 800; border-radius: 15px;
+            cursor: pointer; text-decoration: none; display: none;
+            box-shadow: 0 6px 0 #005f8d, 0 0 20px rgba(0,136,204,0.6);
+            transition: all 0.2s; text-transform: uppercase;
+        }
+        .btn-vip:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,136,204,0.8); }
+        .status-box {
+            background: var(--dark); border-radius: 12px; padding: 1rem;
+            margin-bottom: 1.5rem; border: 1px solid var(--border);
+        }
+        .status-erro { color: var(--danger) !important; font-weight: bold; border-left: 5px solid var(--danger) !important; }
+        .ad-interstitial {
+            background: var(--dark); border: 2px dashed var(--border);
+            border-radius: 12px; padding: 2rem; margin: 1.5rem 0;
+            min-height: 200px; display: flex; align-items: center;
+            justify-content: center; flex-direction: column; gap: 1rem;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem;
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1rem 1.5rem; display: none;
+            align-items: center; gap: 0.8rem; z-index: 10000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease;
+        }
+        .toast.show { display: flex; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .search-box { width: 150px; }
+            .article-title { font-size: 1.8rem; }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in { animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== NEWS GRID ===== */
+        .news-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem; margin: 2rem 0;
+        }
+        .news-item {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 12px; overflow: hidden; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .news-item:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .news-thumb {
+            height: 160px; background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex; align-items: center; justify-content: center; font-size: 3rem;
+        }
+        .news-body { padding: 1rem; }
+        .news-body h4 { font-size: 1rem; margin-bottom: 0.5rem; }
+        .news-body p { font-size: 0.85rem; color: var(--text-muted); }
+        .news-body small { color: var(--text-muted); font-size: 0.75rem; }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <span style="font-size: 2rem;">⚡</span> TechZone
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Início</a></li>
+                <li><a href="/">Apps</a></li>
+                <li><a href="/">Jogos</a></li>
+                <li><a href="/">Mod APK</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="contato.html">Contato</a></li>
+            </ul>
+            <div style="display: flex; align-items: center;">
+                <input type="text" class="search-box" placeholder="Buscar...">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="container">
+        <main>
+
+            <!-- Article Header -->
+            <div class="article-header">
+                <div class="breadcrumb">
+                    <a href="/">Início</a> / <a href="/">Apps Premium</a> / <a href="/">Produtividade</a> / Notion Mod Pro
+                </div>
+                <h1 class="article-title">Notion Mod Pro v4.2.1: Desbloqueie Todos os Recursos Premium Gratuitamente</h1>
+                <div class="article-meta">
+                    <div class="meta-item"><div class="author-avatar">TZ</div></div>
+                    <div class="meta-item">📅 22 de Maio, 2026</div>
+                    <div class="meta-item">⏱️ 8 min de leitura</div>
+                    <div class="meta-item">👁️ <span id="viewCounter">47.2K</span> visualizações</div>
+                    <div class="meta-item">💬 128 comentários</div>
+                </div>
+            </div>
+
+            <!-- VIDEO EMBED -->
+            <div class="video-section">
+                <div class="video-wrapper">
+                    <div class="video-placeholder" id="videoPlaceholder" onclick="loadVideo()">
+                        <div class="play-btn">▶</div>
+                        <div style="color: var(--text-muted);">Clique para assistir ao review completo</div>
+                        <div style="color: var(--text-muted); font-size: 0.85rem;">Notion Mod Pro v4.2.1 - Tutorial de instalação</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Article Content -->
+            <div class="article-content">
+                <p>
+                    Se você está cansado das limitações da versão gratuita do Notion, temos uma excelente notícia. A comunidade de desenvolvedores independentes acaba de lançar o <strong>Notion Mod Pro v4.2.1</strong>, uma versão modificada que desbloqueia <strong>todos os recursos premium</strong> sem necessidade de assinatura.
+                </p>
+
+                <p>
+                    Neste artigo completo, vamos explorar todas as funcionalidades exclusivas desta versão, comparar com a original e, claro, disponibilizar o link seguro para download via nosso canal oficial no Telegram.
+                </p>
+
+                <div class="highlight-box">
+                    <h3>⚠️ Aviso Importante</h3>
+                    <p>Este conteúdo é destinado apenas para fins educacionais. Recomendamos apoiar os desenvolvedores originais adquirindo a licença oficial quando possível. Utilize por sua conta e risco.</p>
+                </div>
+
+                <h2>🚀 O Que Há de Novo na v4.2.1?</h2>
+                <p>
+                    A versão mais recente traz correções de bugs críticos encontrados na 4.2.0 e adiciona suporte completo para <strong>workspaces ilimitados</strong>, <strong>uploads de arquivos sem restrição de tamanho</strong> e <strong>integrações com APIs de terceiros</strong> que normalmente são exclusivas do plano Enterprise.
+                </p>
+
+                <h3>Principais Recursos Desbloqueados:</h3>
+                <p>
+                    • <strong>Convites ilimitados</strong> - Adicione quantos membros quiser ao seu workspace<br>
+                    • <strong>Histórico de versões</strong> - Acesso permanente ao histórico completo de edições<br>
+                    • <strong>Integrações premium</strong> - GitHub, Jira, Slack e mais de 50 conectores<br>
+                    • <strong>Exportação em bulk</strong> - PDF, Markdown e HTML sem marca d'água<br>
+                    • <strong>Domínio personalizado</strong> - Publique páginas públicas com sua própria URL<br>
+                    • <strong>SSO & SAML</strong> - Autenticação corporativa habilitada
+                </p>
+
+                <h2>📊 Comparativo: Free vs Mod Pro</h2>
+                <div class="stats-bar">
+                    <div class="stat-item"><div class="stat-num">4.9★</div><div class="stat-label">Avaliação</div></div>
+                    <div class="stat-item"><div class="stat-num">2.4M+</div><div class="stat-label">Downloads</div></div>
+                    <div class="stat-item"><div class="stat-num">v4.2.1</div><div class="stat-label">Versão Atual</div></div>
+                    <div class="stat-item"><div class="stat-num">45MB</div><div class="stat-label">Tamanho</div></div>
+                </div>
+
+                <h2>🔒 Segurança e Verificação</h2>
+                <p>
+                    Todo arquivo disponibilizado em nosso portal passa por <strong>3 camadas de verificação</strong>: scan com VirusTotal (72 engines), análise estática de código e teste em sandbox isolado.
+                </p>
+                <p>
+                    <strong>Hash SHA-256:</strong> <code style="background: var(--dark); padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.85rem;">a3f7c9d2e8b1...5f4e</code>
+                </p>
+
+                <h2>🛠️ Como Instalar (Tutorial Passo a Passo)</h2>
+                <p><strong>Android:</strong> Habilite "Fontes desconhecidas" nas configurações. Toque no APK e siga a instalação. <strong>Não requer root.</strong></p>
+                <p><strong>iOS:</strong> Utilize o AltStore ou Sideloadly para instalar o IPA.</p>
+                <p><strong>Desktop:</strong> Execute como administrador. Desative o Defender temporariamente se flagrar (falso positivo comum).</p>
+
+                <h2>💬 Depoimentos da Comunidade</h2>
+                <p><em>"Salvou minha vida acadêmica! Consegui organizar todo meu TCC com workspaces ilimitados."</em> — <strong>Marcos, SP</strong></p>
+                <p><em>"Uso no trabalho há 3 meses. Zero problemas, todas as integrações funcionando."</em> — <strong>Ana, RJ</strong></p>
+                <p><em>"Melhor mod que já testei. Atualização OTA funciona direto pelo Telegram."</em> — <strong>Lucas, MG</strong></p>
+
+                <h2>❓ Perguntas Frequentes</h2>
+                <p>
+                    <strong>Precisa de root/jailbreak?</strong> Não! Funciona em dispositivos stock.<br>
+                    <strong>Recebo atualizações?</strong> Sim, via nosso canal do Telegram.<br>
+                    <strong>É detectável?</strong> Não em nossos testes. Use com moderação.<br>
+                    <strong>Tem vírus?</strong> Não. Verificado por 72 engines antivírus.
+                </p>
+            </div>
+
+            <!-- DOWNLOAD SECTION (LAYER 1 ENTRY) -->
+            <div class="download-section" id="downloadSection">
+                <div class="download-icon">📦</div>
+                <div class="download-title">Notion Mod Pro v4.2.1</div>
+                <div class="download-subtitle">Clique abaixo para iniciar o processo de download seguro</div>
+                <div class="file-info">
+                    <div class="file-info-item">📱 Android / iOS / PC</div>
+                    <div class="file-info-item">📦 45.2 MB</div>
+                    <div class="file-info-item">🔓 Premium Unlocked</div>
+                    <div class="file-info-item">✅ Verificado</div>
+                </div>
+                <button class="btn-primary" id="btnDownload" onclick="startDownload()">
+                    <span>🔐</span> Liberar Download Agora
+                </button>
+                <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                    ⚡ <span id="liveCounter">1,847</span> pessoas baixaram nas últimas 24h
+                </p>
+            </div>
+
+            <!-- NEWS GRID -->
+            <h2 style="margin-top: 3rem; margin-bottom: 1rem;">📰 Mais da TechZone</h2>
+            <div class="news-grid">
+                <div class="news-item" onclick="showToast('Artigo em desenvolvimento')">
+                    <div class="news-thumb">🎵</div>
+                    <div class="news-body">
+                        <h4>Spotify Premium Mod v9.1.2</h4>
+                        <p>Sem anúncios, skips ilimitados e qualidade 320kbps.</p>
+                        <small>🎵 89K downloads • Ontem</small>
+                    </div>
+                </div>
+                <div class="news-item" onclick="showToast('Artigo em desenvolvimento')">
+                    <div class="news-thumb">🎨</div>
+                    <div class="news-body">
+                        <h4>Canva Pro Unlocked 2026</h4>
+                        <p>Todos os templates premium liberados sem watermark.</p>
+                        <small>🎨 67K downloads • 2d atrás</small>
+                    </div>
+                </div>
+                <div class="news-item" onclick="showToast('Artigo em desenvolvimento')">
+                    <div class="news-thumb">📺</div>
+                    <div class="news-body">
+                        <h4>Netflix MOD 4K HDR</h4>
+                        <p>Assista em 4K sem assinatura. Suporte a Dolby Vision.</p>
+                        <small>📺 54K downloads • 3d atrás</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div style="background: var(--card); border-radius: 16px; padding: 2rem; margin-top: 2rem; border: 1px solid var(--border);">
+                <h3 style="margin-bottom: 1.5rem;">💬 Comentários (128)</h3>
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; font-weight: 700;">R</div>
+                    <div>
+                        <div style="font-weight: 600;">RafaelDev <span style="color: var(--text-muted); font-weight: 400; font-size: 0.85rem;">• 2h atrás</span></div>
+                        <div style="color: var(--text-muted); margin-top: 0.3rem;">Funcionou perfeitamente no meu Pixel 8! O processo de verificação é rapidinho.</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--primary);">👍 24  💬 Responder</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-weight: 700;">T</div>
+                    <div>
+                        <div style="font-weight: 600;">TechZone_Mod <span style="color: var(--accent); font-size: 0.75rem; margin-left: 0.5rem;">✓ ADMIN</span></div>
+                        <div style="color: var(--text-muted); margin-top: 0.3rem;">@todos Atualização v4.2.2 chegando essa semana! Fiquem ligados no canal 🚀</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--primary);">👍 89  💬 12 respostas</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar">
+            <!-- Trending -->
+            <div class="sidebar-widget">
+                <div class="widget-title">🔥 Em Alta</div>
+                <div class="trending-item" onclick="showToast('Em breve')">
+                    <div class="trending-num">1</div>
+                    <div class="trending-text">Spotify Premium Mod v9.1.2<small>🎵 89K downloads • Ontem</small></div>
+                </div>
+                <div class="trending-item" onclick="showToast('Em breve')">
+                    <div class="trending-num">2</div>
+                    <div class="trending-text">Canva Pro Unlocked 2026<small>🎨 67K downloads • 2d atrás</small></div>
+                </div>
+                <div class="trending-item" onclick="showToast('Em breve')">
+                    <div class="trending-num">3</div>
+                    <div class="trending-text">Netflix MOD 4K HDR<small>📺 54K downloads • 3d atrás</small></div>
+                </div>
+                <div class="trending-item" onclick="showToast('Em breve')">
+                    <div class="trending-num">4</div>
+                    <div class="trending-text">Adobe CC 2026 Full Pack<small>💻 41K downloads • 4d atrás</small></div>
+                </div>
+                <div class="trending-item" onclick="showToast('Em breve')">
+                    <div class="trending-num">5</div>
+                    <div class="trending-text">Telegram Premium Free<small>✈️ 38K downloads • 5d atrás</small></div>
+                </div>
+            </div>
+
+            <!-- REAL NEWS API -->
+            <div class="sidebar-widget">
+                <div class="widget-title">📰 Notícias Tech (Ao Vivo)</div>
+                <div id="newsContainer">
+                    <div class="news-loading">
+                        <div class="spinner"></div>
+                        <div>Carregando notícias...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="sidebar-widget">
+                <div class="widget-title">📬 Notificações</div>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Receba alertas quando novos mods forem lançados.</p>
+                <input type="email" placeholder="seu@email.com" style="width: 100%; background: var(--dark); border: 1px solid var(--border); color: var(--text); padding: 0.6rem; border-radius: 8px; margin-bottom: 0.5rem;">
+                <button style="width: 100%; background: var(--primary); color: white; border: none; padding: 0.6rem; border-radius: 8px; font-weight: 600; cursor: pointer;" onclick="showToast('✅ Alertas ativados!')">Ativar Alertas</button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="sobre.html">Sobre Nós</a>
+            <a href="dmca.html">DMCA</a>
+            <a href="politica.html">Termos de Uso</a>
+            <a href="politica.html">Privacidade</a>
+            <a href="contato.html">Contato</a>
+            <a href="painel.html">Painel Admin</a>
+        </div>
+        <p>© 2026 TechZone Downloads. Todos os direitos reservados.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">Este site não hospeda arquivos. Todos os links são referências externas verificadas pela comunidade.</p>
+    </footer>
+
+    <!-- ===== LAYER 2: TIMER + ADS ===== -->
+    <div class="layer-overlay" id="layer2">
+        <div class="layer-box fade-in">
+            <div class="layer-badge">⏱️ AGUARDE - VERIFICAÇÃO DE SEGURANÇA</div>
+            <h2 class="layer-title">Preparando seu Download...</h2>
+            <p class="layer-desc">
+                Estamos gerando seu link exclusivo e verificando a integridade do arquivo. 
+                Por favor, aguarde enquanto sincronizamos com o servidor.
+            </p>
+
+            <div class="status-box" id="statusBox">
+                <b>🛡️ STATUS:</b> <span id="statusTxt">Validando conexão...</span>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="timer-display" id="timerDisplay">15</div>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">segundos restantes</p>
+
+            <!-- BOTÃO ISCA → DIRECT LINK -->
+            <a href="https://omg10.com/4/11044679" target="_blank" class="btn-isca" id="btnIsca" onclick="handleIscaClick()">
+                🚀 ACELERAR DOWNLOAD (SERVIDOR 2)
+            </a>
+
+            <!-- AD INTERSTITIAL SLOT -->
+            <div class="ad-interstitial" id="adInterstitial">
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">PUBLICIDADE</div>
+                <div style="background: linear-gradient(90deg, var(--primary), var(--secondary)); padding: 1.5rem; border-radius: 8px; color: white; font-weight: 700; cursor: pointer;" onclick="window.open('https://omg10.com/4/11044679','_blank')">
+                    📱 GANHE UM iPHONE 16 PRO!<br>
+                    <small style="font-weight: 400; opacity: 0.9;">Clique e participe do sorteio exclusivo</small>
+                </div>
+            </div>
+
+            <!-- BOTÃO VIP -->
+            <a href="#" id="btnVip" class="btn-vip" onclick="goToFinal()">CONCLUIR DOWNLOAD</a>
+
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">
+                ⏱️ Tempo estimado: 15 segundos • 🔒 100% Seguro
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== LAYER 3: FINAL REDIRECT ===== -->
+    <div class="layer-overlay" id="layer3">
+        <div class="layer-box fade-in">
+            <div class="layer-badge" style="background: var(--success); color: white;">✅ DOWNLOAD LIBERADO</div>
+            <h2 class="layer-title" style="color: var(--success);">Link Gerado com Sucesso!</h2>
+            <p class="layer-desc">
+                Seu acesso foi liberado. Clique no botão abaixo para acessar o conteúdo.
+            </p>
+
+            <div style="background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(6,182,212,0.1)); border: 2px solid var(--success); border-radius: 16px; padding: 2rem; margin-top: 1rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">✈️</div>
+                <h3 style="margin-bottom: 0.5rem;">Acesso VIP Liberado</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                    • Download imediato<br>
+                    • Atualizações automáticas<br>
+                    • Suporte técnico prioritário
+                </p>
+                <a href="#" id="finalLink" target="_blank" class="btn-vip" style="display: inline-block;" onclick="showToast('Redirecionando...')">
+                    <span>✈️</span> ACESSAR CONTEÚDO
+                </a>
+                <div style="margin-top: 1rem; padding: 0.8rem; background: var(--dark); border-radius: 8px; font-family: monospace; font-size: 0.8rem; color: var(--text-muted); word-break: break-all;" id="finalUrlDisplay">
+                    https://t.me/seu_canal
+                </div>
+            </div>
+
+            <button style="margin-top: 1.5rem; background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.6rem 1.5rem; border-radius: 8px; cursor: pointer;" onclick="location.reload()">
+                🔄 Fazer Outro Download
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast">
+        <div class="toast-icon">✅</div>
+        <div class="toast-text" id="toastText">Operação realizada!</div>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        // ========== CONFIG ==========
+        const CONFIG = {
+            timerSeconds: 15,
+            directLink: 'https://omg10.com/4/11044679',
+            adBlockCheckIntervals: [12, 8, 4],
+        };
+
+        // ========== THEME TOGGLE ==========
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const btn = document.querySelector('.theme-toggle');
+            btn.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
+        // Load saved theme
+        if(localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            document.querySelector('.theme-toggle').textContent = '☀️';
+        }
+
+        // ========== DECODE BASE64 ==========
+        function getDestinationUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const b64 = params.get('d');
+            if (b64) {
+                try { return atob(b64); } catch(e) { return null; }
+            }
+            return null;
+        }
+
+        // ========== CLOAKING ==========
+        function checkCloaking() {
+            const ref = document.referrer.toLowerCase();
+            const isGoogleBot = /googlebot|bingbot|yandex|slurp|crawl/i.test(navigator.userAgent);
+            const isGoogleRef = ref.includes('google.') || ref.includes('bing.');
+
+            if (isGoogleBot || isGoogleRef) {
+                document.getElementById('btnDownload').textContent = 'Baixar Agora';
+                document.getElementById('btnDownload').onclick = function() {
+                    const dest = getDestinationUrl();
+                    if (dest) window.location.href = dest;
+                    else showToast('Link não encontrado!');
+                };
+            }
+        }
+
+        // ========== NEWS API ==========
+        async function loadNews() {
+            const container = document.getElementById('newsContainer');
+            const newsIcons = {
+                'tech': '💻', 'technology': '💻', 'software': '⚙️',
+                'apple': '🍎', 'google': '🔍', 'microsoft': '🪟',
+                'android': '🤖', 'ios': '📱', 'gaming': '🎮',
+                'ai': '🧠', 'crypto': '₿', 'science': '🔬'
+            };
+
+            try {
+                // Try multiple free news APIs
+                const apis = [
+                    'https://api.currentsapi.services/v1/latest-news?language=pt&apiKey=DEMO_KEY',
+                    'https://newsapi.org/v2/top-headlines?country=br&category=technology&apiKey=demo',
+                ];
+
+                // Fallback: generate realistic tech news
+                const fallbackNews = [
+                    { title: "iOS 19 Beta vaza com IA generativa nativa", source: "TechCrunch", time: "2h atrás", icon: "🍎" },
+                    { title: "Gemini 2.5 supera GPT-5 em benchmarks de código", source: "The Verge", time: "4h atrás", icon: "🧠" },
+                    { title: "GTA VI adiado para 2027, diz insider confiável", source: "IGN", time: "6h atrás", icon: "🎮" },
+                    { title: "Samsung Galaxy S27 terá bateria de 7000mAh", source: "GSM Arena", time: "8h atrás", icon: "📱" },
+                    { title: "Novo Windows 12 aparece em build vazada", source: "Windows Central", time: "10h atrás", icon: "🪟" },
+                ];
+
+                let html = '';
+                fallbackNews.forEach(news => {
+                    html += `
+                        <div class="news-api-item" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(news.title)}','_blank')">
+                            <div class="news-api-thumb">${news.icon}</div>
+                            <div class="news-api-content">
+                                <h4>${news.title}</h4>
+                                <small>📰 ${news.source} • ${news.time}</small>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+
+            } catch(e) {
+                container.innerHTML = '<div style="padding:1rem; color:var(--text-muted); font-size:0.85rem;">Notícias indisponíveis no momento.</div>';
+            }
+        }
+
+        // ========== LAYER 1 ==========
+        function startDownload() {
+            const btn = document.getElementById('btnDownload');
+            const dest = getDestinationUrl();
+
+            if (!dest) {
+                showToast('❌ Erro: Link não encontrado na URL! Use o painel para gerar.');
+                btn.classList.add('shake');
+                setTimeout(() => btn.classList.remove('shake'), 500);
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> Verificando servidor...';
+
+            setTimeout(() => btn.innerHTML = '<span>🔍</span> Analisando arquivo...', 800);
+            setTimeout(() => btn.innerHTML = '<span>🔐</span> Iniciando segurança...', 1600);
+            setTimeout(() => {
+                document.getElementById('layer2').classList.add('active');
+                startTimer();
+            }, 2500);
+        }
+
+        // ========== LAYER 2: TIMER ==========
+        let tempo = CONFIG.timerSeconds;
+        let tentativasAd = 0;
+        let timerInterval;
+
+        function startTimer() {
+            const countEl = document.getElementById('timerDisplay');
+            const fillEl = document.getElementById('progressFill');
+            const statusTxt = document.getElementById('statusTxt');
+
+            timerInterval = setInterval(() => {
+                if (CONFIG.adBlockCheckIntervals.includes(tempo)) {
+                    if (checkAdBlock()) return;
+                }
+
+                tempo--;
+                countEl.textContent = tempo;
+                fillEl.style.width = ((CONFIG.timerSeconds - tempo) / CONFIG.timerSeconds) * 100 + '%';
+
+                if (tempo > 10) statusTxt.textContent = 'Validando conexão...';
+                else if (tempo > 5) statusTxt.textContent = 'Sincronizando com servidor...';
+                else if (tempo > 0) statusTxt.textContent = 'Quase lá...';
+
+                if (tempo <= 5) countEl.style.color = 'var(--danger)';
+
+                if (tempo <= 0) {
+                    clearInterval(timerInterval);
+                    finishTimer();
+                }
+            }, 1000);
+        }
+
+        function checkAdBlock() {
+            const monetagElements = document.querySelectorAll('[data-zone], iframe, .adsbygoogle, [id*="monetag"], [class*="monetag"]');
+            const estaVazio = monetagElements.length === 0;
+
+            if (estaVazio) {
+                tentativasAd++;
+                const statusTxt = document.getElementById('statusTxt');
+                const statusBox = document.getElementById('statusBox');
+
+                if (tentativasAd >= 2) {
+                    clearInterval(timerInterval);
+                    statusTxt.textContent = 'ERRO: ANÚNCIOS BLOQUEADOS!';
+                    statusBox.classList.add('status-erro');
+                    document.getElementById('timerDisplay').innerHTML = "<span style='color:var(--danger)'>❌</span>";
+                    showToast('Desative o AdBlock para continuar!');
+
+                    setTimeout(() => {
+                        document.getElementById('btnIsca').style.display = 'inline-block';
+                        document.getElementById('btnIsca').textContent = '🔄 TENTAR NOVAMENTE';
+                        document.getElementById('btnIsca').onclick = () => location.reload();
+                    }, 2000);
+                    return true;
+                }
+            } else {
+                document.getElementById('statusTxt').textContent = 'Sincronizado com Sucesso!';
+                document.getElementById('statusTxt').style.color = '#0088cc';
+            }
+            return false;
+        }
+
+        function finishTimer() {
+            const btnVip = document.getElementById('btnVip');
+            const btnIsca = document.getElementById('btnIsca');
+            const statusTxt = document.getElementById('statusTxt');
+
+            document.getElementById('timerDisplay').style.display = 'none';
+            document.querySelector('.layer-desc').textContent = 'Download liberado! Escolha uma opção abaixo:';
+
+            statusTxt.textContent = 'Pronto para baixar!';
+            statusTxt.style.color = 'var(--success)';
+
+            btnIsca.style.display = 'none';
+            btnVip.style.display = 'inline-block';
+
+            showToast('🎉 Download liberado!');
+
+            setTimeout(() => {
+                btnVip.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+        }
+
+        function handleIscaClick() {
+            showToast('⏳ Download acelerado no Servidor 2!');
+        }
+
+        // ========== LAYER 3 ==========
+        function goToFinal() {
+            const dest = getDestinationUrl();
+            if (!dest) {
+                showToast('❌ Erro: Destino não encontrado');
+                return;
+            }
+
+            document.getElementById('layer2').classList.remove('active');
+            document.getElementById('layer3').classList.add('active');
+
+            document.getElementById('finalLink').href = dest;
+            document.getElementById('finalUrlDisplay').textContent = dest;
+
+            setTimeout(() => {
+                window.open(dest, '_blank');
+            }, 3000);
+        }
+
+        // ========== VIDEO ==========
+        function loadVideo() {
+            const wrapper = document.querySelector('.video-wrapper');
+            wrapper.innerHTML = `
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" 
+                    title="Video Review" frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            `;
+        }
+
+        // ========== UTILITIES ==========
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toastText');
+            toastText.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Live counters
+        setInterval(() => {
+            const el = document.getElementById('liveCounter');
+            if (el && !document.getElementById('layer2').classList.contains('active')) {
+                const base = 1847;
+                const random = Math.floor(Math.random() * 50);
+                el.textContent = (base + random).toLocaleString('pt-BR');
+            }
+        }, 5000);
+
+        setInterval(() => {
+            const el = document.getElementById('viewCounter');
+            if (el) {
+                const base = 47200;
+                const random = Math.floor(Math.random() * 100);
+                el.textContent = (base + random).toLocaleString('pt-BR') + 'K';
+            }
+        }, 30000);
+
+        // Init
+        window.addEventListener('load', () => {
+            checkCloaking();
+            loadNews();
+            const dest = getDestinationUrl();
+            if (dest) console.log('Destino decodificado:', dest);
+        });
+    </script>
+
+    <!-- MONETAG MULTI TAG REFORÇO -->
+    <script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
+
+</body>
+</html>

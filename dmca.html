@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMCA - TechZone</title>
+    <meta name="description" content="Política DMCA da TechZone. Solicite a remoção de conteúdo protegido por direitos autorais.">
+    <style>
+        :root {
+            --primary: #6366f1; --secondary: #06b6d4; --accent: #f59e0b;
+            --dark: #0f172a; --darker: #020617; --card: #1e293b;
+            --text: #e2e8f0; --text-muted: #94a3b8; --border: #334155;
+            --danger: #ef4444; --success: #10b981;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--darker); color: var(--text); line-height: 1.6;
+        }
+        .header {
+            background: var(--dark); border-bottom: 1px solid var(--border);
+            padding: 1rem 0; position: sticky; top: 0; z-index: 1000;
+        }
+        .header-inner {
+            max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; }
+        .nav-links a:hover { color: var(--primary); }
+        .container {
+            max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem;
+        }
+        .page-title {
+            font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--text-muted));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .warning-box {
+            background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(245,158,11,0.1));
+            border-left: 4px solid var(--danger); padding: 1.5rem;
+            border-radius: 0 12px 12px 0; margin-bottom: 2rem;
+        }
+        .warning-box h3 { color: var(--danger); margin-bottom: 0.5rem; }
+        .warning-box p { color: var(--text-muted); font-size: 0.95rem; }
+        .content-box {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 2rem; margin-bottom: 2rem;
+        }
+        .content-box h2 { color: var(--text); margin: 1.5rem 0 1rem; font-size: 1.4rem; }
+        .content-box h3 { color: var(--primary); margin: 1.2rem 0 0.8rem; font-size: 1.15rem; }
+        .content-box p { color: var(--text-muted); margin-bottom: 1rem; font-size: 1rem; }
+        .content-box ul { color: var(--text-muted); margin-left: 2rem; margin-bottom: 1rem; }
+        .content-box li { margin-bottom: 0.5rem; }
+        .content-box strong { color: var(--text); }
+        .checklist {
+            background: var(--dark); border-radius: 12px; padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .checklist-item {
+            display: flex; align-items: flex-start; gap: 0.8rem;
+            padding: 0.8rem 0; border-bottom: 1px solid var(--border);
+        }
+        .checklist-item:last-child { border-bottom: none; }
+        .check-icon {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: var(--success); color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+        }
+        .form-dmca {
+            background: var(--dark); border: 1px solid var(--border);
+            border-radius: 12px; padding: 2rem; margin-top: 1.5rem;
+        }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label {
+            display: block; margin-bottom: 0.5rem; font-weight: 600;
+            font-size: 0.9rem; color: var(--text);
+        }
+        .form-group input, .form-group textarea {
+            width: 100%; background: var(--card); border: 1px solid var(--border);
+            color: var(--text); padding: 0.8rem; border-radius: 10px;
+            font-size: 1rem; outline: none; transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+        }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        .btn-submit {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white; border: none; padding: 1rem 2rem;
+            font-size: 1rem; font-weight: 700; border-radius: 10px;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(239,68,68,0.4); }
+        .timeline {
+            display: flex; flex-direction: column; gap: 0;
+            margin: 1.5rem 0; position: relative;
+        }
+        .timeline::before {
+            content: ""; position: absolute; left: 15px; top: 0; bottom: 0;
+            width: 2px; background: var(--border);
+        }
+        .timeline-item {
+            display: flex; align-items: flex-start; gap: 1rem;
+            padding: 1rem 0; position: relative;
+        }
+        .timeline-dot {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: var(--card); border: 2px solid var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; z-index: 1; flex-shrink: 0;
+        }
+        .timeline-content h4 { color: var(--text); margin-bottom: 0.3rem; }
+        .timeline-content p { color: var(--text-muted); font-size: 0.9rem; }
+        .footer {
+            background: var(--dark); border-top: 1px solid var(--border);
+            padding: 2rem 0; text-align: center; color: var(--text-muted);
+        }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; }
+        @media (max-width: 700px) { .nav-links { display: none; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">⚡ TechZone</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="contato.html">Contato</a></li>
+                <li><a href="politica.html">Privacidade</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">Política DMCA</h1>
+
+        <div class="warning-box">
+            <h3>⚠️ Aviso Importante</h3>
+            <p>
+                A TechZone respeita integralmente os direitos autorais e propriedade intelectual. 
+                Se você é titular de direitos autorais e acredita que algum conteúdo em nossa plataforma 
+                infringe seus direitos, siga o procedimento abaixo para solicitar remoção.
+            </p>
+        </div>
+
+        <div class="content-box">
+            <h2>1. Nossa Posição sobre Direitos Autorais</h2>
+            <p>
+                A TechZone opera como um <strong>agregador de links</strong> e <strong>portal informativo</strong>. 
+                Não hospedamos, armazenamos ou distribuímos arquivos, softwares ou qualquer tipo de conteúdo 
+                protegido por direitos autorais em nossos servidores.
+            </p>
+            <p>
+                Todos os links em nossa plataforma são redirecionamentos para serviços de terceiros 
+                (Telegram, serviços de nuvem, etc.). Não temos controle sobre o conteúdo disponível 
+                nesses destinos externos.
+            </p>
+            <p>
+                Nosso serviço de "links seguros" é uma ferramenta de <strong>encurtamento com verificação</strong>, 
+                similar a serviços como Bit.ly ou TinyURL, com a adição de uma camada de segurança 
+                (verificação de anúncios) antes do redirecionamento.
+            </p>
+
+            <h2>2. Procedimento de Notificação DMCA</h2>
+            <p>
+                Para solicitar a remoção de conteúdo que você acredita infringir seus direitos autorais, 
+                envie uma Notificação de Violação de Direitos Autorais ("DMCA Takedown Notice") contendo 
+                <strong>TODAS</strong> as informações abaixo:
+            </p>
+
+            <div class="checklist">
+                <div class="checklist-item">
+                    <div class="check-icon">1</div>
+                    <div>
+                        <strong>Identificação do trabalho protegido</strong><br>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Título, descrição e, quando possível, cópia ou localização do material original (URL)</span>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon">2</div>
+                    <div>
+                        <strong>Identificação do material infrator</strong><br>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">URL exato(s) em nossa plataforma onde o conteúdo está sendo referenciado</span>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon">3</div>
+                    <div>
+                        <strong>Informações de contato</strong><br>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Nome completo, endereço, telefone e email do reclamante</span>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon">4</div>
+                    <div>
+                        <strong>Declaração de boa-fé</strong><br>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">"Acredito de boa-fé que o uso do material não é autorizado pelo proprietário dos direitos"</span>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon">5</div>
+                    <div>
+                        <strong>Declaração de precisão</strong><br>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">"As informações nesta notificação são precisas e, sob pena de perjúrio, sou o titular dos direitos"</span>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon">6</div>
+                    <div>
+                        <strong>Assinatura física ou eletrônica</strong><br>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Do titular dos direitos autorais ou de um representante autorizado</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2>3. Processo de Avaliação</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot">📥</div>
+                    <div class="timeline-content">
+                        <h4>Recebimento da Notificação</h4>
+                        <p>Confirmamos o recebimento em até 24 horas</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">🔍</div>
+                    <div class="timeline-content">
+                        <h4>Análise e Verificação</h4>
+                        <p>Verificamos a legitimidade da requisição (24-48h)</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">⚡</div>
+                    <div class="timeline-content">
+                        <h4>Remoção do Link</h4>
+                        <p>Desativamos o link em questão imediatamente (até 72h do recebimento)</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">📧</div>
+                    <div class="timeline-content">
+                        <h4>Notificação ao Reclamante</h4>
+                        <p>Enviamos confirmação de remoção ao email fornecido</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2>4. Counter-Notification (Contestação)</h2>
+            <p>
+                Se você acredita que seu conteúdo foi removido por engano ou que possui direito legítimo 
+                de uso (fair use, licença, etc.), pode enviar uma Counter-Notification contendo:
+            </p>
+            <ul>
+                <li>Identificação do material removido e sua localização anterior</li>
+                <li>Declaração de boa-fé de que a remoção foi resultado de erro</li>
+                <li>Consentimento para jurisdição do tribunal federal do distrito judicial relevante</li>
+                <li>Informações de contato e assinatura</li>
+            </ul>
+            <p>
+                Após receber uma Counter-Notification válida, notificaremos o reclamante original. 
+                O conteúdo poderá ser restaurado após 10 dias úteis, a menos que o reclamante 
+                inicie uma ação judicial.
+            </p>
+
+            <h2>5. Política de Repeat Infringers</h2>
+            <p>
+                Usuários que gerarem links para conteúdo infrator de forma reiterada terão suas 
+                contas permanentemente banidas de nossa plataforma. Mantemos registros de violações 
+                para fins de cumprimento desta política.
+            </p>
+
+            <h2>6. Envio da Notificação DMCA</h2>
+            <p>
+                Envie sua Notificação DMCA completa para um dos canais abaixo:
+            </p>
+            <ul>
+                <li><strong>Email DMCA:</strong> dmca@techzone.app</li>
+                <li><strong>Email Alternativo:</strong> privacidade@techzone.app</li>
+                <li><strong>Telegram:</strong> <a href="https://t.me/techzone_suporte" target="_blank" style="color: var(--primary);">@techzone_suporte</a> (assunto: DMCA)</li>
+            </ul>
+            <p>
+                <strong>Nota:</strong> Notificações incompletas ou que não sigam o formato DMCA 
+                não serão processadas. Certifique-se de incluir TODOS os itens da checklist acima.
+            </p>
+
+            <div class="form-dmca">
+                <h3>📝 Formulário Rápido de Requisição DMCA</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                    Use este formulário como alternativa ao email. Ainda assim, recomendamos o envio formal por email para maior rastreabilidade.
+                </p>
+                <form onsubmit="event.preventDefault(); enviarDmca();">
+                    <div class="form-group">
+                        <label>Nome completo do titular dos direitos</label>
+                        <input type="text" id="dmcaNome" placeholder="Seu nome legal" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email de contato</label>
+                        <input type="email" id="dmcaEmail" placeholder="seu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Título do trabalho protegido</label>
+                        <input type="text" id="dmcaTitulo" placeholder="Ex: Software XYZ v2.0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>URL(s) em nossa plataforma</label>
+                        <textarea id="dmcaUrls" placeholder="Cole os links completos da TechZone..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Declaração de boa-fé</label>
+                        <textarea id="dmcaDeclara" placeholder="Escreva sua declaração de boa-fé..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">📤 ENVIAR REQUISIÇÃO DMCA</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h2>7. Disclaimer Legal</h2>
+            <p>
+                A TechZone é um serviço de agregação de links e não possui controle sobre o conteúdo 
+                disponível em destinos de terceiros. Nosso papel é similar ao de um motor de busca 
+                ou serviço de encurtamento de URLs. Não endossamos, patrocinamos ou garantimos 
+                qualquer conteúdo acessível através de links gerados por nossos usuários.
+            </p>
+            <p>
+                Nos comprometemos a responder prontamente a requisições DMCA válidas e a cooperar 
+                com detentores de direitos autorais na medida exigida pela lei. No entanto, não 
+                podemos ser responsabilizados por conteúdo que não hospedamos diretamente.
+            </p>
+            <p>
+                Para questões jurídicas formais, nosso agente designado para recebimento de 
+                notificações DMCA pode ser contatado através do email <strong>dmca@techzone.app</strong>.
+            </p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.html">Início</a>
+            <a href="sobre.html">Sobre</a>
+            <a href="dmca.html">DMCA</a>
+            <a href="politica.html">Privacidade</a>
+            <a href="contato.html">Contato</a>
+            <a href="painel.html">Painel</a>
+        </div>
+        <p>© 2026 TechZone. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function enviarDmca() {
+            alert('✅ Requisição DMCA recebida! Nossa equipe analisará em até 72h. Você receberá uma confirmação no email fornecido.');
+            document.querySelector('form').reset();
+        }
+    </script>
+</body>
+</html>

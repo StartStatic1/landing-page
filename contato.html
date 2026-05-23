@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - TechZone</title>
+    <meta name="description" content="Entre em contato com a equipe TechZone. Suporte técnico, parcerias e DMCA.">
+    <style>
+        :root {
+            --primary: #6366f1; --secondary: #06b6d4; --accent: #f59e0b;
+            --dark: #0f172a; --darker: #020617; --card: #1e293b;
+            --text: #e2e8f0; --text-muted: #94a3b8; --border: #334155;
+            --success: #10b981; --danger: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--darker); color: var(--text); line-height: 1.6;
+        }
+        .header {
+            background: var(--dark); border-bottom: 1px solid var(--border);
+            padding: 1rem 0; position: sticky; top: 0; z-index: 1000;
+        }
+        .header-inner {
+            max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; }
+        .nav-links a:hover { color: var(--primary); }
+        .container {
+            max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem;
+        }
+        .page-title {
+            font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--text-muted));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .contact-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+        }
+        .contact-info {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 2rem;
+        }
+        .contact-info h3 { color: var(--text); margin-bottom: 1rem; font-size: 1.3rem; }
+        .contact-item {
+            display: flex; align-items: flex-start; gap: 1rem;
+            padding: 1rem 0; border-bottom: 1px solid var(--border);
+        }
+        .contact-item:last-child { border-bottom: none; }
+        .contact-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; flex-shrink: 0;
+        }
+        .contact-item h4 { color: var(--text); font-size: 1rem; margin-bottom: 0.2rem; }
+        .contact-item p { color: var(--text-muted); font-size: 0.9rem; }
+        .contact-item a { color: var(--primary); text-decoration: none; }
+        .form-box {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 2rem;
+        }
+        .form-box h3 { color: var(--text); margin-bottom: 1rem; font-size: 1.3rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label {
+            display: block; margin-bottom: 0.5rem; font-weight: 600;
+            font-size: 0.9rem; color: var(--text);
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; background: var(--dark); border: 1px solid var(--border);
+            color: var(--text); padding: 0.8rem; border-radius: 10px;
+            font-size: 1rem; outline: none; transition: all 0.3s;
+            font-family: inherit;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+        }
+        .form-group textarea { min-height: 120px; resize: vertical; }
+        .btn-submit {
+            width: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; border: none; padding: 1rem; font-size: 1rem;
+            font-weight: 700; border-radius: 10px; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
+        .faq-section { margin-top: 3rem; }
+        .faq-item {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 12px; margin-bottom: 1rem; overflow: hidden;
+        }
+        .faq-question {
+            padding: 1.2rem; cursor: pointer; display: flex;
+            justify-content: space-between; align-items: center;
+            font-weight: 600; color: var(--text);
+        }
+        .faq-answer {
+            padding: 0 1.2rem; max-height: 0; overflow: hidden;
+            transition: all 0.3s ease; color: var(--text-muted);
+        }
+        .faq-item.active .faq-answer {
+            padding: 0 1.2rem 1.2rem; max-height: 200px;
+        }
+        .footer {
+            background: var(--dark); border-top: 1px solid var(--border);
+            padding: 2rem 0; text-align: center; color: var(--text-muted);
+        }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; }
+        @media (max-width: 700px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">⚡ TechZone</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="contato.html">Contato</a></li>
+                <li><a href="politica.html">Privacidade</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">Fale Conosco</h1>
+        <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 1.1rem;">
+            Tem dúvidas, sugestões ou precisa de ajuda? Nossa equipe está pronta para atender você.
+        </p>
+
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>📞 Canais de Atendimento</h3>
+
+                <div class="contact-item">
+                    <div class="contact-icon">✈️</div>
+                    <div>
+                        <h4>Telegram - Suporte VIP</h4>
+                        <p>Atendimento prioritário 24/7<br>
+                        <a href="https://t.me/techzone_suporte" target="_blank">@techzone_suporte</a></p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📢</div>
+                    <div>
+                        <h4>Telegram - Canal Oficial</h4>
+                        <p>Novidades e anúncios<br>
+                        <a href="https://t.me/techzone_oficial" target="_blank">@techzone_oficial</a></p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div>
+                        <h4>Email</h4>
+                        <p>contato@techzone.app<br>
+                        <small style="color: var(--text-muted);">Resposta em até 48h</small></p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">⚡</div>
+                    <div>
+                        <h4>Parcerias & DMCA</h4>
+                        <p>dmca@techzone.app<br>
+                        <a href="dmca.html">Ver política DMCA</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-box">
+                <h3>📝 Envie uma Mensagem</h3>
+                <form onsubmit="event.preventDefault(); enviarForm();">
+                    <div class="form-group">
+                        <label for="nome">Nome completo</label>
+                        <input type="text" id="nome" placeholder="Seu nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="seu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="assunto">Assunto</label>
+                        <select id="assunto" required>
+                            <option value="">Selecione...</option>
+                            <option value="suporte">Suporte Técnico</option>
+                            <option value="dmca">Requisição DMCA</option>
+                            <option value="parceria">Proposta de Parceria</option>
+                            <option value="bug">Reportar Bug</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem</label>
+                        <textarea id="mensagem" placeholder="Descreva sua dúvida ou solicitação..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">📤 ENVIAR MENSAGEM</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2 style="margin-bottom: 1.5rem;">❓ Perguntas Frequentes</h2>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Quanto tempo demora para receber resposta?</span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Via Telegram: resposta em até 2 horas durante horário comercial.<br>
+                    Via Email: resposta em até 48 horas úteis.<br>
+                    Requisições DMCA são processadas em até 72 horas.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Como reportar um link quebrado?</span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Utilize o formulário ao lado selecionando "Reportar Bug". Inclua o URL completo da página e o nome do app. Nossa equipe verifica e atualiza links em até 24h.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Posso solicitar a remoção de conteúdo (DMCA)?</span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Sim. Acesse nossa <a href="dmca.html" style="color: var(--primary);">página DMCA</a> para instruções detalhadas. Envie uma requisição formal com comprovação de titularidade. Processamos em até 72 horas após recebimento.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Como funciona o sistema de links seguros?</span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Nosso <a href="painel.html" style="color: var(--primary);">painel gerador</a> cria links codificados em Base64. O usuário passa por uma página de verificação com anúncios antes de acessar o destino final. Isso nos ajuda a manter o servidor e oferecer conteúdo gratuito.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.html">Início</a>
+            <a href="sobre.html">Sobre</a>
+            <a href="dmca.html">DMCA</a>
+            <a href="politica.html">Privacidade</a>
+            <a href="contato.html">Contato</a>
+            <a href="painel.html">Painel</a>
+        </div>
+        <p>© 2026 TechZone. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            item.classList.toggle('active');
+            el.querySelector('span:last-child').textContent = item.classList.contains('active') ? '▲' : '▼';
+        }
+        function enviarForm() {
+            const nome = document.getElementById('nome').value;
+            alert('✅ Obrigado, ' + nome + '! Sua mensagem foi recebida. Responderemos em breve.');
+            document.querySelector('form').reset();
+        }
+    </script>
+</body>
+</html>
