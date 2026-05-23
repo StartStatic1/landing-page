@@ -4,35 +4,60 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>Encurtador Pro - Aguarde</title>
-<script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
+<!-- Ad script com defer para não travar -->
+<script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
 
-/* HEADER */
-.header{background:linear-gradient(135deg,#0f172a,#020617);border-bottom:1px solid #334155;padding:1rem;text-align:center;position:sticky;top:0;z-index:100}
-.logo{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,#6366f1,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+/* HEADER COM PESQUISA */
+.header{background:linear-gradient(135deg,#0f172a,#020617);border-bottom:1px solid #334155;padding:1rem;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem}
+.logo{font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,#6366f1,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.menu-btn{background:none;border:none;color:#e2e8f0;font-size:1.5rem;cursor:pointer}
+.search-box{position:relative;width:100%}
+.search-box input{width:100%;background:#1e293b;border:1px solid #334155;color:#e2e8f0;padding:0.7rem 2.5rem 0.7rem 1rem;border-radius:12px;font-size:0.95rem;outline:none}
+.search-box input:focus{border-color:#6366f1}
+.search-box button{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#06b6d4;border:none;color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
 /* CONTAINER */
 .container{max-width:800px;margin:0 auto;padding:1rem}
 
-/* AD SLOTS - só aparecem se carregarem */
+/* AD SLOTS - isolados em iframes para não travar */
 .ad-slot{display:none;background:#1e293b;border:1px dashed #334155;border-radius:12px;min-height:90px;margin:1rem 0;align-items:center;justify-content:center;color:#64748b;font-size:0.75rem;position:relative;overflow:hidden}
 .ad-slot::before{content:"AD";position:absolute;top:5px;right:8px;font-size:0.6rem;background:#334155;padding:2px 6px;border-radius:4px}
 
-/* INFO DO CONTEÚDO */
-.content-info{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:1.5rem;margin:1rem 0;text-align:center}
-.content-img{width:100%;max-height:400px;object-fit:contain;border-radius:12px;margin-bottom:1rem;background:#0f172a}
-.content-title{font-size:1.5rem;font-weight:800;margin-bottom:0.5rem;background:linear-gradient(135deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+/* INFO DO CONTEÚDO - ESTILO NIGANPRO */
+.content-info{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:0;overflow:hidden;margin:1rem 0}
+.content-img{width:100%;max-height:280px;object-fit:cover;display:block}
+.content-body{padding:1.5rem;text-align:center}
+.content-title{font-size:1.6rem;font-weight:800;margin-bottom:0.5rem;background:linear-gradient(135deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .content-desc{color:#94a3b8;font-size:1rem;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;margin-bottom:1rem}
-.content-meta{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-top:1rem}
-.meta-tag{background:#0f172a;padding:0.4rem 0.8rem;border-radius:20px;font-size:0.8rem;color:#64748b;border:1px solid #334155}
+.content-meta{display:flex;justify-content:center;gap:0.8rem;flex-wrap:wrap;margin-top:1rem}
+.meta-tag{background:#0f172a;padding:0.4rem 0.9rem;border-radius:20px;font-size:0.8rem;color:#64748b;border:1px solid #334155;display:flex;align-items:center;gap:0.3rem}
+
+/* INFO CARD - ESTILO NIGANPRO */
+.info-card{background:#1e293b;border-radius:16px;padding:1.2rem;margin:1rem 0}
+.info-row{display:flex;align-items:center;justify-content:space-between;padding:0.7rem 0;border-bottom:1px solid #334155}
+.info-row:last-child{border-bottom:none}
+.info-label{display:flex;align-items:center;gap:0.5rem;color:#94a3b8;font-size:0.9rem;font-weight:600}
+.info-label .icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:0.85rem}
+.info-value{color:#e2e8f0;font-size:0.9rem;text-align:right}
+.info-value a{color:#06b6d4;text-decoration:none}
+
+/* BOTÕES DE AÇÃO - ESTILO NIGANPRO */
+.action-buttons{display:flex;flex-direction:column;gap:0.8rem;margin:1.5rem 0}
+.btn-primary{width:100%;background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;border:none;padding:1rem;font-size:1rem;font-weight:700;border-radius:14px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.5rem;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(6,182,212,0.4)}
+.btn-primary:active{transform:translateY(0)}
+.btn-secondary{width:100%;background:#1e293b;color:#06b6d4;border:2px solid #06b6d4;padding:1rem;font-size:1rem;font-weight:700;border-radius:14px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.5rem;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.btn-secondary:hover{background:#06b6d4;color:#fff}
 
 /* TIMER / PROGRESS */
-.timer-box{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0;text-align:center;position:relative;overflow:hidden}
+.timer-box{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:2rem;margin:2rem 0;text-align:center;position:relative;overflow:hidden}
 .timer-box::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(99,102,241,0.1) 0%,transparent 70%);animation:pulse-bg 4s ease-in-out infinite}
 @keyframes pulse-bg{0%,100%{transform:scale(1);opacity:0.5}50%{transform:scale(1.1);opacity:0.8}}
-.timer-label{position:relative;z-index:1;color:#94a3b8;font-size:0.9rem;margin-bottom:1rem}
+.timer-label{position:relative;z-index:1;color:#94a3b8;font-size:0.9rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:0.5rem}
 .timer-num{position:relative;z-index:1;font-size:4rem;font-weight:800;color:#f59e0b;font-family:'Courier New',monospace}
 .timer-text{position:relative;z-index:1;color:#64748b;font-size:0.85rem;margin-top:0.5rem}
 .progress-bar{background:#0f172a;border-radius:50px;height:12px;margin:1.5rem 0;overflow:hidden;position:relative;z-index:1}
@@ -41,17 +66,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
 /* BOTÕES ISCA */
 .btn-isca{position:relative;z-index:1;display:inline-block;background:linear-gradient(135deg,#475569,#334155);color:#fff;border:2px dashed #64748b;padding:1rem 2rem;font-size:1rem;font-weight:700;border-radius:12px;cursor:pointer;text-decoration:none;margin:0.5rem;transition:all 0.3s;-webkit-tap-highlight-color:transparent}
 .btn-isca:hover{border-color:#f59e0b;color:#f59e0b;transform:scale(1.02)}
-.btn-vip{position:relative;z-index:1;display:none;background:linear-gradient(135deg,#0088cc,#00a8e6);color:#fff;border:none;padding:1.2rem 3rem;font-size:1.2rem;font-weight:800;border-radius:15px;cursor:pointer;text-decoration:none;box-shadow:0 6px 0 #005f8d,0 0 20px rgba(0,136,204,0.6);transition:all 0.2s;text-transform:uppercase;animation:pulse-green 2s infinite;margin-top:1rem}
+.btn-vip{position:relative;z-index:1;display:none;background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;border:none;padding:1.2rem 3rem;font-size:1.2rem;font-weight:800;border-radius:15px;cursor:pointer;text-decoration:none;box-shadow:0 6px 0 #0e7490,0 0 20px rgba(6,182,212,0.6);transition:all 0.2s;text-transform:uppercase;animation:pulse-green 2s infinite;margin-top:1rem}
 @keyframes pulse-green{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
-.btn-vip:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,136,204,0.8)}
+.btn-vip:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(6,182,212,0.8)}
 .status-text{position:relative;z-index:1;color:#10b981;font-size:0.95rem;margin-top:1rem;min-height:1.5rem}
 
-/* FINAL */
-.final-box{display:none;background:#1e293b;border:2px solid #10b981;border-radius:16px;padding:2rem;margin:2rem 0;text-align:center}
+/* FINAL - ACESSO LIBERADO */
+.final-box{display:none;background:#1e293b;border:2px solid #10b981;border-radius:20px;padding:2rem;margin:2rem 0;text-align:center}
 .final-box.show{display:block;animation:fadeIn 0.5s ease}
 .final-icon{font-size:3rem;margin-bottom:1rem}
 .final-title{color:#10b981;font-size:1.5rem;font-weight:800;margin-bottom:0.5rem}
-.final-url{background:#0f172a;border-radius:8px;padding:0.8rem;font-family:monospace;font-size:0.8rem;color:#64748b;word-break:break-all;margin:1rem 0}
+.final-desc{color:#94a3b8;margin-bottom:1.5rem}
 
 /* NO DATA */
 .no-data{text-align:center;padding:3rem 1rem}
@@ -63,21 +88,54 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
 .toast{position:fixed;bottom:1rem;right:1rem;background:#1e293b;border:1px solid #334155;border-radius:10px;padding:0.8rem 1.2rem;display:none;align-items:center;gap:0.5rem;z-index:10000;box-shadow:0 10px 30px rgba(0,0,0,0.5);animation:slideIn 0.3s ease}
 .toast.show{display:flex}
 
+/* SOCIAL SHARE */
+.social-share{display:flex;justify-content:center;gap:0.8rem;margin:1rem 0}
+.social-btn{width:44px;height:44px;border-radius:50%;background:#1e293b;border:1px solid #334155;color:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;transition:all 0.3s;text-decoration:none}
+.social-btn:hover{background:#334155;transform:translateY(-2px)}
+
+/* REPORT */
+.report-link{text-align:center;margin:1rem 0}
+.report-link a{color:#64748b;text-decoration:none;font-size:0.85rem;display:flex;align-items:center;justify-content:center;gap:0.3rem}
+.report-link a:hover{color:#ef4444}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0f172a;border-top:1px solid #334155;display:flex;justify-content:space-around;padding:0.5rem 0;z-index:90}
+.bottom-nav a{flex:1;text-align:center;color:#64748b;text-decoration:none;font-size:0.7rem;display:flex;flex-direction:column;align-items:center;gap:0.2rem;padding:0.3rem}
+.bottom-nav a.active{color:#06b6d4}
+.bottom-nav a svg{width:22px;height:22px}
+
+/* AD OVERLAY - isolado */
+.ad-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:9999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
+.ad-overlay.show{display:flex}
+.ad-overlay-content{background:#1e293b;border-radius:16px;padding:1.5rem;max-width:90%;width:320px;text-align:center;border:1px solid #334155}
+.ad-overlay-title{color:#f59e0b;font-size:1.2rem;font-weight:700;margin-bottom:0.5rem}
+.ad-overlay-text{color:#94a3b8;font-size:0.9rem;margin-bottom:1rem}
+.ad-overlay-close{background:#ef4444;color:#fff;border:none;padding:0.6rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600}
+
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:600px){
   .timer-num{font-size:3rem}
-  .content-title{font-size:1.2rem}
+  .content-title{font-size:1.3rem}
   .btn-isca{padding:0.8rem 1.5rem;font-size:0.9rem}
   .btn-vip{padding:1rem 2rem;font-size:1rem}
+  .container{padding:0.8rem;padding-bottom:80px}
 }
 </style>
+<base target="_blank">
 </head>
 <body>
 
 <header class="header">
-  <div class="logo">⚡ Encurtador Pro</div>
+  <div class="header-top">
+    <div class="logo">⚡ Encurtador Pro</div>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Buscar apps, jogos, mods..." onkeyup="searchApps()">
+    <button onclick="searchApps()">🔍</button>
+  </div>
 </header>
 
 <div class="container">
@@ -89,13 +147,62 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
   <div id="conteudoSection" style="display:none">
     <div class="content-info">
       <img id="contentImg" class="content-img" src="" alt="Capa" style="display:none">
-      <h1 class="content-title" id="contentTitle">Carregando...</h1>
-      <div class="content-desc" id="contentDesc"></div>
-      <div class="content-meta">
-        <span class="meta-tag" id="metaData">📅 Agora</span>
-        <span class="meta-tag">✅ Verificado</span>
-        <span class="meta-tag">🔒 Seguro</span>
+      <div class="content-body">
+        <h1 class="content-title" id="contentTitle">Carregando...</h1>
+        <div class="content-desc" id="contentDesc"></div>
+        <div class="content-meta">
+          <span class="meta-tag" id="metaData">📅 Agora</span>
+          <span class="meta-tag">✅ Verificado</span>
+          <span class="meta-tag">🔒 Seguro</span>
+        </div>
       </div>
+    </div>
+
+    <!-- INFO CARD ESTILO NIGANPRO -->
+    <div class="info-card" id="infoCard">
+      <div class="info-row">
+        <div class="info-label"><span class="icon" style="background:#10b98120;color:#10b981">📦</span> Package</div>
+        <div class="info-value" id="infoPackage">App Mod</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label"><span class="icon" style="background:#f59e0b20;color:#f59e0b">🔖</span> Version</div>
+        <div class="info-value" id="infoVersion">Latest</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label"><span class="icon" style="background:#06b6d420;color:#06b6d4">💾</span> Size</div>
+        <div class="info-value" id="infoSize">~50 MB</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label"><span class="icon" style="background:#8b5cf620;color:#8b5cf6">⚙️</span> Requirements</div>
+        <div class="info-value">Android 5.0+</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label"><span class="icon" style="background:#ec489920;color:#ec4899">⬇️</span> Downloads</div>
+        <div class="info-value">500,000+</div>
+      </div>
+    </div>
+
+    <!-- BOTÕES DE AÇÃO -->
+    <div class="action-buttons">
+      <button class="btn-primary" id="btnDownload" onclick="handleDownload()">
+        <span>⬇️</span> DOWNLOAD APK
+      </button>
+      <a href="#" class="btn-secondary" id="btnTelegram" target="_blank">
+        <span>✈️</span> TELEGRAM
+      </a>
+    </div>
+
+    <!-- SOCIAL SHARE -->
+    <div class="social-share">
+      <a href="#" class="social-btn" onclick="shareFacebook()" title="Facebook">f</a>
+      <a href="#" class="social-btn" onclick="shareTwitter()" title="Twitter">𝕏</a>
+      <a href="#" class="social-btn" onclick="sharePinterest()" title="Pinterest">📌</a>
+      <a href="#" class="social-btn" onclick="shareTelegram()" title="Telegram">✈️</a>
+      <a href="#" class="social-btn" onclick="shareWhatsApp()" title="WhatsApp">📱</a>
+    </div>
+
+    <div class="report-link">
+      <a href="#" onclick="reportApp()">⚠️ Report</a>
     </div>
   </div>
 
@@ -104,14 +211,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
     <div class="no-data">
       <h2>🚀 Bem-vindo ao Encurtador Pro</h2>
       <p>Esta página exibe o conteúdo protegido por anúncios.<br>Use o painel para criar links encurtados.</p>
-      <div style="background:#1e293b;border-radius:12px;padding:1.5rem;text-align:left;max-width:500px;margin:0 auto">
+      <div style="background:#1e293b;border-radius:16px;padding:1.5rem;text-align:left;max-width:500px;margin:0 auto">
         <h3 style="color:#6366f1;margin-bottom:1rem;font-size:1rem">📋 Como usar:</h3>
         <ol style="color:#64748b;padding-left:1.2rem;line-height:2">
           <li>Acesse o <strong>painel</strong> e preencha os dados</li>
           <li>Adicione título, descrição e link de destino</li>
           <li>Gere o link curto e compartilhe</li>
           <li>Quem clicar verá anúncios + timer</li>
-          <li>Após o timer, acesso liberado!</li>
+          <li>Após o timer, download liberado!</li>
         </ol>
       </div>
     </div>
@@ -148,12 +255,42 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
   <div class="final-box" id="finalBox">
     <div class="final-icon">✅</div>
     <div class="final-title">Acesso Liberado!</div>
-    <div style="color:#94a3b8;margin-bottom:1rem">Seu link está pronto para acesso.</div>
-    <a href="#" id="finalLink" target="_blank" class="btn-vip" style="display:inline-block;margin-top:0">🔗 ACESSAR CONTEÚDO</a>
-    <div class="final-url" id="finalUrl"></div>
+    <div class="final-desc">Seu download está pronto. Clique abaixo para iniciar.</div>
+    <button class="btn-primary" onclick="startDownload()" style="max-width:300px;margin:0 auto">
+      <span>⬇️</span> INICIAR DOWNLOAD
+    </button>
   </div>
 
 </div>
+
+<!-- AD OVERLAY PARA POPUPS -->
+<div class="ad-overlay" id="adOverlay">
+  <div class="ad-overlay-content">
+    <div class="ad-overlay-title">⚠️ Anúncio em andamento</div>
+    <div class="ad-overlay-text">Por favor, aguarde enquanto verificamos sua sessão...</div>
+    <button class="ad-overlay-close" onclick="closeAdOverlay()">Fechar Anúncio</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a href="#" class="active" onclick="goHome()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    Home
+  </a>
+  <a href="#" onclick="goHot()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.1.5-2 1.5-2.5"></path></svg>
+    Hot
+  </a>
+  <a href="#" onclick="goIPTV()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+    IPTV
+  </a>
+  <a href="#" onclick="goTelegram()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+    Telegram
+  </a>
+</nav>
 
 <div class="toast" id="toast"><span id="toastText">...</span></div>
 
@@ -162,6 +299,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
 var SESS_PREFIX='enc_';
 var TEMPO=15;
 var destinoUrl=null;
+var downloadStarted=false;
 
 // ===== CARREGAR DADOS =====
 function carregar(){
@@ -180,7 +318,7 @@ function carregar(){
       }
     }
 
-    // Fallback: dados na URL (base64) - para compatibilidade
+    // Fallback: dados na URL (base64)
     var b64=params.get('d');
     if(b64){
       try{
@@ -206,13 +344,28 @@ function carregar(){
 
 function mostrarConteudo(data){
   $('conteudoSection').style.display='block';
-  if(data.t)$('contentTitle').textContent=data.t;
-  if(data.d)$('contentDesc').textContent=data.d;
+  if(data.t){
+    $('contentTitle').textContent=data.t;
+    // Extrair versão do título se houver
+    var versionMatch=data.t.match(/v?[\d]+\.[\d]+(\.[\d]+)?/i);
+    if(versionMatch){
+      $('infoVersion').textContent=versionMatch[0];
+    }
+    $('infoPackage').textContent=data.t.split(' ')[0]+' APK';
+  }
+  if(data.d){
+    $('contentDesc').textContent=data.d;
+  }
   if(data.i){
     var img=$('contentImg');
     img.src=data.i;
     img.style.display='block';
     img.onerror=function(){img.style.display='none'};
+  }
+
+  // Configurar botão Telegram se for link do Telegram
+  if(destinoUrl && destinoUrl.includes('t.me')){
+    $('btnTelegram').href=destinoUrl;
   }
 }
 
@@ -274,7 +427,7 @@ function finalizar(){
       $('statusText').textContent='Redirecionando em '+seg+'s...';
     }else{
       clearInterval(redirectTimeout);
-      if(destinoUrl)window.location.href=destinoUrl;
+      showFinalBox();
     }
   },1000);
 }
@@ -282,15 +435,155 @@ function finalizar(){
 function liberar(){
   if(!destinoUrl){toast('❌ Link inválido');return}
   if(redirectTimeout)clearInterval(redirectTimeout);
+  showFinalBox();
+}
 
+function showFinalBox(){
   $('timerBox').style.display='none';
   $('finalBox').classList.add('show');
-  $('finalLink').href=destinoUrl;
-  $('finalUrl').textContent=destinoUrl;
+}
 
+// ===== DOWNLOAD DIRETO =====
+function handleDownload(){
+  if(!destinoUrl){toast('❌ Link inválido');return}
+
+  // Se ainda não passou pelo timer, mostra timer
+  if($('timerBox').style.display!=='none' && tempoRestante>0){
+    toast('⏳ Aguarde a verificação de segurança!');
+    return;
+  }
+
+  startDownload();
+}
+
+function startDownload(){
+  if(!destinoUrl){toast('❌ Link inválido');return}
+
+  downloadStarted=true;
+
+  // Detectar tipo de link
+  if(destinoUrl.includes('github.com')){
+    // Download direto do GitHub - usar fetch para forçar download
+    forceDownload(destinoUrl);
+  }else if(destinoUrl.includes('t.me')){
+    // Telegram - abrir no app
+    window.location.href=destinoUrl;
+  }else{
+    // Outros links - download direto
+    forceDownload(destinoUrl);
+  }
+}
+
+function forceDownload(url){
+  // Criar link de download invisível
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='';
+  a.style.display='none';
+  document.body.appendChild(a);
+
+  // Para GitHub releases, adicionar ?download=1
+  if(url.includes('github.com') && url.includes('/releases/download/')){
+    // GitHub já força download em /releases/download/
+    a.click();
+  }else{
+    a.setAttribute('download', getFilenameFromUrl(url));
+    a.click();
+  }
+
+  document.body.removeChild(a);
+  toast('⬇️ Download iniciado!');
+
+  // Abrir em nova aba como fallback
   setTimeout(function(){
-    if(destinoUrl)window.location.href=destinoUrl;
-  },1500);
+    if(!downloadStarted){
+      window.open(url, '_blank');
+    }
+  },500);
+}
+
+function getFilenameFromUrl(url){
+  var parts=url.split('/');
+  return parts[parts.length-1] || 'download';
+}
+
+// ===== AD OVERLAY - CONTROLE DE POPUPS =====
+function showAdOverlay(){
+  $('adOverlay').classList.add('show');
+  // Limitar tempo do overlay
+  setTimeout(closeAdOverlay, 5000);
+}
+
+function closeAdOverlay(){
+  $('adOverlay').classList.remove('show');
+}
+
+// Interceptar popups dos ads
+(function(){
+  var originalOpen=window.open;
+  window.open=function(url, target, features){
+    if(url && (url.includes('quge5') || url.includes('omg10'))){
+      showAdOverlay();
+      // Usar iframe para não travar a página principal
+      return null;
+    }
+    return originalOpen.apply(window, arguments);
+  };
+})();
+
+// ===== SOCIAL SHARE =====
+function shareFacebook(){
+  var url=encodeURIComponent(window.location.href);
+  window.open('https://www.facebook.com/sharer/sharer.php?u='+url, '_blank');
+}
+function shareTwitter(){
+  var url=encodeURIComponent(window.location.href);
+  var text=encodeURIComponent($('contentTitle').textContent);
+  window.open('https://twitter.com/intent/tweet?url='+url+'&text='+text, '_blank');
+}
+function sharePinterest(){
+  var url=encodeURIComponent(window.location.href);
+  window.open('https://pinterest.com/pin/create/button/?url='+url, '_blank');
+}
+function shareTelegram(){
+  var url=encodeURIComponent(window.location.href);
+  var text=encodeURIComponent($('contentTitle').textContent);
+  window.open('https://t.me/share/url?url='+url+'&text='+text, '_blank');
+}
+function shareWhatsApp(){
+  var url=encodeURIComponent(window.location.href);
+  var text=encodeURIComponent($('contentTitle').textContent);
+  window.open('https://wa.me/?text='+text+'%20'+url, '_blank');
+}
+
+// ===== REPORT =====
+function reportApp(){
+  toast('⚠️ Report enviado! Obrigado.');
+}
+
+// ===== BOTTOM NAV =====
+function goHome(){window.scrollTo({top:0,behavior:'smooth'})}
+function goHot(){toast('🔥 Em breve: Apps em alta!')}
+function goIPTV(){toast('📺 Em breve: IPTV Apps!')}
+function goTelegram(){
+  if(destinoUrl && destinoUrl.includes('t.me')){
+    window.open(destinoUrl, '_blank');
+  }else{
+    toast('✈️ Em breve: Canal Telegram!');
+  }
+}
+
+// ===== MENU =====
+function toggleMenu(){
+  toast('☰ Menu em desenvolvimento!');
+}
+
+// ===== SEARCH =====
+function searchApps(){
+  var query=$('searchInput').value.trim().toLowerCase();
+  if(!query)return;
+  toast('🔍 Buscando: '+query);
+  // Aqui você pode implementar busca real
 }
 
 // ===== UTILS =====
@@ -302,8 +595,17 @@ function toast(msg){
 
 // ===== INIT =====
 carregar();
+
+// Prevenir travamentos dos ads
+window.addEventListener('error', function(e){
+  if(e.message && e.message.includes('quge5')){
+    e.preventDefault();
+    console.log('Ad error suppressed');
+  }
+});
+
+console.log('Encurtador Pro v2.0 carregado');
 </script>
 
-<script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
 </body>
 </html>
