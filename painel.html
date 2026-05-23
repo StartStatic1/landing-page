@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechZone Painel Pro — Gerador Inteligente de Landings</title>
+    <title>TechZone Painel Pro — Gerador de Pontes de Acesso</title>
     <meta name="description" content="Painel profissional para criar landing pages monetizadas com proteção, estatísticas e QR Code.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
     <style>
@@ -66,7 +66,7 @@
         .tab.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 15px rgba(99,102,241,0.3); }
         .tab:hover:not(.active) { color: var(--text); background: rgba(99,102,241,0.1); }
 
-        .panel { display: none; animation: fadeIn 0.4s ease; }
+        .panel { display: none; animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
         .panel.active { display: block; }
 
         .form-card {
@@ -272,12 +272,13 @@
             .action-btns { grid-template-columns: 1fr 1fr; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div class="panel-container">
         <div class="header-top">
             <div class="logo">⚡ TechZone <span class="badge-pro">Pro</span></div>
-            <div class="subtitle">Crie landing pages monetizadas inteligentes em segundos</div>
+            <div class="subtitle">Crie pontes de acesso monetizadas e verificadas em segundos</div>
         </div>
 
         <div class="stats-bar" id="statsBar">
@@ -299,8 +300,20 @@
             </div>
         </div>
 
+        <div style="max-width:468px;margin:0 auto 1.5rem;">
+<script type="text/javascript">
+  atOptions = {
+    'key' : '75f5e2ea82f98e9047e2ab92b3a0e0bb',
+    'format' : 'iframe',
+    'height' : 60,
+    'width' : 468,
+    'params' : {}
+  };
+</script>
+<script type="text/javascript" src="https://encouragingjawsordinarily.com/75f5e2ea82f98e9047e2ab92b3a0e0bb/invoke.js"></script>
+</div>
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('criar', this)">🚀 Criar Landing</button>
+            <button class="tab active" onclick="switchTab('criar', this)">🚀 Criar Ponte</button>
             <button class="tab" onclick="switchTab('gerenciar', this)">📋 Meus Links</button>
             <button class="tab" onclick="switchTab('analytics', this)">📊 Analytics</button>
         </div>
@@ -314,7 +327,7 @@
                         <div class="form-group">
                             <label>Nome do App <span class="required">*</span></label>
                             <span class="input-icon">📦</span>
-                            <input type="text" id="appName" placeholder="Ex: Notion Mod Pro" oninput="updatePreview()" maxlength="60">
+                            <input type="text" id="appName" placeholder="Ex: Spotify Premium" oninput="updatePreview()" maxlength="60">
                         </div>
                         <div class="form-group">
                             <label>Versão</label>
@@ -343,7 +356,7 @@
                     </div>
                     <div class="form-group">
                         <label>Descrição curta</label>
-                        <textarea id="appDesc" placeholder="Breve descrição do que o app faz..." oninput="updatePreview()" maxlength="300"></textarea>
+                        <textarea id="appDesc" placeholder="Breve descrição do conteúdo disponível..." oninput="updatePreview()" maxlength="300"></textarea>
                         <small id="descCounter">0/300 caracteres</small>
                     </div>
                     <div class="form-group">
@@ -366,13 +379,13 @@
                 </div>
 
                 <div class="form-section">
-                    <div class="section-title">👁️ Preview da Landing</div>
+                    <div class="section-title">👁️ Preview da Ponte</div>
                     <div class="preview-section">
                         <div class="preview-phone">
                             <div class="preview-notch"></div>
                             <div class="preview-screen">
                                 <div class="preview-app-icon" id="previewIcon">📦</div>
-                                <div class="preview-app-name" id="previewTitle">Notion Mod Pro</div>
+                                <div class="preview-app-name" id="previewTitle">Spotify Premium</div>
                                 <div class="preview-app-ver" id="previewVer">v4.2.1 • 45.2 MB</div>
                                 <div class="preview-badge" id="previewCat">📱 Apps</div>
                                 <div class="preview-meta">
@@ -380,7 +393,7 @@
                                     <span>⬇️ 2.4M+</span>
                                     <span>✅ Verificado</span>
                                 </div>
-                                <div class="preview-btn">🔐 LIBERAR DOWNLOAD</div>
+                                <div class="preview-btn">🔐 ACESSAR PONTE</div>
                             </div>
                         </div>
                     </div>
@@ -388,11 +401,11 @@
 
                 <button class="btn-generate" id="btnGenerate" onclick="gerarLink()">
                     <span class="spinner" id="btnSpinner"></span>
-                    <span id="btnText">🔐 GERAR LANDING PAGE PRO</span>
+                    <span id="btnText">🔐 GERAR PONTE DE ACESSO PRO</span>
                 </button>
 
                 <div class="result-box" id="resultBox">
-                    <div class="result-label">✅ Landing page gerada com sucesso!</div>
+                    <div class="result-label">✅ Ponte de acesso gerada com sucesso!</div>
                     <textarea class="result-url" id="outputLink" readonly></textarea>
                     <div class="action-btns">
                         <button class="btn-copy" id="btnCopy" onclick="copiarLink()">📋 Copiar</button>
@@ -423,7 +436,7 @@
                     <div class="empty-state">
                         <div class="icon">📭</div>
                         <div style="font-size:1.1rem; font-weight:700; margin-bottom:0.5rem;">Nenhum link ainda</div>
-                        <div>Crie sua primeira landing page na aba "Criar Landing"</div>
+                        <div>Crie sua primeira ponte de acesso na aba "Criar Ponte"</div>
                     </div>
                 </div>
             </div>
@@ -639,7 +652,7 @@
             const container = document.getElementById('linksList');
 
             if (links.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="icon">📭</div><div style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;">Nenhum link ainda</div><div>Crie sua primeira landing page na aba "Criar Landing"</div></div>`;
+                container.innerHTML = `<div class="empty-state"><div class="icon">📭</div><div style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;">Nenhum link ainda</div><div>Crie sua primeira ponte de acesso na aba "Criar Ponte"</div></div>`;
                 return;
             }
 
