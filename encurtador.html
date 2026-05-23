@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>Encurtador Pro</title>
+<title>Encurtador Pro - Painel</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:1rem}
@@ -30,7 +30,20 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
 .btns button:hover{background:#475569}
 .toast{position:fixed;bottom:1rem;right:1rem;background:#1e293b;border:1px solid #334155;border-radius:10px;padding:0.8rem 1.2rem;display:none;z-index:10000;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
 .toast.show{display:block}
+
+/* HISTÓRICO */
+.history-card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:1.5rem;margin-bottom:1.5rem}
+.history-card h2{font-size:1.1rem;color:#6366f1;margin-bottom:1rem}
+.history-item{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:1rem;margin-bottom:0.8rem;display:flex;align-items:center;gap:1rem}
+.history-item img{width:50px;height:50px;border-radius:8px;object-fit:cover;background:#1e293b}
+.history-item .info{flex:1;min-width:0}
+.history-item .title{font-weight:600;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.history-item .url{font-size:0.75rem;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:0.2rem}
+.history-item .actions{display:flex;gap:0.3rem}
+.history-item .actions button{background:#334155;border:none;color:#e2e8f0;padding:0.4rem 0.6rem;border-radius:6px;cursor:pointer;font-size:0.75rem}
+.history-item .actions button:hover{background:#475569}
 </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -53,8 +66,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
 
     <div class="form-group">
       <label>Link de destino <span>*</span></label>
-      <input type="text" id="linkDestino" placeholder="https://t.me/seu_canal">
-      <small>Link final após os anúncios</small>
+      <input type="text" id="linkDestino" placeholder="https://github.com/.../download/app.apk">
+      <small>Link direto de download (GitHub, Drive, etc)</small>
     </div>
 
     <div class="form-group">
@@ -62,7 +75,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
       <input type="file" id="imagem" accept="image/*" style="padding:0.5rem">
     </div>
 
-    <!-- BOTÃO COM ONCLICK INLINE - GARANTIDO QUE FUNCIONA -->
     <button class="btn" id="btnGerar" onclick="gerarLink()" type="button">🔐 GERAR LINK</button>
 
     <div class="result" id="resultBox">
@@ -73,6 +85,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
         <button onclick="abrirLink()">🔗 Abrir</button>
       </div>
     </div>
+  </div>
+
+  <!-- HISTÓRICO -->
+  <div class="history-card" id="historyCard" style="display:none">
+    <h2>📜 Histórico</h2>
+    <div id="historyList"></div>
   </div>
 </div>
 
@@ -86,38 +104,29 @@ var imgBase64=null;
 
 // ===== FUNÇÃO PRINCIPAL: GERAR LINK =====
 function gerarLink(){
-  // 1. PEGAR VALORES
   var titulo=document.getElementById('titulo').value.trim();
   var descricao=document.getElementById('descricao').value.trim();
   var linkDestino=document.getElementById('linkDestino').value.trim();
 
-  // 2. VALIDAR
   if(!titulo){mostrarToast('❌ Digite o título!');return;}
   if(!descricao){mostrarToast('❌ Digite a descrição!');return;}
   if(!linkDestino){mostrarToast('❌ Cole o link de destino!');return;}
   if(linkDestino.indexOf('http')!==0){mostrarToast('❌ Link deve começar com http://');return;}
 
-  // 3. DESABILITAR BOTÃO
   var btn=document.getElementById('btnGerar');
   btn.disabled=true;
   btn.textContent='⏳ Gerando...';
 
-  // 4. PROCESSAR (com delay para feedback visual)
   setTimeout(function(){
     try{
-      // Criar ID único
       var id='lnk'+Date.now().toString(36);
-
-      // Montar objeto de dados
       var dados={t:titulo,d:descricao,u:linkDestino};
       if(imgBase64)dados.i=imgBase64;
 
-      // Salvar em sessionStorage
       var json=JSON.stringify(dados);
       sessionStorage.setItem(SESS_PREFIX+id,json);
       try{localStorage.setItem(SESS_PREFIX+id,json);}catch(e){}
 
-      // Criar link curto
       var base=window.location.href;
       base=base.replace('encurtador.html','index.html');
       base=base.split('?')[0];
@@ -129,18 +138,17 @@ function gerarLink(){
       historico.unshift({id:id,titulo:titulo,url:linkFinal,destino:linkDestino,data:new Date().toLocaleString('pt-BR'),temImg:!!imgBase64});
       try{localStorage.setItem(DB_KEY,JSON.stringify(historico));}catch(e){}
 
-      // MOSTRAR RESULTADO
       document.getElementById('linkGerado').value=linkFinal;
       document.getElementById('resultBox').classList.add('show');
 
-      // RESTAURAR BOTÃO
       btn.disabled=false;
       btn.textContent='🔐 GERAR LINK';
 
       mostrarToast('✅ Link gerado com sucesso!');
-
-      // Copiar automaticamente
       setTimeout(copiarLink,500);
+
+      // Atualizar histórico
+      carregarHistorico();
 
     }catch(erro){
       mostrarToast('❌ Erro: '+erro.message);
@@ -148,6 +156,67 @@ function gerarLink(){
       btn.textContent='🔐 GERAR LINK';
     }
   },500);
+}
+
+// ===== HISTÓRICO =====
+function carregarHistorico(){
+  var historico=[];
+  try{historico=JSON.parse(localStorage.getItem(DB_KEY))||[];}catch(e){}
+
+  if(historico.length===0){
+    document.getElementById('historyCard').style.display='none';
+    return;
+  }
+
+  document.getElementById('historyCard').style.display='block';
+  var html='';
+
+  historico.slice(0,10).forEach(function(item){
+    html+='<div class="history-item">';
+    if(item.temImg){
+      html+='<img src="'+getImgFromStorage(item.id)+'" alt="">';
+    }else{
+      html+='<div style="width:50px;height:50px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:1.2rem">📱</div>';
+    }
+    html+='<div class="info">';
+    html+='<div class="title">'+escapeHtml(item.titulo)+'</div>';
+    html+='<div class="url">'+escapeHtml(item.url)+'</div>';
+    html+='</div>';
+    html+='<div class="actions">';
+    html+='<button onclick="copiarUrl(''+escapeHtml(item.url)+'')">📋</button>';
+    html+='<button onclick="abrirUrl(''+escapeHtml(item.url)+'')">🔗</button>';
+    html+='</div>';
+    html+='</div>';
+  });
+
+  document.getElementById('historyList').innerHTML=html;
+}
+
+function getImgFromStorage(id){
+  var dados=sessionStorage.getItem(SESS_PREFIX+id)||localStorage.getItem(SESS_PREFIX+id);
+  if(dados){
+    try{
+      var data=JSON.parse(dados);
+      return data.i||'';
+    }catch(e){}
+  }
+  return '';
+}
+
+function escapeHtml(text){
+  var div=document.createElement('div');
+  div.textContent=text;
+  return div.innerHTML;
+}
+
+function copiarUrl(url){
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(url).then(function(){mostrarToast('📋 Copiado!');}).catch(function(){fallbackCopy(url);});
+  }else{fallbackCopy(url);}
+}
+
+function abrirUrl(url){
+  window.open(url,'_blank');
 }
 
 // ===== IMAGEM =====
@@ -192,7 +261,9 @@ function mostrarToast(msg){
   setTimeout(function(){t.classList.remove('show');},2500);
 }
 
-console.log('Encurtador Pro carregado');
+// ===== INIT =====
+carregarHistorico();
+console.log('Encurtador Pro Painel carregado');
 </script>
 
 </body>
