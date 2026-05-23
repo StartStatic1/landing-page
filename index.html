@@ -732,7 +732,11 @@ Tudo o que você digita no painel aparece aqui automaticamente: título, descri�
                 // MÉTODO 1: SessionStorage (novo, evita URI_TOO_LONG)
                 const id = params.get('id');
                 if (id) {
-                    const stored = sessionStorage.getItem(SESSION_PREFIX + id);
+                    let stored = sessionStorage.getItem(SESSION_PREFIX + id);
+                    // Fallback: tentar localStorage se sessionStorage falhar
+                    if (!stored) {
+                        stored = localStorage.getItem(SESSION_PREFIX + id);
+                    }
                     if (stored) {
                         appData = JSON.parse(stored);
                         hasData = true;
