@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Encurtador Pro - Painel</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:1rem}
+.container{max-width:600px;margin:0 auto}
+.logo{font-size:1.8rem;font-weight:800;text-align:center;margin-bottom:0.5rem;background:linear-gradient(135deg,#6366f1,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:#94a3b8;margin-bottom:2rem;font-size:0.9rem}
+
+.card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 10px 30px rgba(0,0,0,0.3)}
+.card h2{font-size:1.1rem;color:#6366f1;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem}
+
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;margin-bottom:0.4rem;font-weight:600;font-size:0.9rem}
+.form-group label .required{color:#ef4444}
+.form-group input,.form-group textarea{width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:0.9rem;border-radius:10px;font-size:1rem;outline:none}
+.form-group input:focus,.form-group textarea:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,0.2)}
+.form-group textarea{min-height:100px;resize:vertical}
+.form-group small{color:#64748b;font-size:0.75rem;margin-top:0.3rem;display:block}
+
+.btn-primary{width:100%;background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:none;padding:1rem;font-size:1rem;font-weight:700;border-radius:10px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.5rem;-webkit-tap-highlight-color:transparent}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,0.4)}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+
+.btn-secondary{background:#334155;color:#e2e8f0;border:1px solid #475569;padding:0.6rem 1rem;border-radius:8px;cursor:pointer;font-weight:600;transition:all 0.3s;-webkit-tap-highlight-color:transparent}
+.btn-secondary:hover{background:#475569}
+
+.result-box{display:none;margin-top:1rem;padding:1rem;background:#0f172a;border:2px solid #10b981;border-radius:10px}
+.result-box.show{display:block;animation:fadeIn 0.3s ease}
+.result-url{width:100%;background:#020617;border:1px solid #334155;color:#10b981;padding:0.8rem;border-radius:8px;font-family:monospace;font-size:0.8rem;word-break:break-all;resize:none;outline:none}
+
+.links-list{margin-top:1rem}
+.link-item{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:1rem;margin-bottom:0.8rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.link-item .info{flex:1;min-width:0}
+.link-item .title{font-weight:600;font-size:0.9rem;margin-bottom:0.2rem;word-break:break-word}
+.link-item .url{color:#64748b;font-size:0.75rem;word-break:break-all}
+.link-item .actions{display:flex;gap:0.5rem}
+
+.empty{text-align:center;padding:2rem;color:#64748b}
+
+.toast{position:fixed;bottom:1rem;right:1rem;background:#1e293b;border:1px solid #334155;border-radius:10px;padding:0.8rem 1.2rem;display:none;align-items:center;gap:0.5rem;z-index:10000;box-shadow:0 10px 30px rgba(0,0,0,0.5);animation:slideIn 0.3s ease}
+.toast.show{display:flex}
+
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">⚡ Encurtador Pro</div>
+  <div class="subtitle">Monetize seus links com anúncios</div>
+
+  <!-- TABS -->
+  <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;background:#1e293b;padding:0.4rem;border-radius:10px;border:1px solid #334155">
+    <button class="btn-primary" style="flex:1;font-size:0.9rem" id="tabCriar" onclick="showTab('criar')">🚀 Criar Link</button>
+    <button class="btn-secondary" style="flex:1;font-size:0.9rem" id="tabLinks" onclick="showTab('links')">📋 Meus Links</button>
+  </div>
+
+  <!-- PAINEL CRIAR -->
+  <div id="panelCriar">
+    <div class="card">
+      <h2>🔗 Encurtar Link</h2>
+
+      <div class="form-group">
+        <label>Título / Nome <span class="required">*</span></label>
+        <input type="text" id="titulo" placeholder="Ex: Under Boss XC v4.0.4">
+      </div>
+
+      <div class="form-group">
+        <label>Descrição <span class="required">*</span></label>
+        <textarea id="descricao" placeholder="Descrição do conteúdo...
+Pode incluir instruções, senhas, etc."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Link de destino <span class="required">*</span></label>
+        <input type="text" id="linkDestino" placeholder="https://t.me/seu_canal ou https://...">
+        <small>Link final que o usuário acessará após os anúncios</small>
+      </div>
+
+      <div class="form-group">
+        <label>Imagem de capa (opcional)</label>
+        <input type="file" id="imagem" accept="image/*" style="padding:0.5rem">
+        <small>Preview da imagem aparecerá na página de anúncios</small>
+      </div>
+
+      <button class="btn-primary" id="btnGerar" type="button">🔐 GERAR LINK</button>
+
+      <div class="result-box" id="resultBox">
+        <div style="font-size:0.85rem;color:#94a3b8;margin-bottom:0.5rem">✅ Link gerado!</div>
+        <textarea class="result-url" id="linkGerado" readonly rows="2"></textarea>
+        <div style="display:flex;gap:0.5rem;margin-top:0.8rem">
+          <button class="btn-secondary" style="flex:1" onclick="copiar()">📋 Copiar</button>
+          <button class="btn-secondary" style="flex:1" onclick="abrir()">🔗 Abrir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAINEL LINKS -->
+  <div id="panelLinks" style="display:none">
+    <div class="card">
+      <h2>📋 Links Gerados</h2>
+      <div id="listaLinks">
+        <div class="empty">
+          <div style="font-size:2rem">📭</div>
+          <div>Nenhum link ainda</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastText">Operação realizada!</span>
+</div>
+
+<script>
+// ===== CONFIG =====
+var DB_KEY = 'encurtador_pro_v1';
+var SESS_PREFIX = 'enc_';
+
+// ===== HELPERS =====
+function $(id){return document.getElementById(id)}
+function toast(msg){
+  var t=$('toast');$('toastText').textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2500)
+}
+function getLinks(){try{return JSON.parse(localStorage.getItem(DB_KEY))||[]}catch(e){return[]}}
+function saveLinks(d){try{localStorage.setItem(DB_KEY,JSON.stringify(d))}catch(e){toast('❌ Erro ao salvar')}}
+
+// ===== TABS =====
+function showTab(tab){
+  $('panelCriar').style.display=tab==='criar'?'block':'none';
+  $('panelLinks').style.display=tab==='links'?'block':'none';
+  $('tabCriar').className=tab==='criar'?'btn-primary':'btn-secondary';
+  $('tabCriar').style.flex='1';
+  $('tabLinks').className=tab==='links'?'btn-primary':'btn-secondary';
+  $('tabLinks').style.flex='1';
+  if(tab==='links')renderLinks()
+}
+
+// ===== PREVIEW EM TEMPO REAL =====
+function initListeners(){
+  var campos=['titulo','descricao','linkDestino'];
+  for(var i=0;i<campos.length;i++){
+    var el=$(campos[i]);
+    if(el){
+      el.addEventListener('input',atualizarPreview);
+      el.addEventListener('change',atualizarPreview);
+    }
+  }
+}
+function atualizarPreview(){
+  // Preview simples - pode expandir depois
+  console.log('Preview:',$('titulo').value)
+}
+
+// ===== IMAGEM =====
+var imgBase64=null;
+function initImagem(){
+  var input=$('imagem');
+  if(!input)return;
+  input.addEventListener('change',function(e){
+    var file=e.target.files[0];
+    if(!file)return;
+    if(file.size>5*1024*1024){toast('❌ Imagem muito grande! Max 5MB');return}
+    var reader=new FileReader();
+    reader.onload=function(e){
+      imgBase64=e.target.result;
+      toast('✅ Imagem carregada: '+Math.round((imgBase64.length*0.75)/1024)+'KB');
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ===== GERAR LINK =====
+function gerar(){
+  try{
+    var titulo=($('titulo').value||'').trim();
+    var desc=($('descricao').value||'').trim();
+    var url=($('linkDestino').value||'').trim();
+
+    if(!titulo){toast('❌ Digite o título!');return}
+    if(!desc){toast('❌ Digite a descrição!');return}
+    if(!url){toast('❌ Cole o link de destino!');return}
+    if(!url.match(/^https?:\/\//i)){toast('❌ Link deve começar com http://');return}
+
+    var btn=$('btnGerar');
+    btn.disabled=true;
+    btn.textContent='⏳ Gerando...';
+
+    setTimeout(function(){
+      try{
+        var id='lnk'+Date.now().toString(36);
+        var data={t:titulo,d:desc,u:url};
+        if(imgBase64)data.i=imgBase64;
+
+        // Salvar em sessionStorage (curto prazo) + localStorage (backup)
+        var json=JSON.stringify(data);
+        sessionStorage.setItem(SESS_PREFIX+id,json);
+        try{localStorage.setItem(SESS_PREFIX+id,json)}catch(e){}
+
+        // Link curto
+        var base=location.href.replace(/painel\.html/i,'index.html').replace(/encurtador\.html/i,'index.html');
+        var baseClean=base.split('?')[0];
+        var linkFinal=baseClean+'?id='+id;
+
+        // Salvar no histórico
+        var links=getLinks();
+        links.unshift({id:id,titulo:titulo,url:linkFinal,destino:url,data:new Date().toLocaleString('pt-BR'),temImg:!!imgBase64});
+        saveLinks(links);
+
+        $('linkGerado').value=linkFinal;
+        $('resultBox').classList.add('show');
+
+        btn.disabled=false;
+        btn.textContent='🔐 GERAR LINK';
+        toast('✅ Link gerado!');
+
+        setTimeout(copiar,500);
+      }catch(err){
+        toast('❌ Erro: '+err.message);
+        btn.disabled=false;
+        btn.textContent='🔐 GERAR LINK';
+      }
+    },400);
+  }catch(err){
+    toast('❌ Erro inesperado: '+err.message);
+  }
+}
+
+// ===== AÇÕES =====
+function copiar(){
+  var el=$('linkGerado');
+  var txt=el.value;
+  if(!txt)return;
+
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(function(){toast('📋 Copiado!')}).catch(function(){fallbackCopy(txt)});
+  }else{fallbackCopy(txt)}
+}
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea');
+  ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;';
+  document.body.appendChild(ta);ta.focus();ta.select();
+  try{document.execCommand('copy');toast('📋 Copiado!')}catch(e){toast('❌ Falha ao copiar')}
+  document.body.removeChild(ta);
+}
+function abrir(){
+  var url=$('linkGerado').value;
+  if(url)window.open(url,'_blank');
+}
+
+// ===== LISTA =====
+function renderLinks(){
+  var links=getLinks();
+  var container=$('listaLinks');
+  if(links.length===0){
+    container.innerHTML='<div class="empty"><div style="font-size:2rem">📭</div><div>Nenhum link ainda</div></div>';
+    return;
+  }
+  var html='';
+  for(var i=0;i<links.length;i++){
+    var l=links[i];
+    var imgTag=l.temImg?'🖼️ ':'';
+    html+='<div class="link-item">'+
+      '<div class="info">'+
+        '<div class="title">'+imgTag+escapeHtml(l.titulo)+'</div>'+
+        '<div class="url">'+escapeHtml(l.url.substring(0,50))+'...</div>'+
+      '</div>'+
+      '<div class="actions">'+
+        '<button class="btn-secondary" onclick="copyLink(''+l.url.replace(/'/g,"\'")+'')">📋</button>'+
+        '<button class="btn-secondary" onclick="window.open(''+l.url.replace(/'/g,"\'")+'','_blank')">🔗</button>'+
+      '</div>'+
+    '</div>';
+  }
+  container.innerHTML=html;
+}
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+window.copyLink=function(url){
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(url).then(function(){toast('📋 Copiado!')}).catch(function(){fallbackCopy(url)});
+  }else{fallbackCopy(url)}
+};
+
+// ===== INIT =====
+function init(){
+  initListeners();
+  initImagem();
+  $('btnGerar').addEventListener('click',gerar);
+  console.log('Encurtador Pro v1 OK');
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',init);
+}else{init()}
+</script>
+
+</body>
+</html>

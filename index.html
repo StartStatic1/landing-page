@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Encurtador Pro - Aguarde</title>
+<script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#0f172a,#020617);border-bottom:1px solid #334155;padding:1rem;text-align:center;position:sticky;top:0;z-index:100}
+.logo{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,#6366f1,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* CONTAINER */
+.container{max-width:800px;margin:0 auto;padding:1rem}
+
+/* AD SLOTS - só aparecem se carregarem */
+.ad-slot{display:none;background:#1e293b;border:1px dashed #334155;border-radius:12px;min-height:90px;margin:1rem 0;align-items:center;justify-content:center;color:#64748b;font-size:0.75rem;position:relative;overflow:hidden}
+.ad-slot::before{content:"AD";position:absolute;top:5px;right:8px;font-size:0.6rem;background:#334155;padding:2px 6px;border-radius:4px}
+
+/* INFO DO CONTEÚDO */
+.content-info{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:1.5rem;margin:1rem 0;text-align:center}
+.content-img{width:100%;max-height:400px;object-fit:contain;border-radius:12px;margin-bottom:1rem;background:#0f172a}
+.content-title{font-size:1.5rem;font-weight:800;margin-bottom:0.5rem;background:linear-gradient(135deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.content-desc{color:#94a3b8;font-size:1rem;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;margin-bottom:1rem}
+.content-meta{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-top:1rem}
+.meta-tag{background:#0f172a;padding:0.4rem 0.8rem;border-radius:20px;font-size:0.8rem;color:#64748b;border:1px solid #334155}
+
+/* TIMER / PROGRESS */
+.timer-box{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0;text-align:center;position:relative;overflow:hidden}
+.timer-box::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(99,102,241,0.1) 0%,transparent 70%);animation:pulse-bg 4s ease-in-out infinite}
+@keyframes pulse-bg{0%,100%{transform:scale(1);opacity:0.5}50%{transform:scale(1.1);opacity:0.8}}
+.timer-label{position:relative;z-index:1;color:#94a3b8;font-size:0.9rem;margin-bottom:1rem}
+.timer-num{position:relative;z-index:1;font-size:4rem;font-weight:800;color:#f59e0b;font-family:'Courier New',monospace}
+.timer-text{position:relative;z-index:1;color:#64748b;font-size:0.85rem;margin-top:0.5rem}
+.progress-bar{background:#0f172a;border-radius:50px;height:12px;margin:1.5rem 0;overflow:hidden;position:relative;z-index:1}
+.progress-fill{background:linear-gradient(90deg,#6366f1,#06b6d4);height:100%;width:0%;border-radius:50px;transition:width 1s linear}
+
+/* BOTÕES ISCA */
+.btn-isca{position:relative;z-index:1;display:inline-block;background:linear-gradient(135deg,#475569,#334155);color:#fff;border:2px dashed #64748b;padding:1rem 2rem;font-size:1rem;font-weight:700;border-radius:12px;cursor:pointer;text-decoration:none;margin:0.5rem;transition:all 0.3s;-webkit-tap-highlight-color:transparent}
+.btn-isca:hover{border-color:#f59e0b;color:#f59e0b;transform:scale(1.02)}
+.btn-vip{position:relative;z-index:1;display:none;background:linear-gradient(135deg,#0088cc,#00a8e6);color:#fff;border:none;padding:1.2rem 3rem;font-size:1.2rem;font-weight:800;border-radius:15px;cursor:pointer;text-decoration:none;box-shadow:0 6px 0 #005f8d,0 0 20px rgba(0,136,204,0.6);transition:all 0.2s;text-transform:uppercase;animation:pulse-green 2s infinite;margin-top:1rem}
+@keyframes pulse-green{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.btn-vip:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,136,204,0.8)}
+.status-text{position:relative;z-index:1;color:#10b981;font-size:0.95rem;margin-top:1rem;min-height:1.5rem}
+
+/* FINAL */
+.final-box{display:none;background:#1e293b;border:2px solid #10b981;border-radius:16px;padding:2rem;margin:2rem 0;text-align:center}
+.final-box.show{display:block;animation:fadeIn 0.5s ease}
+.final-icon{font-size:3rem;margin-bottom:1rem}
+.final-title{color:#10b981;font-size:1.5rem;font-weight:800;margin-bottom:0.5rem}
+.final-url{background:#0f172a;border-radius:8px;padding:0.8rem;font-family:monospace;font-size:0.8rem;color:#64748b;word-break:break-all;margin:1rem 0}
+
+/* NO DATA */
+.no-data{text-align:center;padding:3rem 1rem}
+.no-data h2{color:#e2e8f0;margin-bottom:1rem}
+.no-data p{color:#64748b;margin-bottom:1.5rem;line-height:1.6}
+.no-data a{color:#6366f1;text-decoration:none;font-weight:600}
+
+/* TOAST */
+.toast{position:fixed;bottom:1rem;right:1rem;background:#1e293b;border:1px solid #334155;border-radius:10px;padding:0.8rem 1.2rem;display:none;align-items:center;gap:0.5rem;z-index:10000;box-shadow:0 10px 30px rgba(0,0,0,0.5);animation:slideIn 0.3s ease}
+.toast.show{display:flex}
+
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  .timer-num{font-size:3rem}
+  .content-title{font-size:1.2rem}
+  .btn-isca{padding:0.8rem 1.5rem;font-size:0.9rem}
+  .btn-vip{padding:1rem 2rem;font-size:1rem}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">⚡ Encurtador Pro</div>
+</header>
+
+<div class="container">
+
+  <!-- AD TOP -->
+  <div class="ad-slot" id="adTop"></div>
+
+  <!-- CONTEÚDO (se tiver dados) -->
+  <div id="conteudoSection" style="display:none">
+    <div class="content-info">
+      <img id="contentImg" class="content-img" src="" alt="Capa" style="display:none">
+      <h1 class="content-title" id="contentTitle">Carregando...</h1>
+      <div class="content-desc" id="contentDesc"></div>
+      <div class="content-meta">
+        <span class="meta-tag" id="metaData">📅 Agora</span>
+        <span class="meta-tag">✅ Verificado</span>
+        <span class="meta-tag">🔒 Seguro</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NO DATA -->
+  <div id="noDataSection" style="display:none">
+    <div class="no-data">
+      <h2>🚀 Bem-vindo ao Encurtador Pro</h2>
+      <p>Esta página exibe o conteúdo protegido por anúncios.<br>Use o painel para criar links encurtados.</p>
+      <div style="background:#1e293b;border-radius:12px;padding:1.5rem;text-align:left;max-width:500px;margin:0 auto">
+        <h3 style="color:#6366f1;margin-bottom:1rem;font-size:1rem">📋 Como usar:</h3>
+        <ol style="color:#64748b;padding-left:1.2rem;line-height:2">
+          <li>Acesse o <strong>painel</strong> e preencha os dados</li>
+          <li>Adicione título, descrição e link de destino</li>
+          <li>Gere o link curto e compartilhe</li>
+          <li>Quem clicar verá anúncios + timer</li>
+          <li>Após o timer, acesso liberado!</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- AD MIDDLE -->
+  <div class="ad-slot" id="adMiddle"></div>
+
+  <!-- TIMER / ANÚNCIOS -->
+  <div class="timer-box" id="timerBox">
+    <div class="timer-label">⏱️ VERIFICAÇÃO DE SEGURANÇA</div>
+    <div class="timer-num" id="timerNum">15</div>
+    <div class="timer-text">segundos restantes</div>
+
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div style="background:#0f172a;border:1px dashed #334155;border-radius:12px;padding:1.5rem;margin:1rem 0;min-height:100px;display:flex;align-items:center;justify-content:center;color:#64748b;position:relative;z-index:1">
+      <!-- Espaço para anúncio nativo -->
+    </div>
+
+    <a href="https://omg10.com/4/11044679" target="_blank" class="btn-isca" id="btnIsca1">🚀 ACELERAR (SERVIDOR 1)</a>
+    <a href="https://omg10.com/4/11047687" target="_blank" class="btn-isca" id="btnIsca2" style="display:none">⚡ ACELERAR (SERVIDOR 2)</a>
+    <a href="https://omg10.com/4/11047689" target="_blank" class="btn-isca" id="btnIsca3" style="display:none">🔥 ACELERAR (SERVIDOR 3)</a>
+
+    <button class="btn-vip" id="btnVip" onclick="liberar()">CONTINUAR</button>
+
+    <div class="status-text" id="statusText"></div>
+  </div>
+
+  <!-- AD BOTTOM -->
+  <div class="ad-slot" id="adBottom"></div>
+
+  <!-- FINAL / REDIRECT -->
+  <div class="final-box" id="finalBox">
+    <div class="final-icon">✅</div>
+    <div class="final-title">Acesso Liberado!</div>
+    <div style="color:#94a3b8;margin-bottom:1rem">Seu link está pronto para acesso.</div>
+    <a href="#" id="finalLink" target="_blank" class="btn-vip" style="display:inline-block;margin-top:0">🔗 ACESSAR CONTEÚDO</a>
+    <div class="final-url" id="finalUrl"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"><span id="toastText">...</span></div>
+
+<script>
+// ===== CONFIG =====
+var SESS_PREFIX='enc_';
+var TEMPO=15;
+var destinoUrl=null;
+
+// ===== CARREGAR DADOS =====
+function carregar(){
+  try{
+    var params=new URLSearchParams(location.search);
+    var id=params.get('id');
+
+    if(id){
+      var dados=sessionStorage.getItem(SESS_PREFIX+id)||localStorage.getItem(SESS_PREFIX+id);
+      if(dados){
+        var data=JSON.parse(dados);
+        destinoUrl=data.u||null;
+        mostrarConteudo(data);
+        iniciarTimer();
+        return;
+      }
+    }
+
+    // Fallback: dados na URL (base64) - para compatibilidade
+    var b64=params.get('d');
+    if(b64){
+      try{
+        var json=atob(b64);
+        var data=JSON.parse(json);
+        destinoUrl=data.u||null;
+        mostrarConteudo(data);
+        iniciarTimer();
+        return;
+      }catch(e){}
+    }
+
+    // Sem dados
+    $('noDataSection').style.display='block';
+    $('timerBox').style.display='none';
+
+  }catch(e){
+    console.error(e);
+    $('noDataSection').style.display='block';
+    $('timerBox').style.display='none';
+  }
+}
+
+function mostrarConteudo(data){
+  $('conteudoSection').style.display='block';
+  if(data.t)$('contentTitle').textContent=data.t;
+  if(data.d)$('contentDesc').textContent=data.d;
+  if(data.i){
+    var img=$('contentImg');
+    img.src=data.i;
+    img.style.display='block';
+    img.onerror=function(){img.style.display='none'};
+  }
+}
+
+// ===== TIMER =====
+var tempoRestante=TEMPO;
+var timerInterval;
+var redirectTimeout;
+var iscaAtual=0;
+
+function iniciarTimer(){
+  var num=$('timerNum');
+  var fill=$('progressFill');
+  var status=$('statusText');
+
+  rotacionarIsca();
+  var iscaInt=setInterval(rotacionarIsca,5000);
+
+  timerInterval=setInterval(function(){
+    tempoRestante--;
+    num.textContent=tempoRestante;
+    fill.style.width=((TEMPO-tempoRestante)/TEMPO)*100+'%';
+
+    if(tempoRestante>10)status.textContent='Verificando...';
+    else if(tempoRestante>5)status.textContent='Quase lá...';
+    else if(tempoRestante>0)status.textContent='Finalizando...';
+
+    if(tempoRestante<=5)num.style.color='#ef4444';
+
+    if(tempoRestante<=0){
+      clearInterval(timerInterval);
+      clearInterval(iscaInt);
+      finalizar();
+    }
+  },1000);
+}
+
+function rotacionarIsca(){
+  iscaAtual=(iscaAtual%3)+1;
+  for(var i=1;i<=3;i++){
+    $('btnIsca'+i).style.display=(i===iscaAtual)?'inline-block':'none';
+  }
+}
+
+function finalizar(){
+  $('timerNum').style.display='none';
+  $('statusText').textContent='✅ Pronto!';
+  $('statusText').style.color='#10b981';
+  $('btnVip').style.display='inline-block';
+
+  for(var i=1;i<=3;i++)$('btnIsca'+i).style.display='none';
+
+  toast('🎉 Acesso liberado!');
+
+  var seg=3;
+  $('statusText').textContent='Redirecionando em '+seg+'s...';
+  redirectTimeout=setInterval(function(){
+    seg--;
+    if(seg>0){
+      $('statusText').textContent='Redirecionando em '+seg+'s...';
+    }else{
+      clearInterval(redirectTimeout);
+      if(destinoUrl)window.location.href=destinoUrl;
+    }
+  },1000);
+}
+
+function liberar(){
+  if(!destinoUrl){toast('❌ Link inválido');return}
+  if(redirectTimeout)clearInterval(redirectTimeout);
+
+  $('timerBox').style.display='none';
+  $('finalBox').classList.add('show');
+  $('finalLink').href=destinoUrl;
+  $('finalUrl').textContent=destinoUrl;
+
+  setTimeout(function(){
+    if(destinoUrl)window.location.href=destinoUrl;
+  },1500);
+}
+
+// ===== UTILS =====
+function $(id){return document.getElementById(id)}
+function toast(msg){
+  var t=$('toast');$('toastText').textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2500)
+}
+
+// ===== INIT =====
+carregar();
+</script>
+
+<script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
+</body>
+</html>
