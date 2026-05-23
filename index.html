@@ -46,10 +46,12 @@
             .container { grid-template-columns: 1fr 300px; }
         }
 
+        /* AD SLOTS - escondidos por padrão, só aparecem se anúncio carregar */
         .ad-slot {
+            display: none;
             background: var(--dark); border: 1px dashed var(--border);
             border-radius: 12px; min-height: 90px; margin: 1rem 0;
-            display: flex; align-items: center; justify-content: center;
+            align-items: center; justify-content: center;
             color: var(--text-muted); font-size: 0.75rem;
             position: relative; overflow: hidden; max-width: 100%;
         }
@@ -61,7 +63,7 @@
         .ad-sticky-footer {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: var(--dark); border-top: 1px solid var(--border);
-            min-height: 60px; z-index: 999; display: flex;
+            min-height: 60px; z-index: 999; display: none;
             align-items: center; justify-content: center;
             font-size: 0.75rem; color: var(--text-muted);
         }
@@ -84,7 +86,6 @@
             display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;
         }
 
-        /* HERO IMAGE - qualquer proporção, não força 9:16 */
         .hero-img-container {
             width: 100%; max-width: 100%;
             margin: 0 auto 1.5rem auto;
@@ -146,6 +147,55 @@
         .stat-item { text-align: center; flex: 1; min-width: 100px; }
         .stat-num { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
         .stat-label { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* SEÇÃO DINÂMICA - dados do painel no meio */
+        .dynamic-section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .dynamic-section h2 {
+            color: var(--text);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .dynamic-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .dynamic-desc strong {
+            color: var(--text);
+        }
+        .dynamic-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .dynamic-meta-item {
+            background: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .dynamic-meta-item span {
+            color: var(--text);
+            font-weight: 600;
+        }
 
         .download-section {
             background: var(--card); border: 1px solid var(--border);
@@ -344,6 +394,7 @@
             .file-info-item { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
             .layer-box { padding: 1.5rem 1rem; }
             .timer-display { font-size: 2.8rem; }
+            .dynamic-section { padding: 1.5rem 1rem; }
         }
 
         .fade-in { animation: fadeIn 0.5s ease; }
@@ -352,9 +403,30 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Pre-wrap para descrição com quebras de linha */
-        #descMain { white-space: pre-wrap; }
+        /* Estado sem dados */
+        .no-data-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .no-data-box h2 {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+        .no-data-box p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+        .no-data-box a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -380,10 +452,10 @@
 
             <div class="article-header">
                 <div class="breadcrumb">
-                    <a href="/">Início</a> / <span id="breadcrumbCat">📱 Apps</span> / <span id="breadcrumbApp">Notion Mod Pro</span>
+                    <a href="/">Início</a> / <span id="breadcrumbCat">📱 Apps</span> / <span id="breadcrumbApp">TechZone</span>
                 </div>
 
-                <!-- IMAGEM DO PAINEL - qualquer proporção -->
+                <!-- IMAGEM DO PAINEL -->
                 <div id="heroImageContainer" style="display:none;">
                     <div class="hero-img-container">
                         <img id="heroImage" class="hero-img" src="" alt="Preview">
@@ -391,13 +463,13 @@
                     </div>
                 </div>
 
-                <h1 class="article-title" id="pageTitle">Notion Mod Pro v4.2.1: Desbloqueie Todos os Recursos Premium Gratuitamente</h1>
+                <h1 class="article-title" id="pageTitle">TechZone - Conteúdo Premium</h1>
                 <div class="article-meta">
                     <div class="meta-item"><div class="author-avatar">TZ</div></div>
-                    <div class="meta-item">📅 <span id="postDate">22 de Maio, 2026</span></div>
-                    <div class="meta-item">⏱️ 8 min de leitura</div>
+                    <div class="meta-item">📅 <span id="postDate">23 de Maio, 2026</span></div>
+                    <div class="meta-item">⏱️ 5 min de leitura</div>
                     <div class="meta-item">👁️ <span id="viewCount">47.2K</span> visualizações</div>
-                    <div class="meta-item">💬 128 comentários</div>
+                    <div class="meta-item">💬 <span id="commentCount">128</span> comentários</div>
                 </div>
             </div>
 
@@ -408,18 +480,50 @@
                     <div class="video-placeholder" id="videoPlaceholder" onclick="loadVideo()">
                         <div class="play-btn">▶</div>
                         <div style="color: var(--text-muted);">Clique para assistir ao review completo</div>
-                        <div style="color: var(--text-muted); font-size: 0.85rem;">Notion Mod Pro v4.2.1 - Tutorial de instalação</div>
+                        <div style="color: var(--text-muted); font-size: 0.85rem;" id="videoLabel">TechZone - Conteúdo Exclusivo</div>
                     </div>
                 </div>
             </div>
 
             <div class="ad-slot ad-between"></div>
 
+            <!-- CONTEÚDO DINÂMICO DO PAINEL - NO MEIO DO ARTIGO -->
+            <div id="dynamicContentSection" style="display:none;">
+                <div class="dynamic-section fade-in">
+                    <h2>📄 <span id="dynamicTitle">Informações</span></h2>
+                    <div class="dynamic-desc" id="dynamicDesc"></div>
+                    <div class="dynamic-meta">
+                        <div class="dynamic-meta-item">📦 <span id="dynamicSize">-</span></div>
+                        <div class="dynamic-meta-item">🏷️ <span id="dynamicVer">-</span></div>
+                        <div class="dynamic-meta-item">📁 <span id="dynamicCat">-</span></div>
+                        <div class="dynamic-meta-item">✅ <span>Verificado</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESTADO SEM DADOS -->
+            <div id="noDataSection" style="display:none;">
+                <div class="no-data-box">
+                    <h2>🚀 Bem-vindo ao TechZone</h2>
+                    <p>Esta página foi gerada automaticamente pelo nosso painel.<br>Use o <a href="painel.html">Painel TechZone</a> para criar landing pages personalizadas com seus próprios conteúdos, imagens e links.</p>
+                    <div style="background: var(--dark); border-radius: 12px; padding: 1.5rem; margin-top: 1rem; text-align: left;">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1rem;">📋 Como funciona:</h3>
+                        <ol style="color: var(--text-muted); padding-left: 1.2rem; line-height: 2;">
+                            <li>Acesse o <strong>Painel</strong> e preencha os dados do conteúdo</li>
+                            <li>Adicione uma imagem de capa (opcional)</li>
+                            <li>Cole o link de destino (Telegram, Drive, etc)</li>
+                            <li>Gere e copie o link da landing page</li>
+                            <li>Compartilhe com seu público!</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
             <div class="article-content" id="articleContent">
                 <p id="descMain">
-Se você está cansado das limitações da versão gratuita do Notion, temos uma excelente notícia. A comunidade de desenvolvedores independentes acaba de lançar o <strong>Notion Mod Pro v4.2.1</strong>, uma versão modificada que desbloqueia <strong>todos os recursos premium</strong> sem necessidade de assinatura.
+Seja bem-vindo ao <strong>TechZone</strong>. Nossa plataforma permite criar landing pages profissionais para qualquer tipo de conteúdo — apps modificados, packs de senhas, arquivos exclusivos e muito mais.
 
-Neste artigo completo, vamos explorar todas as funcionalidades exclusivas desta versão, comparar com a original e, claro, disponibilizar o link seguro para download via nosso canal oficial no Telegram.
+Tudo o que você digita no painel aparece aqui automaticamente: título, descrição, imagem, versão, tamanho e categoria. O link final é protegido por um sistema de timer com monetização integrada.
                 </p>
 
                 <div class="highlight-box">
@@ -429,46 +533,46 @@ Neste artigo completo, vamos explorar todas as funcionalidades exclusivas desta 
 
                 <h2>🚀 O Que Há de Novo?</h2>
                 <p>
-                    A versão mais recente traz correções de bugs críticos e adiciona suporte completo para <strong>workspaces ilimitados</strong>, <strong>uploads de arquivos sem restrição</strong> e <strong>integrações premium</strong>.
+                    Sistema renovado com carregamento via <strong>sessionStorage</strong> — nunca mais erro de URL muito longa! As imagens em Base64 são armazenadas localmente e a landing page carrega instantaneamente.
                 </p>
 
                 <h3>Principais Recursos:</h3>
                 <p>
-                    • <strong>Convites ilimitados</strong> - Adicione quantos membros quiser<br>
-                    • <strong>Histórico de versões</strong> - Acesso permanente ao histórico<br>
-                    • <strong>50+ integrações</strong> - GitHub, Jira, Slack e mais<br>
-                    • <strong>Exportação em bulk</strong> - PDF, Markdown, HTML<br>
-                    • <strong>Domínio personalizado</strong> - Publique com sua URL<br>
-                    • <strong>SSO & SAML</strong> - Autenticação corporativa
+                    • <strong>Imagens de qualquer proporção</strong> - Upload do celular ou URL externa<br>
+                    • <strong>Descrição completa</strong> - Tudo que digitar aparece no meio da página<br>
+                    • <strong>Timer com 3 servidores</strong> - Monetização otimizada<br>
+                    • <strong>Design responsivo</strong> - Perfeito no mobile<br>
+                    • <strong>Sem caixas em branco</strong> - AD slots só aparecem quando carregam
                 </p>
 
-                <h2>📊 Comparativo</h2>
+                <h2>📊 Estatísticas</h2>
                 <div class="stats-bar">
                     <div class="stat-item"><div class="stat-num">4.9★</div><div class="stat-label">Avaliação</div></div>
                     <div class="stat-item"><div class="stat-num">2.4M+</div><div class="stat-label">Downloads</div></div>
-                    <div class="stat-item"><div class="stat-num" id="statVer">v4.2.1</div><div class="stat-label">Versão</div></div>
-                    <div class="stat-item"><div class="stat-num" id="statSize">45MB</div><div class="stat-label">Tamanho</div></div>
+                    <div class="stat-item"><div class="stat-num" id="statVer">v1.0</div><div class="stat-label">Versão</div></div>
+                    <div class="stat-item"><div class="stat-num" id="statSize">-</div><div class="stat-label">Tamanho</div></div>
                 </div>
 
-                <h2>🛠️ Como Instalar</h2>
-                <p><strong>Android:</strong> Habilite "Fontes desconhecidas" e instale o APK. <strong>Não requer root.</strong></p>
-                <p><strong>iOS:</strong> Use AltStore ou Sideloadly para instalar o IPA.</p>
-                <p><strong>Desktop:</strong> Execute como administrador.</p>
+                <h2>🛠️ Como Usar</h2>
+                <p><strong>Passo 1:</strong> Acesse o painel e preencha os campos obrigatórios.</p>
+                <p><strong>Passo 2:</strong> Adicione uma descrição completa com quebras de linha.</p>
+                <p><strong>Passo 3:</strong> Cole o link de destino e gere a landing.</p>
+                <p><strong>Passo 4:</strong> Compartilhe o link curto com seus seguidores!</p>
 
                 <h2>💬 Depoimentos</h2>
-                <p><em>"Salvou minha vida acadêmica! Consegui organizar meu TCC com workspaces ilimitados."</em> — <strong>Marcos, SP</strong></p>
-                <p><em>"Uso há 3 meses. Zero problemas, todas as integrações funcionando."</em> — <strong>Ana, RJ</strong></p>
+                <p><em>"O melhor gerador de landing pages que já usei. Simples e funciona no celular!"</em> — <strong>Marcos, SP</strong></p>
+                <p><em>"Finalmente resolveu o problema da URL longa. Agora posso usar imagens sem erro."</em> — <strong>Ana, RJ</strong></p>
             </div>
 
             <div class="ad-slot ad-between"></div>
 
             <div class="download-section" id="downloadSection">
                 <div class="download-icon">📦</div>
-                <div class="download-title" id="dlTitle">Notion Mod Pro v4.2.1</div>
+                <div class="download-title" id="dlTitle">TechZone Premium</div>
                 <div class="download-subtitle">Clique no botão abaixo para iniciar o download seguro</div>
                 <div class="file-info">
                     <div class="file-info-item">📱 <span id="dlPlatform">Android / iOS / PC</span></div>
-                    <div class="file-info-item">📦 <span id="dlSize">45.2 MB</span></div>
+                    <div class="file-info-item">📦 <span id="dlSize">-</span></div>
                     <div class="file-info-item">🔓 Premium Unlocked</div>
                     <div class="file-info-item">✅ Verificado</div>
                 </div>
@@ -487,7 +591,7 @@ Neste artigo completo, vamos explorar todas as funcionalidades exclusivas desta 
             <div class="ad-slot ad-between"></div>
 
             <div style="background: var(--card); border-radius: 16px; padding: 2rem; margin-top: 2rem; border: 1px solid var(--border);">
-                <h3 style="margin-bottom: 1.5rem;">💬 Comentários (128)</h3>
+                <h3 style="margin-bottom: 1.5rem;">💬 Comentários (<span id="commentsNum">128</span>)</h3>
                 <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
                     <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink:0;">R</div>
                     <div style="min-width:0;">
@@ -614,97 +718,116 @@ Neste artigo completo, vamos explorar todas as funcionalidades exclusivas desta 
             'https://omg10.com/4/11047687',
             'https://omg10.com/4/11047689'
         ];
+        const SESSION_PREFIX = 'tz_lp_';
 
-        // ========== DECODE ROBUSTO DOS DADOS DO PAINEL ==========
+        // ========== CARREGAR DADOS DO PAINEL ==========
         let destUrl = null;
         let appData = {};
+        let hasData = false;
 
         function loadAppData() {
             try {
                 const params = new URLSearchParams(window.location.search);
-                const b64 = params.get('d');
-                if (!b64) {
-                    console.log('Nenhum parametro d encontrado');
-                    return false;
-                }
 
-                // Decode Base64 seguro (suporta UTF-8)
-                let jsonStr;
-                try {
-                    jsonStr = decodeURIComponent(escape(atob(b64)));
-                } catch(e) {
-                    jsonStr = atob(b64);
-                }
-
-                const data = JSON.parse(jsonStr);
-                appData = data;
-                console.log('Dados do painel:', data);
-
-                // TÍTULO
-                if (data.n) {
-                    const titleText = data.n + (data.v ? ' ' + data.v : '');
-                    document.getElementById('pageTitle').textContent = titleText + ': Download Premium';
-                    document.getElementById('dlTitle').textContent = titleText;
-                    document.title = data.n + ' - TechZone';
-                    document.getElementById('breadcrumbApp').textContent = data.n;
-                }
-
-                // VERSÃO
-                if (data.v) {
-                    document.getElementById('statVer').textContent = data.v;
-                }
-
-                // TAMANHO
-                if (data.s) {
-                    document.getElementById('statSize').textContent = data.s;
-                    document.getElementById('dlSize').textContent = data.s;
-                }
-
-                // CATEGORIA
-                if (data.c) {
-                    document.getElementById('breadcrumbCat').textContent = data.c;
-                }
-
-                // DESCRIÇÃO - substitui o texto padrão completamente
-                if (data.d && data.d.trim()) {
-                    const descEl = document.getElementById('descMain');
-                    // Converte quebras de linha em <br> e mantém HTML permitido
-                    const formatted = data.d
-                        .replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;')
-                        .replace(/
-/g, '<br>');
-                    descEl.innerHTML = formatted;
-                }
-
-                // IMAGEM - aceita URL externa ou Base64
-                if (data.img) {
-                    const heroContainer = document.getElementById('heroImageContainer');
-                    const heroImg = document.getElementById('heroImage');
-                    heroImg.src = data.img;
-                    heroImg.onerror = function() {
-                        // Se a imagem falhar, esconde o container
-                        heroContainer.style.display = 'none';
-                    };
-                    heroImg.onload = function() {
-                        heroContainer.style.display = 'block';
-                    };
-                    // Tenta mostrar imediatamente (se já estiver em cache)
-                    if (heroImg.complete && heroImg.naturalWidth > 0) {
-                        heroContainer.style.display = 'block';
+                // MÉTODO 1: SessionStorage (novo, evita URI_TOO_LONG)
+                const id = params.get('id');
+                if (id) {
+                    const stored = sessionStorage.getItem(SESSION_PREFIX + id);
+                    if (stored) {
+                        appData = JSON.parse(stored);
+                        hasData = true;
+                        applyData(appData);
+                        return;
                     }
                 }
 
-                // LINK FINAL
-                destUrl = data.u || null;
-                console.log('Link destino:', destUrl);
-                return destUrl;
+                // MÉTODO 2: Base64 na URL (fallback antigo)
+                const b64 = params.get('d');
+                if (b64) {
+                    let jsonStr;
+                    try {
+                        jsonStr = decodeURIComponent(escape(atob(b64)));
+                    } catch(e) {
+                        jsonStr = atob(b64);
+                    }
+                    appData = JSON.parse(jsonStr);
+                    hasData = true;
+                    applyData(appData);
+                    return;
+                }
+
+                // SEM DADOS: mostra estado padrão
+                showNoData();
 
             } catch(e) {
-                console.error('Erro ao decodificar dados do painel:', e);
-                return null;
+                console.error('Erro ao carregar dados:', e);
+                showNoData();
             }
+        }
+
+        function applyData(data) {
+            console.log('Dados carregados:', data);
+            destUrl = data.u || null;
+
+            // TÍTULO
+            if (data.n) {
+                const titleText = data.n + (data.v ? ' ' + data.v : '');
+                document.getElementById('pageTitle').textContent = titleText;
+                document.getElementById('dlTitle').textContent = titleText;
+                document.title = data.n + ' - TechZone';
+                document.getElementById('breadcrumbApp').textContent = data.n;
+                document.getElementById('dynamicTitle').textContent = data.n;
+                document.getElementById('videoLabel').textContent = titleText + ' - Review Completo';
+            }
+
+            // VERSÃO
+            if (data.v) {
+                document.getElementById('statVer').textContent = data.v;
+                document.getElementById('dynamicVer').textContent = data.v;
+            }
+
+            // TAMANHO
+            if (data.s) {
+                document.getElementById('statSize').textContent = data.s;
+                document.getElementById('dlSize').textContent = data.s;
+                document.getElementById('dynamicSize').textContent = data.s;
+            }
+
+            // CATEGORIA
+            if (data.c) {
+                document.getElementById('breadcrumbCat').textContent = data.c;
+                document.getElementById('dynamicCat').textContent = data.c;
+            }
+
+            // DESCRIÇÃO - SEÇÃO DINÂMICA NO MEIO
+            if (data.d && data.d.trim()) {
+                document.getElementById('dynamicDesc').textContent = data.d;
+                document.getElementById('dynamicContentSection').style.display = 'block';
+                // Esconde o texto padrão se temos dados do painel
+                document.getElementById('descMain').style.display = 'none';
+            }
+
+            // IMAGEM
+            if (data.img) {
+                const heroContainer = document.getElementById('heroImageContainer');
+                const heroImg = document.getElementById('heroImage');
+                heroImg.src = data.img;
+                heroImg.onerror = function() {
+                    heroContainer.style.display = 'none';
+                };
+                heroImg.onload = function() {
+                    heroContainer.style.display = 'block';
+                };
+                if (heroImg.complete && heroImg.naturalWidth > 0) {
+                    heroContainer.style.display = 'block';
+                }
+            }
+        }
+
+        function showNoData() {
+            document.getElementById('noDataSection').style.display = 'block';
+            document.getElementById('downloadSection').style.display = 'none';
+            document.getElementById('btnDownload').style.display = 'none';
         }
 
         // Executa imediatamente
@@ -712,7 +835,6 @@ Neste artigo completo, vamos explorar todas as funcionalidades exclusivas desta 
 
         // ========== DOWNLOAD ==========
         function startDownload() {
-            console.log('startDownload chamado, destUrl:', destUrl);
             const btn = document.getElementById('btnDownload');
 
             if (!destUrl || destUrl === 'null' || destUrl === 'undefined') {
