@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel TechZone v2.0 - Gerador Multi-Link</title>
-
-    <!-- MONETAG MULTI TAG -->
-    <script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
-
+    <title>TechZone Painel - Gerador de Landing Pages</title>
     <style>
         :root {
             --primary: #6366f1; --primary-dark: #4f46e5; --secondary: #06b6d4;
@@ -21,47 +17,37 @@
             background: linear-gradient(135deg, var(--darker), var(--dark));
             color: var(--text); min-height: 100vh; padding: 2rem;
         }
-        .panel-container {
-            max-width: 900px; margin: 0 auto;
-        }
+        .panel-container { max-width: 800px; margin: 0 auto; }
         .logo {
             font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .subtitle {
-            text-align: center; color: var(--text-muted); margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
+        .subtitle { text-align: center; color: var(--text-muted); margin-bottom: 2rem; }
 
-        /* Tabs */
-        .tabs {
-            display: flex; gap: 0.5rem; margin-bottom: 2rem;
-            background: var(--card); padding: 0.5rem; border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-        .tab {
-            flex: 1; padding: 0.8rem; text-align: center; cursor: pointer;
-            border-radius: 8px; font-weight: 600; transition: all 0.3s;
-            color: var(--text-muted); border: none; background: transparent;
-        }
-        .tab.active { background: var(--primary); color: white; }
-        .tab:hover:not(.active) { background: var(--dark); color: var(--text); }
-
-        /* Panels */
-        .panel { display: none; }
-        .panel.active { display: block; animation: fadeIn 0.3s ease; }
-
-        /* Form Card */
         .form-card {
             background: var(--card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 2rem; margin-bottom: 2rem;
+            border-radius: 20px; padding: 2.5rem; margin-bottom: 2rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
         }
-        .form-group { margin-bottom: 1.2rem; }
+        .form-section {
+            margin-bottom: 1.5rem; padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .form-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .section-title {
+            font-size: 1rem; font-weight: 700; color: var(--primary);
+            margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .form-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+        }
+        .form-group { margin-bottom: 1rem; }
         .form-group label {
             display: block; margin-bottom: 0.5rem; font-weight: 600;
             font-size: 0.9rem; color: var(--text);
         }
+        .form-group label .required { color: var(--danger); }
         .form-group input, .form-group select, .form-group textarea {
             width: 100%; background: var(--dark); border: 1px solid var(--border);
             color: var(--text); padding: 0.9rem; border-radius: 10px;
@@ -71,18 +57,22 @@
             border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
         }
         .form-group textarea { min-height: 80px; resize: vertical; }
+        .form-group small {
+            display: block; margin-top: 0.3rem; color: var(--text-muted);
+            font-size: 0.8rem;
+        }
         .btn-generate {
             width: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white; border: none; padding: 1rem; font-size: 1.1rem;
+            color: white; border: none; padding: 1.2rem; font-size: 1.1rem;
             font-weight: 700; border-radius: 12px; cursor: pointer;
             transition: all 0.3s; box-shadow: 0 4px 15px rgba(99,102,241,0.4);
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
         }
         .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.6); }
 
-        /* Result */
         .result-box {
             display: none; margin-top: 1.5rem; padding: 1.5rem;
-            background: var(--dark); border: 1px solid var(--border);
+            background: var(--dark); border: 2px solid var(--success);
             border-radius: 12px;
         }
         .result-box.show { display: block; animation: fadeIn 0.5s ease; }
@@ -100,162 +90,144 @@
             padding: 0.7rem; border-radius: 8px; font-weight: 600;
             cursor: pointer; transition: all 0.3s;
         }
-        .btn-copy:hover { background: var(--primary); color: white; border-color: var(--primary); }
-        .btn-copy.copied { background: var(--success); color: white; border-color: var(--success); }
+        .btn-copy:hover { background: var(--primary); color: white; }
+        .btn-copy.copied { background: var(--success); color: white; }
 
-        /* Stats */
-        .stats-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
-            margin-bottom: 2rem;
+        .preview-box {
+            background: var(--dark); border-radius: 12px; padding: 1.5rem;
+            margin-top: 1rem; border: 1px solid var(--border);
         }
-        .stat-card {
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 12px; padding: 1.5rem; text-align: center;
-        }
-        .stat-card .num { font-size: 2rem; font-weight: 800; color: var(--primary); }
-        .stat-card .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem; }
+        .preview-box h4 { color: var(--primary); margin-bottom: 1rem; font-size: 0.9rem; }
+        .preview-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .preview-item:last-child { border-bottom: none; }
+        .preview-item span:first-child { color: var(--text-muted); }
+        .preview-item span:last-child { color: var(--text); font-weight: 600; }
 
-        /* Links Table */
-        .links-table {
-            width: 100%; border-collapse: collapse;
-        }
+        .links-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
         .links-table th {
-            background: var(--dark); padding: 1rem; text-align: left;
-            font-size: 0.85rem; color: var(--text-muted); font-weight: 600;
+            background: var(--dark); padding: 0.8rem; text-align: left;
+            font-size: 0.8rem; color: var(--text-muted); font-weight: 600;
             border-bottom: 1px solid var(--border);
         }
         .links-table td {
-            padding: 1rem; border-bottom: 1px solid var(--border);
-            font-size: 0.9rem; color: var(--text-muted);
-        }
-        .links-table tr:hover td { background: var(--dark); }
-        .link-title { color: var(--text); font-weight: 600; }
-        .link-url {
-            font-family: monospace; font-size: 0.8rem;
-            color: var(--primary); word-break: break-all;
-        }
-        .badge {
-            display: inline-block; padding: 0.2rem 0.6rem;
-            border-radius: 50px; font-size: 0.75rem; font-weight: 700;
-        }
-        .badge-active { background: rgba(16,185,129,0.2); color: var(--success); }
-        .badge-pending { background: rgba(245,158,11,0.2); color: var(--accent); }
-        .btn-small {
-            background: var(--dark); border: 1px solid var(--border);
-            color: var(--text); padding: 0.4rem 0.8rem;
-            border-radius: 6px; font-size: 0.8rem; cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn-small:hover { background: var(--primary); color: white; border-color: var(--primary); }
-        .btn-small.danger:hover { background: var(--danger); border-color: var(--danger); }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center; padding: 3rem; color: var(--text-muted);
-        }
-        .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; }
-
-        /* Info Box */
-        .info-box {
-            background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(6,182,212,0.1));
-            border-left: 4px solid var(--primary); padding: 1rem;
-            border-radius: 0 8px 8px 0; margin-bottom: 1.5rem;
+            padding: 0.8rem; border-bottom: 1px solid var(--border);
             font-size: 0.85rem; color: var(--text-muted);
         }
-
-        .footer-links {
-            text-align: center; margin-top: 2rem;
+        .btn-small {
+            background: var(--dark); border: 1px solid var(--border);
+            color: var(--text); padding: 0.3rem 0.6rem;
+            border-radius: 6px; font-size: 0.75rem; cursor: pointer;
         }
-        .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 0.5rem; font-size: 0.85rem; }
-        .footer-links a:hover { color: var(--primary); }
+        .btn-small:hover { background: var(--primary); color: white; }
+
+        .empty-state { text-align: center; padding: 2rem; color: var(--text-muted); }
+        .tabs {
+            display: flex; gap: 0.5rem; margin-bottom: 2rem;
+            background: var(--card); padding: 0.5rem; border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .tab {
+            flex: 1; padding: 0.8rem; text-align: center; cursor: pointer;
+            border-radius: 8px; font-weight: 600; transition: all 0.3s;
+            color: var(--text-muted); border: none; background: transparent;
+        }
+        .tab.active { background: var(--primary); color: white; }
+        .panel { display: none; }
+        .panel.active { display: block; animation: fadeIn 0.3s ease; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         @media (max-width: 600px) {
-            .stats-grid { grid-template-columns: 1fr; }
-            .tabs { flex-direction: column; }
+            .form-row { grid-template-columns: 1fr; }
+            .form-card { padding: 1.5rem; }
         }
     </style>
 </head>
 <body>
     <div class="panel-container">
-        <div class="logo">⚡ TechZone Painel v2.0</div>
-        <div class="subtitle">Gerador Multi-Link com Estatísticas</div>
+        <div class="logo">⚡ TechZone Painel</div>
+        <div class="subtitle">Crie landing pages monetizadas em segundos</div>
 
-        <!-- Stats -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="num" id="statTotal">0</div>
-                <div class="label">Links Gerados</div>
-            </div>
-            <div class="stat-card">
-                <div class="num" id="statClicks">0</div>
-                <div class="label">Cliques Totais</div>
-            </div>
-            <div class="stat-card">
-                <div class="num" id="statActive">0</div>
-                <div class="label">Links Ativos</div>
-            </div>
-        </div>
-
-        <!-- Tabs -->
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('gerar')">🚀 Gerar Link</button>
+            <button class="tab active" onclick="switchTab('criar')">🚀 Criar Landing</button>
             <button class="tab" onclick="switchTab('gerenciar')">📋 Meus Links</button>
-            <button class="tab" onclick="switchTab('encurtar')">✂️ Encurtar</button>
         </div>
 
-        <!-- Panel: Gerar -->
-        <div class="panel active" id="panel-gerar">
+        <!-- PANEL CRIAR -->
+        <div class="panel active" id="panel-criar">
             <div class="form-card">
-                <div class="info-box">
-                    <strong>💡 Dica:</strong> Cole o link do Telegram ou arquivo. O sistema codifica em Base64 e cria uma landing page monetizada com anúncios Monetag.
+                <div class="form-section">
+                    <div class="section-title">📱 Informações do App</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nome do App <span class="required">*</span></label>
+                            <input type="text" id="appName" placeholder="Ex: Notion Mod Pro" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Versão</label>
+                            <input type="text" id="appVersion" placeholder="Ex: v4.2.1" oninput="updatePreview()">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tamanho</label>
+                            <input type="text" id="appSize" placeholder="Ex: 45.2 MB" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria</label>
+                            <select id="appCategory" onchange="updatePreview()">
+                                <option value="📱 Apps">📱 Apps</option>
+                                <option value="🎮 Jogos">🎮 Jogos</option>
+                                <option value="🔓 Mod APK">🔓 Mod APK</option>
+                                <option value="💻 Windows">💻 Windows</option>
+                                <option value="🍎 macOS">🍎 macOS</option>
+                                <option value="📦 Outro">📦 Outro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição curta</label>
+                        <textarea id="appDesc" placeholder="Breve descrição do que o app faz..." oninput="updatePreview()"></textarea>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>🔗 Link do Destino (Telegram/Arquivo)</label>
-                    <input type="text" id="urlInput" placeholder="https://t.me/seu_canal ou https://..." autocomplete="off">
+                <div class="form-section">
+                    <div class="section-title">🔗 Link Final</div>
+                    <div class="form-group">
+                        <label>Link do Telegram / Download <span class="required">*</span></label>
+                        <input type="text" id="destUrl" placeholder="https://t.me/seu_canal">
+                        <small>Este é o destino final após o usuário passar pelos anúncios.</small>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>📝 Título do Download</label>
-                    <input type="text" id="titleInput" placeholder="Ex: Notion Mod Pro v4.2.1">
-                </div>
-
-                <div class="form-group">
-                    <label>📂 Categoria</label>
-                    <select id="categoryInput">
-                        <option value="apps">📱 Apps</option>
-                        <option value="jogos">🎮 Jogos</option>
-                        <option value="mod">🔓 Mod APK</option>
-                        <option value="windows">💻 Windows</option>
-                        <option value="macos">🍎 macOS</option>
-                        <option value="outro">📦 Outro</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>📝 Descrição curta (opcional)</label>
-                    <textarea id="descInput" placeholder="Breve descrição do conteúdo..."></textarea>
+                <div class="form-section">
+                    <div class="section-title">👁️ Preview da Landing</div>
+                    <div class="preview-box" id="previewBox">
+                        <h4>📄 Como vai aparecer:</h4>
+                        <div class="preview-item"><span>Título:</span><span id="previewTitle">Notion Mod Pro v4.2.1</span></div>
+                        <div class="preview-item"><span>Categoria:</span><span id="previewCat">📱 Apps</span></div>
+                        <div class="preview-item"><span>Tamanho:</span><span id="previewSize">45.2 MB</span></div>
+                        <div class="preview-item"><span>Descrição:</span><span id="previewDesc">Versão modificada com recursos premium desbloqueados.</span></div>
+                    </div>
                 </div>
 
                 <button class="btn-generate" onclick="gerarLink()">
-                    🔐 GERAR LINK SEGURO
+                    🔐 GERAR LANDING PAGE
                 </button>
 
                 <div class="result-box" id="resultBox">
-                    <div class="result-label">✅ Link gerado! Copie e compartilhe:</div>
+                    <div class="result-label">✅ Landing page gerada! Copie o link:</div>
                     <textarea class="result-url" id="outputLink" readonly></textarea>
-                    <button class="btn-copy" id="btnCopy" onclick="copiarLink()">
-                        📋 COPIAR LINK
-                    </button>
-                    <div style="margin-top: 0.8rem; display: flex; gap: 0.5rem;">
-                        <button class="btn-copy" style="margin-top: 0; flex: 1;" onclick="abrirLink()">
-                            🔗 ABRIR LINK
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.8rem;">
+                        <button class="btn-copy" style="flex:1; margin-top:0;" id="btnCopy" onclick="copiarLink()">
+                            📋 COPIAR
                         </button>
-                        <button class="btn-copy" style="margin-top: 0; flex: 1;" onclick="encurtarLink()">
+                        <button class="btn-copy" style="flex:1; margin-top:0;" onclick="abrirLink()">
+                            🔗 ABRIR
+                        </button>
+                        <button class="btn-copy" style="flex:1; margin-top:0;" onclick="encurtarLink()">
                             ✂️ ENCURTAR
                         </button>
                     </div>
@@ -263,99 +235,29 @@
             </div>
         </div>
 
-        <!-- Panel: Gerenciar -->
+        <!-- PANEL GERENCIAR -->
         <div class="panel" id="panel-gerenciar">
             <div class="form-card">
                 <h3 style="margin-bottom: 1rem; color: var(--text);">📋 Links Gerados</h3>
                 <div id="linksList">
                     <div class="empty-state">
-                        <div class="icon">📭</div>
-                        <div>Nenhum link gerado ainda.</div>
-                        <div style="font-size: 0.85rem; margin-top: 0.5rem;">Vá para "Gerar Link" e crie o primeiro!</div>
+                        <div style="font-size: 2rem;">📭</div>
+                        <div>Nenhum link ainda.</div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Panel: Encurtar -->
-        <div class="panel" id="panel-encurtar">
-            <div class="form-card">
-                <div class="info-box">
-                    <strong>✂️ Encurtador:</strong> Cole um link longo (incluindo os gerados aqui) para encurtar com serviços como Bit.ly, TinyURL ou seu encurtador preferido.
-                </div>
-
-                <div class="form-group">
-                    <label>🔗 Link para Encurtar</label>
-                    <input type="text" id="urlEncurtar" placeholder="Cole o link longo aqui...">
-                </div>
-
-                <div class="form-group">
-                    <label>🌐 Serviço de Encurtamento</label>
-                    <select id="serviceEncurtar">
-                        <option value="tinyurl">TinyURL</option>
-                        <option value="isgd">is.gd</option>
-                        <option value="custom">Link Personalizado (manual)</option>
-                    </select>
-                </div>
-
-                <button class="btn-generate" onclick="encurtarExterno()">
-                    ✂️ ENCURTAR LINK
-                </button>
-
-                <div class="result-box" id="resultEncurtar">
-                    <div class="result-label">✅ Link encurtado:</div>
-                    <textarea class="result-url" id="outputEncurtar" readonly></textarea>
-                    <button class="btn-copy" onclick="copiarEncurtado()">
-                        📋 COPIAR
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-links">
-            <a href="index.html">← Voltar para o site</a>
-            <a href="sobre.html">Sobre</a>
-            <a href="contato.html">Contato</a>
-        </div>
     </div>
 
     <script>
-        // ========== STORAGE ==========
-        const STORAGE_KEY = 'techzone_links_v2';
+        const STORAGE_KEY = 'techzone_landings_v3';
 
-        function getLinks() {
-            try {
-                return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            } catch(e) { return []; }
+        function getLandings() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+            catch(e) { return []; }
         }
+        function saveLandings(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
-        function saveLinks(links) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(links));
-        }
-
-        function addLink(linkData) {
-            const links = getLinks();
-            links.unshift(linkData);
-            saveLinks(links);
-            updateStats();
-            renderLinks();
-        }
-
-        function deleteLink(id) {
-            const links = getLinks().filter(l => l.id !== id);
-            saveLinks(links);
-            updateStats();
-            renderLinks();
-        }
-
-        function updateStats() {
-            const links = getLinks();
-            document.getElementById('statTotal').textContent = links.length;
-            document.getElementById('statClicks').textContent = links.reduce((a, l) => a + (l.clicks || 0), 0);
-            document.getElementById('statActive').textContent = links.filter(l => l.active !== false).length;
-        }
-
-        // ========== TABS ==========
         function switchTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -364,44 +266,60 @@
             if(tab === 'gerenciar') renderLinks();
         }
 
-        // ========== GERAR LINK ==========
+        function updatePreview() {
+            const name = document.getElementById('appName').value || 'Notion Mod Pro';
+            const ver = document.getElementById('appVersion').value || 'v4.2.1';
+            const size = document.getElementById('appSize').value || '45.2 MB';
+            const cat = document.getElementById('appCategory').value;
+            const desc = document.getElementById('appDesc').value || 'Versão modificada com recursos premium desbloqueados.';
+
+            document.getElementById('previewTitle').textContent = name + ' ' + ver;
+            document.getElementById('previewCat').textContent = cat;
+            document.getElementById('previewSize').textContent = size;
+            document.getElementById('previewDesc').textContent = desc;
+        }
+
         function gerarLink() {
-            const url = document.getElementById('urlInput').value.trim();
-            const title = document.getElementById('titleInput').value.trim() || 'Download';
-            const category = document.getElementById('categoryInput').value;
-            const desc = document.getElementById('descInput').value.trim();
+            const name = document.getElementById('appName').value.trim();
+            const ver = document.getElementById('appVersion').value.trim();
+            const size = document.getElementById('appSize').value.trim();
+            const cat = document.getElementById('appCategory').value;
+            const desc = document.getElementById('appDesc').value.trim();
+            const url = document.getElementById('destUrl').value.trim();
 
-            if(!url) {
-                alert("❌ Insira um link válido!");
-                document.getElementById('urlInput').focus();
-                return;
-            }
+            if(!name) { alert('❌ Digite o nome do app!'); return; }
+            if(!url) { alert('❌ Cole o link do destino!'); return; }
+            if(!url.startsWith('http')) { alert('❌ Link deve começar com http://'); return; }
 
-            if(!url.startsWith('http')) {
-                alert("❌ O link deve começar com http:// ou https://");
-                return;
-            }
+            // Cria objeto com todos os dados
+            const data = {
+                n: name,
+                v: ver || 'v1.0',
+                s: size || 'N/A',
+                c: cat,
+                d: desc || 'Download disponível.',
+                u: url
+            };
 
-            const encoded = btoa(url); 
-            const baseUrl = window.location.origin + "/index.html";
+            // Codifica tudo em Base64
+            const jsonStr = JSON.stringify(data);
+            const encoded = btoa(jsonStr);
+
+            const baseUrl = window.location.origin + '/index.html';
             const finalLink = `${baseUrl}?d=${encoded}`;
 
-            // Salvar no storage
-            const linkData = {
+            // Salva no storage
+            const landings = getLandings();
+            landings.unshift({
                 id: Date.now(),
-                title: title,
-                url: url,
-                encoded: encoded,
+                title: name + ' ' + (ver || ''),
                 finalLink: finalLink,
-                category: category,
-                description: desc,
                 created: new Date().toLocaleString('pt-BR'),
-                clicks: 0,
-                active: true
-            };
-            addLink(linkData);
+                clicks: 0
+            });
+            saveLandings(landings);
 
-            // Mostrar resultado
+            // Mostra resultado
             document.getElementById('resultBox').classList.add('show');
             document.getElementById('outputLink').value = finalLink;
 
@@ -409,21 +327,14 @@
         }
 
         function copiarLink() {
-            const copyText = document.getElementById("outputLink");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-
-            try {
-                navigator.clipboard.writeText(copyText.value).then(() => {
-                    showCopied('btnCopy', '✅ COPIADO!');
-                }).catch(() => {
-                    document.execCommand('copy');
-                    showCopied('btnCopy', '✅ COPIADO!');
-                });
-            } catch(e) {
-                document.execCommand('copy');
-                showCopied('btnCopy', '✅ COPIADO!');
-            }
+            const el = document.getElementById('outputLink');
+            el.select();
+            navigator.clipboard.writeText(el.value).then(() => {
+                const btn = document.getElementById('btnCopy');
+                btn.textContent = '✅ COPIADO!';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = '📋 COPIAR'; btn.classList.remove('copied'); }, 2000);
+            });
         }
 
         function abrirLink() {
@@ -434,132 +345,36 @@
         function encurtarLink() {
             const url = document.getElementById('outputLink').value;
             if(!url) return;
-
-            // Abre TinyURL em nova aba com o link preenchido
-            const tinyUrl = `https://tinyurl.com/create.php?source=create&url=${encodeURIComponent(url)}`;
-            window.open(tinyUrl, '_blank');
+            window.open(`https://tinyurl.com/create.php?url=${encodeURIComponent(url)}`, '_blank');
         }
 
-        function showCopied(btnId, text) {
-            const btn = document.getElementById(btnId);
-            const original = btn.textContent;
-            btn.textContent = text;
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.textContent = original;
-                btn.classList.remove('copied');
-            }, 2000);
-        }
-
-        // ========== RENDER LINKS ==========
         function renderLinks() {
-            const links = getLinks();
+            const links = getLandings();
             const container = document.getElementById('linksList');
 
             if(links.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="icon">📭</div>
-                        <div>Nenhum link gerado ainda.</div>
-                        <div style="font-size: 0.85rem; margin-top: 0.5rem;">Vá para "Gerar Link" e crie o primeiro!</div>
-                    </div>
-                `;
+                container.innerHTML = '<div class="empty-state"><div style="font-size:2rem;">📭</div><div>Nenhum link ainda.</div></div>';
                 return;
             }
 
-            let html = '<table class="links-table"><thead><tr>';
-            html += '<th>Título</th><th>Categoria</th><th>Criado</th><th>Cliques</th><th>Ações</th>';
-            html += '</tr></thead><tbody>';
-
+            let html = '<table class="links-table"><thead><tr><th>App</th><th>Criado</th><th>Cliques</th><th>Ações</th></tr></thead><tbody>';
             links.forEach(link => {
-                const catLabels = {
-                    apps: '📱 Apps', jogos: '🎮 Jogos', mod: '🔓 Mod',
-                    windows: '💻 Windows', macos: '🍎 macOS', outro: '📦 Outro'
-                };
                 html += `<tr>
-                    <td>
-                        <div class="link-title">${link.title}</div>
-                        <div class="link-url">${link.finalLink.substring(0, 50)}...</div>
-                    </td>
-                    <td>${catLabels[link.category] || link.category}</td>
+                    <td><strong>${link.title}</strong><br><small style="color:var(--text-muted)">${link.finalLink.substring(0,40)}...</small></td>
                     <td>${link.created}</td>
-                    <td><span class="badge badge-active">${link.clicks || 0}</span></td>
+                    <td>${link.clicks || 0}</td>
                     <td>
-                        <button class="btn-small" onclick="copiarUrl('${link.finalLink}')">📋</button>
+                        <button class="btn-small" onclick="navigator.clipboard.writeText('${link.finalLink}');alert('Copiado!')">📋</button>
                         <button class="btn-small" onclick="window.open('${link.finalLink}','_blank')">🔗</button>
-                        <button class="btn-small danger" onclick="deleteLink(${link.id})">🗑️</button>
                     </td>
                 </tr>`;
             });
-
             html += '</tbody></table>';
             container.innerHTML = html;
         }
 
-        function copiarUrl(url) {
-            navigator.clipboard.writeText(url).then(() => {
-                alert('✅ Link copiado!');
-            });
-        }
-
-        // ========== ENCURTAR EXTERNO ==========
-        function encurtarExterno() {
-            const url = document.getElementById('urlEncurtar').value.trim();
-            const service = document.getElementById('serviceEncurtar').value;
-
-            if(!url) {
-                alert("❌ Insira um link!");
-                return;
-            }
-
-            if(service === 'tinyurl') {
-                fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`)
-                    .then(r => r.text())
-                    .then(short => {
-                        document.getElementById('resultEncurtar').classList.add('show');
-                        document.getElementById('outputEncurtar').value = short;
-                    })
-                    .catch(() => {
-                        // Fallback: abre TinyURL manual
-                        window.open(`https://tinyurl.com/create.php?url=${encodeURIComponent(url)}`, '_blank');
-                    });
-            } else if(service === 'isgd') {
-                fetch(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(url)}`)
-                    .then(r => r.text())
-                    .then(short => {
-                        document.getElementById('resultEncurtar').classList.add('show');
-                        document.getElementById('outputEncurtar').value = short;
-                    })
-                    .catch(() => {
-                        alert('Erro ao encurtar. Tente manualmente.');
-                    });
-            } else {
-                // Custom/manual
-                document.getElementById('resultEncurtar').classList.add('show');
-                document.getElementById('outputEncurtar').value = url;
-            }
-        }
-
-        function copiarEncurtado() {
-            const el = document.getElementById('outputEncurtar');
-            el.select();
-            navigator.clipboard.writeText(el.value).then(() => {
-                showCopied(event.target, '✅ COPIADO!');
-            });
-        }
-
-        // ========== INIT ==========
-        window.addEventListener('load', () => {
-            updateStats();
-
-            // Enter para gerar
-            document.getElementById('urlInput').addEventListener('keypress', (e) => {
-                if(e.key === 'Enter') gerarLink();
-            });
-        });
+        // Init
+        updatePreview();
     </script>
-
-    <!-- MONETAG MULTI TAG REFORÇO -->
-    <script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
 </body>
 </html>
