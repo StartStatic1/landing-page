@@ -8,42 +8,68 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:1rem}
 .container{max-width:600px;margin:0 auto}
-.logo{font-size:1.8rem;font-weight:800;text-align:center;margin-bottom:0.5rem;background:linear-gradient(135deg,#6366f1,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo{font-size:1.8rem;font-weight:800;text-align:center;margin-bottom:0.3rem;background:linear-gradient(135deg,#6366f1,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .subtitle{text-align:center;color:#94a3b8;margin-bottom:2rem;font-size:0.9rem}
-.card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:1.5rem;margin-bottom:1.5rem}
-.card h2{font-size:1.1rem;color:#6366f1;margin-bottom:1rem}
+
+.card{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;color:#6366f1;margin-bottom:1.2rem;display:flex;align-items:center;gap:0.5rem}
+
 .form-group{margin-bottom:1rem}
 .form-group label{display:block;margin-bottom:0.4rem;font-weight:600;font-size:0.9rem}
 .form-group label span{color:#ef4444}
-.form-group input,.form-group textarea{width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:0.9rem;border-radius:10px;font-size:1rem;outline:none}
+.form-group input,.form-group textarea{width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:0.9rem 1rem;border-radius:12px;font-size:1rem;outline:none;transition:border-color 0.3s}
 .form-group input:focus,.form-group textarea:focus{border-color:#6366f1}
-.form-group textarea{min-height:100px;resize:vertical}
+.form-group textarea{min-height:80px;resize:vertical}
 .form-group small{color:#64748b;font-size:0.75rem;margin-top:0.3rem;display:block}
-.btn{width:100%;background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:none;padding:1rem;font-size:1rem;font-weight:700;border-radius:10px;cursor:pointer;transition:all 0.3s}
-.btn:hover{transform:translateY(-2px)}
-.btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
-.result{display:none;margin-top:1rem;padding:1rem;background:#0f172a;border:2px solid #10b981;border-radius:10px}
-.result.show{display:block}
-.result textarea{width:100%;background:#020617;border:1px solid #334155;color:#10b981;padding:0.8rem;border-radius:8px;font-family:monospace;font-size:0.8rem;word-break:break-all;resize:none;outline:none}
-.btns{display:flex;gap:0.5rem;margin-top:0.8rem}
-.btns button{flex:1;background:#334155;color:#e2e8f0;border:1px solid #475569;padding:0.6rem;border-radius:8px;cursor:pointer;font-weight:600}
-.btns button:hover{background:#475569}
-.toast{position:fixed;bottom:1rem;right:1rem;background:#1e293b;border:1px solid #334155;border-radius:10px;padding:0.8rem 1.2rem;display:none;z-index:10000;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
-.toast.show{display:block}
 
-/* HISTÓRICO */
-.history-card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:1.5rem;margin-bottom:1.5rem}
+.form-row{display:flex;gap:0.8rem}
+.form-row .form-group{flex:1}
+
+.btn{width:100%;background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:none;padding:1.1rem;font-size:1.1rem;font-weight:700;border-radius:14px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:0.5rem}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,0.4)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+
+.result{display:none;margin-top:1.2rem;padding:1.2rem;background:#0f172a;border:2px solid #10b981;border-radius:14px}
+.result.show{display:block;animation:fadeIn 0.3s ease}
+.result-title{color:#10b981;font-size:0.9rem;font-weight:600;margin-bottom:0.5rem}
+.result textarea{width:100%;background:#020617;border:1px solid #334155;color:#10b981;padding:0.8rem;border-radius:10px;font-family:monospace;font-size:0.85rem;word-break:break-all;resize:none;outline:none}
+.btns{display:flex;gap:0.5rem;margin-top:0.8rem}
+.btns button{flex:1;background:#334155;color:#e2e8f0;border:1px solid #475569;padding:0.7rem;border-radius:10px;cursor:pointer;font-weight:600;transition:all 0.2s}
+.btns button:hover{background:#475569}
+
+/* Preview */
+.preview-card{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:1.5rem;margin-bottom:1.5rem;display:none}
+.preview-card.show{display:block;animation:fadeIn 0.3s ease}
+.preview-card h3{color:#6366f1;font-size:1rem;margin-bottom:1rem}
+.preview-img{width:100%;border-radius:16px;margin-bottom:1rem;background:#0f172a;object-fit:cover}
+.preview-title{font-size:1.3rem;font-weight:700;margin-bottom:0.5rem}
+.preview-desc{color:#94a3b8;font-size:0.9rem;line-height:1.5}
+.preview-tags{display:flex;gap:0.5rem;margin-top:0.8rem;flex-wrap:wrap}
+.preview-tag{background:#06b6d4;color:#fff;padding:0.3rem 0.8rem;border-radius:20px;font-size:0.8rem;font-weight:600}
+
+/* History */
+.history-card{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:1.5rem;margin-bottom:1.5rem}
 .history-card h2{font-size:1.1rem;color:#6366f1;margin-bottom:1rem}
-.history-item{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:1rem;margin-bottom:0.8rem;display:flex;align-items:center;gap:1rem}
-.history-item img{width:50px;height:50px;border-radius:8px;object-fit:cover;background:#1e293b}
+.history-item{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:1rem;margin-bottom:0.8rem;display:flex;align-items:center;gap:1rem}
 .history-item .info{flex:1;min-width:0}
 .history-item .title{font-weight:600;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .history-item .url{font-size:0.75rem;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:0.2rem}
 .history-item .actions{display:flex;gap:0.3rem}
-.history-item .actions button{background:#334155;border:none;color:#e2e8f0;padding:0.4rem 0.6rem;border-radius:6px;cursor:pointer;font-size:0.75rem}
+.history-item .actions button{background:#334155;border:none;color:#e2e8f0;padding:0.4rem 0.7rem;border-radius:8px;cursor:pointer;font-size:0.75rem;font-weight:600}
 .history-item .actions button:hover{background:#475569}
+
+.toast{position:fixed;bottom:1rem;right:1rem;background:#1e293b;border:1px solid #334155;border-radius:12px;padding:1rem 1.5rem;display:none;z-index:10000;box-shadow:0 10px 30px rgba(0,0,0,0.5);font-weight:600;max-width:90%}
+.toast.show{display:block;animation:slideIn 0.3s ease}
+
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:480px){
+  .form-row{flex-direction:column;gap:0}
+  body{padding:0.8rem}
+}
 </style>
-<base target="_blank">
 </head>
 <body>
 
@@ -52,33 +78,87 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
   <div class="subtitle">Monetize seus links com anúncios</div>
 
   <div class="card">
-    <h2>🔗 Encurtar Link</h2>
+    <h2>🔗 Encurtar App / Link</h2>
 
+    <!-- TITULO -->
     <div class="form-group">
-      <label>Título / Nome <span>*</span></label>
-      <input type="text" id="titulo" placeholder="Ex: Under Boss XC v4.0.4">
+      <label>Título / Nome do App <span>*</span></label>
+      <input type="text" id="titulo" placeholder="Ex: Proton VPN v5.18.46.0 MOD APK">
+    </div>
+
+    <!-- DESCRICAO -->
+    <div class="form-group">
+      <label>Descrição curta <span>*</span></label>
+      <textarea id="descricao" placeholder="Premium Unlocked, sem anúncios, funcionalidades liberadas..."></textarea>
+    </div>
+
+    <!-- TAGS -->
+    <div class="form-row">
+      <div class="form-group" style="flex:1">
+        <label>Tag 1</label>
+        <input type="text" id="tag1" placeholder="Ex: VPN Proxy">
+      </div>
+      <div class="form-group" style="flex:1">
+        <label>Tag 2</label>
+        <input type="text" id="tag2" placeholder="Ex: Tools">
+      </div>
+    </div>
+
+    <!-- LINK DESTINO -->
+    <div class="form-group">
+      <label>Link de download direto <span>*</span></label>
+      <input type="text" id="linkDestino" placeholder="https://github.com/.../releases/download/.../app.apk">
+      <small>Link direto do arquivo APK</small>
+    </div>
+
+    <!-- INFO DO APP -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Versão</label>
+        <input type="text" id="versao" placeholder="5.18.46.0">
+      </div>
+      <div class="form-group">
+        <label>Tamanho</label>
+        <input type="text" id="tamanho" placeholder="53 MB">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Requirements</label>
+        <input type="text" id="requirements" placeholder="Android 5.0+">
+      </div>
+      <div class="form-group">
+        <label>Downloads</label>
+        <input type="text" id="downloads" placeholder="5,000,000+">
+      </div>
     </div>
 
     <div class="form-group">
-      <label>Descrição <span>*</span></label>
-      <textarea id="descricao" placeholder="Descrição do conteúdo..."></textarea>
+      <label>Developer</label>
+      <input type="text" id="developer" placeholder="Ex: Proton AG">
     </div>
 
     <div class="form-group">
-      <label>Link de destino <span>*</span></label>
-      <input type="text" id="linkDestino" placeholder="https://github.com/.../download/app.apk">
-      <small>Link direto de download (GitHub, Drive, etc)</small>
+      <label>Link Telegram (opcional)</label>
+      <input type="text" id="linkTelegram" placeholder="https://t.me/seu_canal">
     </div>
 
+    <!-- IMAGEM -->
     <div class="form-group">
-      <label>Imagem (opcional)</label>
-      <input type="file" id="imagem" accept="image/*" style="padding:0.5rem">
+      <label>Imagem do App <span>*</span></label>
+      <input type="file" id="imagem" accept="image/*" style="padding:0.6rem">
+      <small>Imagem grande será adaptada automaticamente (max 5MB)</small>
     </div>
 
-    <button class="btn" id="btnGerar" onclick="gerarLink()" type="button">🔐 GERAR LINK</button>
+    <!-- BOTAO -->
+    <button class="btn" id="btnGerar" onclick="gerarLink()" type="button">
+      <span id="btnIcon">🔐</span> <span id="btnText">GERAR LINK</span>
+    </button>
 
+    <!-- RESULTADO -->
     <div class="result" id="resultBox">
-      <div style="font-size:0.85rem;color:#94a3b8;margin-bottom:0.5rem">✅ Link gerado!</div>
+      <div class="result-title">✅ Link gerado com sucesso!</div>
       <textarea id="linkGerado" readonly rows="2"></textarea>
       <div class="btns">
         <button onclick="copiarLink()">📋 Copiar</button>
@@ -87,7 +167,16 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
     </div>
   </div>
 
-  <!-- HISTÓRICO -->
+  <!-- PREVIEW -->
+  <div class="preview-card" id="previewCard">
+    <h3>👁️ Preview da Página de Destino</h3>
+    <img id="previewImg" class="preview-img" src="" alt="Preview" style="display:none">
+    <div class="preview-title" id="previewTitle"></div>
+    <div class="preview-desc" id="previewDesc"></div>
+    <div class="preview-tags" id="previewTags"></div>
+  </div>
+
+  <!-- HISTORICO -->
   <div class="history-card" id="historyCard" style="display:none">
     <h2>📜 Histórico</h2>
     <div id="historyList"></div>
@@ -97,173 +186,232 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== VARIÁVEIS GLOBAIS =====
-var DB_KEY='encurtador_v1';
-var SESS_PREFIX='enc_';
-var imgBase64=null;
+// ===== VARIAVEIS =====
+var DB_KEY = 'encurtador_v2';
+var SESS_PREFIX = 'enc_';
+var imgBase64 = null;
 
-// ===== FUNÇÃO PRINCIPAL: GERAR LINK =====
-function gerarLink(){
-  var titulo=document.getElementById('titulo').value.trim();
-  var descricao=document.getElementById('descricao').value.trim();
-  var linkDestino=document.getElementById('linkDestino').value.trim();
+// ===== GERAR LINK =====
+function gerarLink() {
+  console.log('=== GERAR LINK CHAMADO ===');
 
-  if(!titulo){mostrarToast('❌ Digite o título!');return;}
-  if(!descricao){mostrarToast('❌ Digite a descrição!');return;}
-  if(!linkDestino){mostrarToast('❌ Cole o link de destino!');return;}
-  if(linkDestino.indexOf('http')!==0){mostrarToast('❌ Link deve começar com http://');return;}
+  var titulo = document.getElementById('titulo').value.trim();
+  var descricao = document.getElementById('descricao').value.trim();
+  var linkDestino = document.getElementById('linkDestino').value.trim();
 
-  var btn=document.getElementById('btnGerar');
-  btn.disabled=true;
-  btn.textContent='⏳ Gerando...';
+  console.log('Titulo:', titulo);
+  console.log('Descricao:', descricao);
+  console.log('Link:', linkDestino);
+  console.log('Tem imagem:', !!imgBase64);
 
-  setTimeout(function(){
-    try{
-      var id='lnk'+Date.now().toString(36);
-      var dados={t:titulo,d:descricao,u:linkDestino};
-      if(imgBase64)dados.i=imgBase64;
+  // VALIDACAO
+  if(!titulo) { mostrarToast('❌ Digite o título!'); return; }
+  if(!descricao) { mostrarToast('❌ Digite a descrição!'); return; }
+  if(!linkDestino) { mostrarToast('❌ Cole o link de download!'); return; }
+  if(linkDestino.indexOf('http') !== 0) { mostrarToast('❌ Link deve começar com http:// ou https://'); return; }
+  if(!imgBase64) { mostrarToast('❌ Adicione uma imagem!'); return; }
 
-      var json=JSON.stringify(dados);
-      sessionStorage.setItem(SESS_PREFIX+id,json);
-      try{localStorage.setItem(SESS_PREFIX+id,json);}catch(e){}
+  var btn = document.getElementById('btnGerar');
+  var btnIcon = document.getElementById('btnIcon');
+  var btnText = document.getElementById('btnText');
 
-      var base=window.location.href;
-      base=base.replace('encurtador.html','index.html');
-      base=base.split('?')[0];
-      var linkFinal=base+'?id='+id;
+  btn.disabled = true;
+  btnIcon.textContent = '⏳';
+  btnText.textContent = 'Gerando...';
 
-      // Salvar no histórico
-      var historico=[];
-      try{historico=JSON.parse(localStorage.getItem(DB_KEY))||[];}catch(e){}
-      historico.unshift({id:id,titulo:titulo,url:linkFinal,destino:linkDestino,data:new Date().toLocaleString('pt-BR'),temImg:!!imgBase64});
-      try{localStorage.setItem(DB_KEY,JSON.stringify(historico));}catch(e){}
+  setTimeout(function() {
+    try {
+      var id = 'lnk' + Date.now().toString(36) + Math.random().toString(36).substr(2, 4);
 
-      document.getElementById('linkGerado').value=linkFinal;
+      var dados = {
+        t: titulo,
+        d: descricao,
+        u: linkDestino,
+        i: imgBase64,
+        tg1: document.getElementById('tag1').value.trim(),
+        tg2: document.getElementById('tag2').value.trim(),
+        v: document.getElementById('versao').value.trim(),
+        s: document.getElementById('tamanho').value.trim(),
+        r: document.getElementById('requirements').value.trim(),
+        dl: document.getElementById('downloads').value.trim(),
+        dev: document.getElementById('developer').value.trim(),
+        tel: document.getElementById('linkTelegram').value.trim()
+      };
+
+      console.log('Dados completos:', dados);
+
+      var json = JSON.stringify(dados);
+      sessionStorage.setItem(SESS_PREFIX + id, json);
+      try { localStorage.setItem(SESS_PREFIX + id, json); } catch(e) { console.log('localStorage cheio'); }
+
+      var base = window.location.href;
+      base = base.replace('encurtador.html', 'index.html');
+      base = base.split('?')[0];
+      var linkFinal = base + '?id=' + id;
+
+      var historico = [];
+      try { historico = JSON.parse(localStorage.getItem(DB_KEY)) || []; } catch(e) {}
+      historico.unshift({
+        id: id,
+        titulo: titulo,
+        url: linkFinal,
+        destino: linkDestino,
+        data: new Date().toLocaleString('pt-BR'),
+        temImg: !!imgBase64
+      });
+      try { localStorage.setItem(DB_KEY, JSON.stringify(historico)); } catch(e) {}
+
+      document.getElementById('linkGerado').value = linkFinal;
       document.getElementById('resultBox').classList.add('show');
 
-      btn.disabled=false;
-      btn.textContent='🔐 GERAR LINK';
+      btn.disabled = false;
+      btnIcon.textContent = '🔐';
+      btnText.textContent = 'GERAR LINK';
 
       mostrarToast('✅ Link gerado com sucesso!');
-      setTimeout(copiarLink,500);
-
-      // Atualizar histórico
+      setTimeout(copiarLink, 600);
       carregarHistorico();
 
-    }catch(erro){
-      mostrarToast('❌ Erro: '+erro.message);
-      btn.disabled=false;
-      btn.textContent='🔐 GERAR LINK';
+      console.log('=== SUCESSO ===', linkFinal);
+
+    } catch(erro) {
+      console.error('ERRO:', erro);
+      mostrarToast('❌ Erro: ' + erro.message);
+      btn.disabled = false;
+      btnIcon.textContent = '🔐';
+      btnText.textContent = 'GERAR LINK';
     }
-  },500);
-}
-
-// ===== HISTÓRICO =====
-function carregarHistorico(){
-  var historico=[];
-  try{historico=JSON.parse(localStorage.getItem(DB_KEY))||[];}catch(e){}
-
-  if(historico.length===0){
-    document.getElementById('historyCard').style.display='none';
-    return;
-  }
-
-  document.getElementById('historyCard').style.display='block';
-  var html='';
-
-  historico.slice(0,10).forEach(function(item){
-    html+='<div class="history-item">';
-    if(item.temImg){
-      html+='<img src="'+getImgFromStorage(item.id)+'" alt="">';
-    }else{
-      html+='<div style="width:50px;height:50px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:1.2rem">📱</div>';
-    }
-    html+='<div class="info">';
-    html+='<div class="title">'+escapeHtml(item.titulo)+'</div>';
-    html+='<div class="url">'+escapeHtml(item.url)+'</div>';
-    html+='</div>';
-    html+='<div class="actions">';
-    html+='<button onclick="copiarUrl(''+escapeHtml(item.url)+'')">📋</button>';
-    html+='<button onclick="abrirUrl(''+escapeHtml(item.url)+'')">🔗</button>';
-    html+='</div>';
-    html+='</div>';
-  });
-
-  document.getElementById('historyList').innerHTML=html;
-}
-
-function getImgFromStorage(id){
-  var dados=sessionStorage.getItem(SESS_PREFIX+id)||localStorage.getItem(SESS_PREFIX+id);
-  if(dados){
-    try{
-      var data=JSON.parse(dados);
-      return data.i||'';
-    }catch(e){}
-  }
-  return '';
-}
-
-function escapeHtml(text){
-  var div=document.createElement('div');
-  div.textContent=text;
-  return div.innerHTML;
-}
-
-function copiarUrl(url){
-  if(navigator.clipboard&&window.isSecureContext){
-    navigator.clipboard.writeText(url).then(function(){mostrarToast('📋 Copiado!');}).catch(function(){fallbackCopy(url);});
-  }else{fallbackCopy(url);}
-}
-
-function abrirUrl(url){
-  window.open(url,'_blank');
+  }, 500);
 }
 
 // ===== IMAGEM =====
-document.getElementById('imagem').addEventListener('change',function(e){
-  var file=e.target.files[0];
-  if(!file)return;
-  if(file.size>5*1024*1024){mostrarToast('❌ Imagem muito grande! Max 5MB');return;}
-  var reader=new FileReader();
-  reader.onload=function(e){imgBase64=e.target.result;mostrarToast('✅ Imagem carregada');};
+document.getElementById('imagem').addEventListener('change', function(e) {
+  var file = e.target.files[0];
+  if(!file) return;
+  if(file.size > 5 * 1024 * 1024) { mostrarToast('❌ Imagem muito grande! Max 5MB'); return; }
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    imgBase64 = e.target.result;
+    mostrarToast('✅ Imagem carregada!');
+
+    var previewImg = document.getElementById('previewImg');
+    previewImg.src = imgBase64;
+    previewImg.style.display = 'block';
+    document.getElementById('previewTitle').textContent = document.getElementById('titulo').value || 'Preview';
+    document.getElementById('previewDesc').textContent = document.getElementById('descricao').value || '';
+
+    var tagsHtml = '';
+    var t1 = document.getElementById('tag1').value.trim();
+    var t2 = document.getElementById('tag2').value.trim();
+    if(t1) tagsHtml += '<span class="preview-tag">' + escapeHtml(t1) + '</span>';
+    if(t2) tagsHtml += '<span class="preview-tag">' + escapeHtml(t2) + '</span>';
+    document.getElementById('previewTags').innerHTML = tagsHtml;
+
+    document.getElementById('previewCard').classList.add('show');
+  };
+  reader.onerror = function() {
+    mostrarToast('❌ Erro ao ler imagem');
+  };
   reader.readAsDataURL(file);
 });
 
 // ===== COPIAR =====
-function copiarLink(){
-  var el=document.getElementById('linkGerado');
-  var txt=el.value;
-  if(!txt)return;
+function copiarLink() {
+  var el = document.getElementById('linkGerado');
+  var txt = el.value;
+  if(!txt) return;
 
-  if(navigator.clipboard&&window.isSecureContext){
-    navigator.clipboard.writeText(txt).then(function(){mostrarToast('📋 Copiado!');}).catch(function(){fallbackCopy(txt);});
-  }else{fallbackCopy(txt);}
+  if(navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(txt).then(function() {
+      mostrarToast('📋 Link copiado!');
+    }).catch(function() {
+      fallbackCopy(txt);
+    });
+  } else {
+    fallbackCopy(txt);
+  }
 }
-function fallbackCopy(txt){
-  var ta=document.createElement('textarea');
-  ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;';
-  document.body.appendChild(ta);ta.focus();ta.select();
-  try{document.execCommand('copy');mostrarToast('📋 Copiado!');}catch(e){mostrarToast('❌ Falha ao copiar');}
+
+function fallbackCopy(txt) {
+  var ta = document.createElement('textarea');
+  ta.value = txt;
+  ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
+    mostrarToast('📋 Link copiado!');
+  } catch(e) {
+    mostrarToast('❌ Falha ao copiar');
+  }
   document.body.removeChild(ta);
 }
 
 // ===== ABRIR =====
-function abrirLink(){
-  var url=document.getElementById('linkGerado').value;
-  if(url)window.open(url,'_blank');
+function abrirLink() {
+  var url = document.getElementById('linkGerado').value;
+  if(url) window.open(url, '_blank');
 }
 
 // ===== TOAST =====
-function mostrarToast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg;
+function mostrarToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
   t.classList.add('show');
-  setTimeout(function(){t.classList.remove('show');},2500);
+  setTimeout(function() { t.classList.remove('show'); }, 2500);
+}
+
+// ===== HISTORICO =====
+function carregarHistorico() {
+  var historico = [];
+  try { historico = JSON.parse(localStorage.getItem(DB_KEY)) || []; } catch(e) {}
+
+  if(historico.length === 0) {
+    document.getElementById('historyCard').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('historyCard').style.display = 'block';
+  var html = '';
+
+  historico.slice(0, 10).forEach(function(item) {
+    html += '<div class="history-item">';
+    html += '<div style="width:45px;height:45px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0">📱</div>';
+    html += '<div class="info">';
+    html += '<div class="title">' + escapeHtml(item.titulo) + '</div>';
+    html += '<div class="url">' + escapeHtml(item.url) + '</div>';
+    html += '</div>';
+    html += '<div class="actions">';
+    html += '<button onclick="copiarUrl('' + escapeHtml(item.url) + '')">📋</button>';
+    html += '<button onclick="abrirUrl('' + escapeHtml(item.url) + '')">🔗</button>';
+    html += '</div>';
+    html += '</div>';
+  });
+
+  document.getElementById('historyList').innerHTML = html;
+}
+
+function escapeHtml(text) {
+  var div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function copiarUrl(url) {
+  if(navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(url).then(function() { mostrarToast('📋 Copiado!'); });
+  } else { fallbackCopy(url); }
+}
+
+function abrirUrl(url) {
+  window.open(url, '_blank');
 }
 
 // ===== INIT =====
 carregarHistorico();
-console.log('Encurtador Pro Painel carregado');
+console.log('Encurtador Pro Painel v2.1 carregado - Pronto para uso');
 </script>
 
 </body>
