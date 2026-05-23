@@ -6,26 +6,13 @@
     <title>TechZone — Download Premium</title>
     <meta name="description" content="Download seguro e verificado de apps, jogos e mods premium.">
 
-    <!-- Open Graph dinâmico -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="TechZone">
     <meta id="ogTitle" property="og:title" content="TechZone — Download Premium">
-    <meta id="ogDesc" property="og:description" content="Download seguro e verificado.">
-    <meta id="ogImage" property="og:image" content="https://cdn-icons-png.flaticon.com/512/2965/2965306.png">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta id="ogImage" content="https://cdn-icons-png.flaticon.com/512/2965/2965306.png">
 
-    <!-- Schema.org -->
-    <script type="application/ld+json" id="schemaJson">{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "TechZone Download",
-        "applicationCategory": "UtilitiesApplication",
-        "operatingSystem": "Android, iOS, Windows, macOS",
-        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "BRL"},
-        "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.9", "ratingCount": "2400"}
-    }</script>
-
-    <!-- MONETAG MULTI TAG (HEAD) -->
+    <!-- MONETAG MULTI TAG (Pop-unders e Flutuantes) -->
     <script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
 
     <style>
@@ -34,7 +21,6 @@
             --accent: #f59e0b; --dark: #0f172a; --darker: #020617;
             --card: #1e293b; --text: #e2e8f0; --text-muted: #94a3b8;
             --border: #334155; --success: #10b981; --danger: #ef4444;
-            --telegram: #0088cc; --glass: rgba(30, 41, 59, 0.6);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -61,195 +47,91 @@
             display: flex; align-items: center; gap: 0.5rem;
         }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.3s; font-size: 0.9rem; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.9rem; }
         .nav-links a:hover { color: var(--primary); }
         .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
 
-        /* CONTAINER */
         .container {
             max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
             display: grid; grid-template-columns: 1fr 320px; gap: 2rem;
             width: 100%;
-            overflow: hidden;
         }
 
-        /* ========== AD SLOTS OTIMIZADOS (INVISÍVEIS PARA REALISMO) ========== */
-        .ad-slot {
-            display: flex; align-items: center; justify-content: center;
-            position: relative; overflow: hidden; width: 100%;
-            background: transparent; /* Removido o fundo e borda falsa */
+        /* WRAPPER DE ADS INVISÍVEL ATÉ CARREGAR */
+        .ad-wrapper {
+            display: flex; justify-content: center; align-items: center;
+            width: 100%; margin: 1.5rem 0; overflow: hidden;
+            background: transparent; border: none; min-height: 0;
         }
-        .ad-header { width: 100%; min-height: 90px; margin: 0 auto 1rem; max-width: 1200px; }
-        .ad-inline { position: relative; min-height: 90px; margin: 1.5rem 0; }
-        .ad-between { min-height: 120px; position: relative; margin: 2rem 0; }
-        .ad-sidebar { min-height: 250px; position: relative; margin-bottom: 1.5rem; }
-        .ad-sticky-footer {
-            position: fixed; bottom: 0; left: 0; right: 0; 
-            min-height: 60px; z-index: 999; display: none;
-        }
-        .ad-native { min-height: 200px; margin: 2rem 0; }
-        .ad-before-download { min-height: 100px; margin: 1.5rem 0; }
-        .ad-after-download { min-height: 100px; margin: 2rem 0; }
 
-        /* ARTICLE */
-        .article-header { margin-bottom: 2rem; animation: fadeIn 0.6s ease; word-wrap: break-word; }
+        /* ARTICLE & VIDEO */
+        .article-header { margin-bottom: 2rem; word-wrap: break-word; }
         .breadcrumb { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
         .breadcrumb a { color: var(--primary); text-decoration: none; }
         .article-title {
             font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 1rem;
             background: linear-gradient(135deg, #fff, var(--text-muted));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-            word-wrap: break-word;
         }
-        .article-meta { display: flex; gap: 1rem; color: var(--text-muted); font-size: 0.9rem; flex-wrap: wrap; align-items: center; }
-        .meta-item { display: flex; align-items: center; gap: 0.4rem; }
-        .author-avatar {
-            width: 40px; height: 40px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 0.9rem;
-        }
-        .verified-badge {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white; font-size: 0.65rem; padding: 0.15rem 0.5rem;
-            border-radius: 50px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
-        }
-
-        /* VIDEO */
+        
         .video-section {
             width: 100%; margin-bottom: 2rem; border-radius: 16px;
             overflow: hidden; border: 1px solid var(--border); background: var(--card);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            max-width: 100%;
         }
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; width: 100%; }
         .video-placeholder {
             position: absolute; inset: 0; background: linear-gradient(135deg, var(--card), var(--dark));
             display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem;
-            cursor: pointer; transition: all 0.3s;
+            cursor: pointer; z-index: 2;
         }
-        .video-placeholder:hover { background: linear-gradient(135deg, #1e293b, #0f172a); }
         .play-btn {
-            width: 80px; height: 80px; border-radius: 50%;
+            width: 70px; height: 70px; border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; box-shadow: 0 0 30px rgba(99,102,241,0.5);
-            animation: pulse-btn 2s infinite; transition: transform 0.3s;
+            font-size: 1.8rem; box-shadow: 0 0 30px rgba(99,102,241,0.5);
+            animation: pulse-btn 2s infinite;
         }
-        .video-placeholder:hover .play-btn { transform: scale(1.1); }
-        @keyframes pulse-btn {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(99,102,241,0.5); }
-            50% { transform: scale(1.08); box-shadow: 0 0 50px rgba(99,102,241,0.8); }
-        }
+        @keyframes pulse-btn { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
-        /* CONTENT */
-        .article-content { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 2rem; animation: fadeIn 0.8s ease; width: 100%; overflow-wrap: break-word;}
-        .article-content p { margin-bottom: 1.5rem; line-height: 1.8; }
+        .article-content { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 2rem; width: 100%; overflow-wrap: break-word;}
         .article-content h2 { color: var(--text); font-size: 1.5rem; margin: 2.5rem 0 1rem; font-weight: 800; }
-        .article-content h3 { color: var(--text); font-size: 1.2rem; margin: 1.8rem 0 0.8rem; font-weight: 700; }
-        .highlight-box {
-            background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(6,182,212,0.08));
-            border-left: 4px solid var(--primary); padding: 1.5rem;
-            border-radius: 0 14px 14px 0; margin: 2rem 0;
-        }
-        .stats-bar {
-            display: flex; justify-content: space-around; background: var(--dark);
-            border-radius: 14px; padding: 1.2rem; margin: 1.5rem 0; border: 1px solid var(--border);
-            flex-wrap: wrap; gap: 1rem; width: 100%;
-        }
-        .stat-item { text-align: center; flex: 1; min-width: 80px; }
-        .stat-num { font-size: 1.4rem; font-weight: 800; color: var(--primary); }
-        .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* DOWNLOAD */
+        /* DOWNLOAD SECTION */
         .download-section {
             background: linear-gradient(135deg, var(--card), rgba(99,102,241,0.05));
             border: 1px solid var(--border); border-radius: 24px;
-            padding: 3rem 1.5rem; margin: 2rem 0; text-align: center;
-            position: relative; overflow: hidden; animation: fadeIn 1s ease;
-            width: 100%;
+            padding: 2.5rem 1.5rem; margin: 2rem 0; text-align: center; width: 100%;
         }
-        .download-icon { font-size: 4rem; margin-bottom: 1rem; position: relative; z-index: 1; }
-        .download-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; position: relative; z-index: 1; word-wrap: break-word;}
-        .download-subtitle { color: var(--text-muted); margin-bottom: 2rem; position: relative; z-index: 1; font-size: 1rem; }
-        .file-info {
-            display: flex; justify-content: center; gap: 1rem; margin-bottom: 2.5rem;
-            flex-wrap: wrap; position: relative; z-index: 1; width: 100%;
-        }
-        .file-info-item {
-            background: var(--dark); padding: 0.7rem 1.2rem;
-            border-radius: 12px; font-size: 0.85rem; border: 1px solid var(--border);
-            display: flex; align-items: center; gap: 0.5rem; font-weight: 600;
-        }
-
         .btn-download {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white; border: none; padding: 1.2rem 3rem; font-size: 1.1rem;
             font-weight: 800; border-radius: 18px; cursor: pointer; transition: all 0.3s;
-            position: relative; z-index: 1; display: inline-flex; align-items: center;
-            gap: 0.8rem; box-shadow: 0 8px 25px rgba(99,102,241,0.4);
-            text-transform: uppercase; letter-spacing: 1.5px; width: 100%; justify-content: center; max-width: 400px;
+            display: inline-flex; align-items: center; gap: 0.8rem; 
+            box-shadow: 0 8px 25px rgba(99,102,241,0.4); text-transform: uppercase; 
+            width: 100%; max-width: 350px; justify-content: center; margin-bottom: 1rem;
         }
-        .btn-download:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 15px 40px rgba(99,102,241,0.6); }
-        .btn-download:disabled { opacity: 0.7; cursor: not-allowed; transform: none; animation: none; }
-        .btn-download .icon { font-size: 1.5rem; }
+        .btn-download:hover { transform: translateY(-4px); }
 
-        .live-counter {
-            display: inline-flex; align-items: center; gap: 0.6rem;
-            background: var(--dark); padding: 0.6rem 1.2rem;
-            border-radius: 50px; font-size: 0.85rem; color: var(--text-muted);
-            margin-top: 1.2rem; border: 1px solid var(--border); position: relative; z-index: 1;
-        }
-        .live-dot {
-            width: 8px; height: 8px; background: var(--success);
-            border-radius: 50%; animation: blink-dot 1.5s infinite;
-        }
-        @keyframes blink-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        /* SIDEBAR */
-        .sidebar { display: flex; flex-direction: column; gap: 1.5rem; width: 100%; overflow: hidden; }
+        /* SIDEBAR & NEWS */
+        .sidebar { display: flex; flex-direction: column; gap: 1.5rem; width: 100%; }
         .sidebar-widget {
             background: var(--card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 1.5rem; transition: all 0.3s; width: 100%;
+            border-radius: 16px; padding: 1.5rem; width: 100%;
         }
-        .widget-title {
-            font-size: 1.1rem; font-weight: 800; margin-bottom: 1.2rem;
-            color: var(--text); display: flex; align-items: center; gap: 0.5rem;
-        }
-        .trending-item {
-            display: flex; gap: 1rem; padding: 0.9rem 0;
-            border-bottom: 1px solid var(--border); cursor: pointer; transition: all 0.3s;
-        }
-        .trending-item:last-child { border-bottom: none; }
-        .trending-item:hover { color: var(--primary); transform: translateX(6px); }
-        .trending-num { font-size: 1.6rem; font-weight: 800; color: var(--primary); opacity: 0.4; min-width: 30px; }
-        .trending-item div { font-size: 0.9rem; font-weight: 600; word-break: break-word; }
-        .trending-item small { display: block; color: var(--text-muted); font-size: 0.75rem; margin-top: 0.2rem; font-weight: 400; }
-
         .news-api-item {
             display: flex; gap: 0.8rem; padding: 0.8rem 0;
-            border-bottom: 1px solid var(--border); cursor: pointer; transition: all 0.3s; text-decoration: none; color: inherit;
+            border-bottom: 1px solid var(--border); cursor: pointer; text-decoration: none; color: inherit;
         }
         .news-api-item:last-child { border-bottom: none; }
-        .news-api-item:hover { color: var(--primary); }
         .news-api-thumb {
             width: 60px; height: 60px; border-radius: 10px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            object-fit: cover; flex-shrink: 0;
+            background: var(--dark); flex-shrink: 0; display:flex; align-items:center; justify-content:center;
+            font-size: 1.5rem;
         }
-        .news-api-content h4 { font-size: 0.85rem; margin-bottom: 0.2rem; line-height: 1.3; font-weight: 600; }
+        .news-api-content h4 { font-size: 0.85rem; margin-bottom: 0.2rem; line-height: 1.3; font-weight: 600; color: var(--text); }
         .news-api-content small { color: var(--text-muted); font-size: 0.75rem; }
 
-        /* FOOTER */
-        .footer {
-            background: var(--dark); border-top: 1px solid var(--border);
-            padding: 3rem 0; margin-top: 4rem; text-align: center; color: var(--text-muted);
-        }
-        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.3s; }
-        .footer-links a:hover { color: var(--primary); }
-
-        /* LAYERS */
+        /* LAYERS & FAKE BUTTONS */
         .layer-overlay {
             position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98);
             backdrop-filter: blur(15px); z-index: 9999; display: none;
@@ -259,63 +141,29 @@
         .layer-box {
             background: var(--card); border: 1px solid var(--border);
             border-radius: 24px; padding: 2rem 1.5rem; max-width: 500px;
-            width: 100%; text-align: center; position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6); animation: scaleIn 0.4s ease;
+            width: 100%; text-align: center;
         }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        .layer-badge {
-            display: inline-block; background: linear-gradient(135deg, var(--accent), #d97706);
-            color: var(--dark); padding: 0.4rem 1.2rem; border-radius: 50px;
-            font-size: 0.8rem; font-weight: 800; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .layer-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
-        .layer-desc { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1rem; }
-        .timer-display {
-            font-size: 4rem; font-weight: 900; font-family: 'SF Mono', 'Courier New', monospace;
-            color: var(--accent); margin: 0.5rem 0; letter-spacing: -2px;
-        }
-        .progress-bar {
-            background: var(--dark); border-radius: 50px; height: 12px;
-            margin-bottom: 2rem; overflow: hidden; border: 1px solid var(--border); width: 100%;
-        }
-        .progress-fill {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            height: 100%; width: 0%; border-radius: 50px; transition: width 1s linear;
+        .timer-display { font-size: 4rem; font-weight: 900; color: var(--accent); margin: 0.5rem 0; }
+        
+        .btn-isca {
+            background: linear-gradient(135deg, #475569, #334155);
+            color: white; border: 2px dashed var(--text-muted);
+            padding: 1rem; font-size: 0.9rem; font-weight: 700;
+            border-radius: 14px; cursor: pointer; text-decoration: none;
+            display: block; margin: 1.5rem auto; width: 100%; max-width: 300px;
         }
         .btn-vip {
             background: linear-gradient(135deg, var(--success), #059669);
             color: white; border: none; padding: 1.2rem 2rem;
             font-size: 1.1rem; font-weight: 800; border-radius: 16px;
             cursor: pointer; text-decoration: none; display: none; width: 100%; justify-content: center;
-            box-shadow: 0 6px 0 #047857, 0 0 25px rgba(16,185,129,0.5);
-            transition: all 0.2s; text-transform: uppercase; letter-spacing: 1px;
         }
-        .btn-vip:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(16,185,129,0.7); }
 
-        /* TOAST */
-        .toast {
-            position: fixed; bottom: 2rem; right: 2rem;
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 14px; padding: 1rem 1.5rem; display: none;
-            align-items: center; gap: 0.8rem; z-index: 10000;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            animation: slideIn 0.4s ease; font-weight: 600;
-        }
-        .toast.show { display: flex; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* RESPONSIVE */
         @media (max-width: 900px) {
             .container { grid-template-columns: 1fr; }
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
             .article-title { font-size: 1.8rem; }
-            .btn-download { padding: 1.1rem 1rem; font-size: 1rem; }
-            .layer-box { padding: 2rem 1.2rem; }
-            .timer-display { font-size: 3.5rem; }
-            .file-info { flex-direction: column; align-items: stretch; gap: 0.5rem; }
-            .file-info-item { justify-content: center; }
         }
     </style>
 </head>
@@ -324,199 +172,189 @@
     <header class="header">
         <div class="header-inner">
             <div class="logo"><span style="font-size: 2rem;">⚡</span> TechZone</div>
-            <ul class="nav-links">
-                <li><a href="./">Início</a></li>
-                <li><a href="./">Apps</a></li>
-                <li><a href="./">Jogos</a></li>
-                <li><a href="sobre.html">Sobre</a></li>
-                <li><a href="contato.html">Contato</a></li>
-            </ul>
-            <button class="mobile-menu-btn" onclick="showToast('Menu mobile em desenvolvimento', 'warning')">☰</button>
+            <button class="mobile-menu-btn">☰</button>
         </div>
     </header>
 
-    <!-- AD SLOT 1: HEADER BANNER -->
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
-        <div class="ad-slot ad-header"></div>
-    </div>
-
-    <div class="container">
-        <main style="max-width: 100%; overflow: hidden;">
+    <div class="container" style="margin-top: 1.5rem;">
+        <main>
             <div class="article-header">
                 <div class="breadcrumb">
                     <a href="./">Início</a> / <span id="breadcrumbCat">📱 Apps</span> / <span id="breadcrumbApp">Carregando...</span>
                 </div>
                 <h1 class="article-title" id="pageTitle">Processando Download Seguro...</h1>
-                <div class="article-meta">
-                    <div class="meta-item"><div class="author-avatar">TZ</div></div>
-                    <div class="meta-item"><span class="verified-badge">✓ Verificado</span></div>
-                    <div class="meta-item">📅 <span id="postDate">Hoje</span></div>
-                    <div class="meta-item">👁️ <span id="viewCount">Calculando...</span> views</div>
-                </div>
             </div>
 
-            <!-- AD SLOT 2 -->
-            <div class="ad-slot ad-inline"></div>
+            <!-- ADSTERRA BANNER 468x60 -->
+            <div class="ad-wrapper">
+                <script>
+                  atOptions = {
+                    'key' : '75f5e2ea82f98e9047e2ab92b3a0e0bb',
+                    'format' : 'iframe',
+                    'height' : 60,
+                    'width' : 468,
+                    'params' : {}
+                  };
+                </script>
+                <script src="https://encouragingjawsordinarily.com/75f5e2ea82f98e9047e2ab92b3a0e0bb/invoke.js"></script>
+            </div>
 
-            <!-- VÍDEO CORRIGIDO -->
+            <!-- VÍDEO -->
             <div class="video-section">
                 <div class="video-wrapper">
                     <div class="video-placeholder" id="videoPlaceholder" onclick="loadVideo()">
                         <div class="play-btn">▶</div>
-                        <div style="color: var(--text-muted); font-weight: 500; text-align: center; padding: 0 1rem;">Clique para assistir ao review completo</div>
-                        <div style="color: var(--text-muted); font-size: 0.85rem; text-align: center;" id="videoCaption">Tutorial de Instalação</div>
+                        <div style="color: var(--text-muted); font-weight: 500; text-align: center; margin-top: 1rem;">Clique para assistir à demonstração</div>
                     </div>
                 </div>
             </div>
 
-            <!-- AD SLOT 3 -->
-            <div class="ad-slot ad-between"></div>
-
-            <div class="article-content" id="articleContent">
-                <p id="descMain">
-                    Você está a um passo de realizar o download da versão mais recente. Verificamos nossos arquivos regularmente para garantir que estejam livres de malware e funcionem corretamente em todos os dispositivos compatíveis.
-                </p>
-
-                <div class="highlight-box">
-                    <h3>⚠️ Aviso de Segurança</h3>
-                    <p>Mantenha sempre fontes desconhecidas ativadas apenas durante a instalação deste arquivo e, em seguida, desative para proteger seu sistema.</p>
+            <div class="article-content">
+                <p id="descMain">Verificamos nossos arquivos regularmente para garantir que estejam livres de malware e funcionem perfeitamente.</p>
+                
+                <!-- ADSTERRA BANNER 468x60 -->
+                <div class="ad-wrapper">
+                    <script>
+                      atOptions = {
+                        'key' : '75f5e2ea82f98e9047e2ab92b3a0e0bb',
+                        'format' : 'iframe',
+                        'height' : 60,
+                        'width' : 468,
+                        'params' : {}
+                      };
+                    </script>
+                    <script src="https://encouragingjawsordinarily.com/75f5e2ea82f98e9047e2ab92b3a0e0bb/invoke.js"></script>
                 </div>
-
-                <!-- AD SLOT 4: NATIVE -->
-                <div class="ad-slot ad-native"></div>
-
-                <h2>🚀 Características Principais</h2>
-                <p id="featuresList">
-                    • <strong>Premium desbloqueado</strong><br>
-                    • <strong>Sem anúncios invasivos</strong><br>
-                    • <strong>Recursos PRO liberados</strong><br>
-                    • <strong>Instalação rápida</strong>
-                </p>
-
-                <h2>🛠️ Guia Rápido</h2>
-                <p id="installGuide">Faça o download do arquivo. Se for um aplicativo, basta tocar em "Instalar". Certifique-se de ter espaço suficiente no dispositivo.</p>
-
-                <!-- AD SLOT 5: ANTES DO DOWNLOAD -->
-                <div class="ad-slot ad-before-download"></div>
             </div>
 
-            <div class="download-section" id="downloadSection">
-                <div class="download-icon" id="dlIcon">📦</div>
-                <div class="download-title" id="dlTitle">Arquivo Protegido</div>
-                <div class="download-subtitle" id="dlSubtitle">Clique no botão abaixo para iniciar de forma segura</div>
-                
-                <div class="file-info">
-                    <div class="file-info-item">📱 <span id="dlPlatform">Multiplataforma</span></div>
-                    <div class="file-info-item">📦 <span id="dlSize">Otimizado</span></div>
-                    <div class="file-info-item">✅ Verificado (72 Engines)</div>
-                </div>
+            <div class="download-section">
+                <div style="font-size: 3rem; margin-bottom: 1rem;" id="dlIcon">📦</div>
+                <h2 style="margin-bottom: 1.5rem;" id="dlTitle">Arquivo Protegido</h2>
 
-                <!-- BOTÃO SIMPLIFICADO -->
+                <!-- BOTÃO PRINCIPAL COM REDIRECIONAMENTO AGRESSIVO -->
                 <button class="btn-download" id="btnDownload" onclick="startDownload()">
                     <span class="icon">⬇️</span>
                     <span id="btnText">DOWNLOAD</span>
                 </button>
-
-                <div class="live-counter">
-                    <div class="live-dot"></div>
-                    <span><span id="liveCounter">--</span> pessoas baixando agora</span>
-                </div>
+                
+                <p style="color: var(--text-muted); font-size: 0.85rem;">🔒 Conexão SSL Segura • Scan 72 Engines</p>
             </div>
-
-            <!-- AD SLOT 6 -->
-            <div class="ad-slot ad-after-download"></div>
         </main>
 
         <aside class="sidebar">
-            <!-- AD SLOT 7: SIDEBAR TOP -->
-            <div class="ad-slot ad-sidebar"></div>
-
-            <!-- INTEGRAÇÃO API DE NOTÍCIAS REAL -->
-            <div class="sidebar-widget">
-                <div class="widget-title">📰 Tech News (Atualizado)</div>
-                <div id="newsContainer">
-                    <div style="text-align:center; padding: 2rem 0; color: var(--text-muted);">
-                        ⏳ Carregando notícias da API...
-                    </div>
-                </div>
+            <!-- ADSTERRA BANNER 320x50 (MOBILE) -->
+            <div class="ad-wrapper">
+                <script>
+                  atOptions = {
+                    'key' : 'e9b65e3582d7f776c07b55b97a846b19',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 320,
+                    'params' : {}
+                  };
+                </script>
+                <script src="https://encouragingjawsordinarily.com/e9b65e3582d7f776c07b55b97a846b19/invoke.js"></script>
             </div>
 
-            <!-- AD SLOT 8: SIDEBAR BOTTOM -->
-            <div class="ad-slot ad-sidebar"></div>
+            <div class="sidebar-widget">
+                <h3 style="margin-bottom: 1rem; color: var(--text);">📰 Notícias Tech</h3>
+                <div id="newsContainer">
+                    <div style="text-align:center; color: var(--text-muted);">Carregando feed...</div>
+                </div>
+            </div>
         </aside>
     </div>
 
-    <!-- LAYER 2: TIMER -->
+    <!-- LAYER 2: TIMER E BOTÕES ISCA -->
     <div class="layer-overlay" id="layer2">
         <div class="layer-box">
-            <div class="layer-badge">⏱️ SISTEMA ANTI-BOT</div>
-            <h2 class="layer-title">Analisando Tráfego...</h2>
-            <p class="layer-desc">Aguarde a liberação do seu link direto.</p>
+            <h2 class="layer-title">Aguarde a Liberação</h2>
+            <p class="layer-desc">Estamos processando seu link seguro.</p>
 
-            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
             <div class="timer-display" id="timerDisplay">15</div>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;" id="timerLabel">segundos restantes</p>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;" id="timerLabel">segundos</p>
 
-            <!-- Ad Invisível dentro do timer -->
-            <div class="ad-slot" style="min-height: 90px; margin: 1rem 0;"></div>
+            <!-- ADSTERRA BANNER 320x50 (DENTRO DO TIMER) -->
+            <div class="ad-wrapper" style="margin: 0.5rem 0;">
+                <script>
+                  atOptions = {
+                    'key' : 'e9b65e3582d7f776c07b55b97a846b19',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 320,
+                    'params' : {}
+                  };
+                </script>
+                <script src="https://encouragingjawsordinarily.com/e9b65e3582d7f776c07b55b97a846b19/invoke.js"></script>
+            </div>
 
+            <!-- BOTÃO ISCA (DIRECT LINK) -->
+            <a href="https://omg10.com/4/11044679" target="_blank" class="btn-isca" id="btnIsca">
+                🚀 ACELERAR DOWNLOAD (SERVIDOR 2)
+            </a>
+
+            <!-- BOTÃO REAL SÓ APARECE NO FIM -->
             <a href="#" id="btnVip" class="btn-vip" onclick="goToFinal()">CONCLUIR DOWNLOAD</a>
         </div>
     </div>
 
-    <!-- TOAST -->
-    <div class="toast" id="toast">
-        <div style="font-size: 1.3rem;">✅</div>
-        <div id="toastText">Operação realizada!</div>
-    </div>
-
     <script>
-        // ========== DECODE DADOS ==========
-        let destUrl = null;
+        const DIRECT_LINK = 'https://omg10.com/4/11044679';
+        let destUrl = 'https://t.me/ApkBugado'; 
 
         function loadAppData() {
             const params = new URLSearchParams(window.location.search);
             const b64 = params.get('d');
-            if (!b64) return 'https://t.me/techzone_oficial'; // Fallback
-
-            try {
-                const decodedUri = decodeURIComponent(atob(b64));
-                const data = JSON.parse(decodedUri);
-                
-                if (data.n) {
-                    document.getElementById('pageTitle').textContent = data.n + ' ' + (data.v || '');
-                    document.getElementById('dlTitle').textContent = data.n;
-                    document.title = data.n + ' - TechZone Download';
-                    document.getElementById('breadcrumbApp').textContent = data.n;
-                }
-                if (data.s) document.getElementById('dlSize').textContent = data.s;
-                if (data.c) document.getElementById('breadcrumbCat').textContent = data.c;
-                if (data.i) document.getElementById('dlIcon').textContent = data.i;
-                if (data.d) document.getElementById('descMain').textContent = data.d;
-
-                return data.u || 'https://t.me/techzone_oficial';
-            } catch(e) {
-                console.error('Erro de link');
-                return 'https://t.me/techzone_oficial';
+            if (b64) {
+                try {
+                    const data = JSON.parse(decodeURIComponent(atob(b64)));
+                    if (data.n) {
+                        document.getElementById('pageTitle').textContent = data.n;
+                        document.getElementById('dlTitle').textContent = data.n;
+                        document.getElementById('breadcrumbApp').textContent = data.n;
+                    }
+                    if (data.c) document.getElementById('breadcrumbCat').textContent = data.c;
+                    if (data.i) document.getElementById('dlIcon').textContent = data.i;
+                    if (data.u) destUrl = data.u;
+                } catch(e) {}
             }
         }
-        destUrl = loadAppData();
+        loadAppData();
 
-        // ========== INTEGRAÇÃO API GNEWS ==========
-        async function loadRealNews() {
+        const fakeNewsHTML = `
+            <a href="${DIRECT_LINK}" target="_blank" class="news-api-item">
+                <div class="news-api-thumb">🤖</div>
+                <div class="news-api-content">
+                    <h4>IA vaza e surpreende desenvolvedores com novos códigos</h4>
+                    <small>Tech Update • 2h atrás</small>
+                </div>
+            </a>
+            <a href="${DIRECT_LINK}" target="_blank" class="news-api-item">
+                <div class="news-api-thumb">📱</div>
+                <div class="news-api-content">
+                    <h4>Novo sistema mobile quebra recorde de velocidade</h4>
+                    <small>Mobile News • 5h atrás</small>
+                </div>
+            </a>
+            <a href="${DIRECT_LINK}" target="_blank" class="news-api-item">
+                <div class="news-api-thumb">💻</div>
+                <div class="news-api-content">
+                    <h4>Vazamento revela novas placas de vídeo para 2027</h4>
+                    <small>Hardware Zone • 8h atrás</small>
+                </div>
+            </a>
+        `;
+
+        async function loadNews() {
             try {
-                // Sua chave API real fornecida
-                const res = await fetch('https://gnews.io/api/v4/top-headlines?category=technology&lang=pt&max=4&apikey=a2645ca2d41f79592f1bc044036f69bd');
+                const res = await fetch('https://gnews.io/api/v4/top-headlines?category=technology&lang=pt&max=3&apikey=a2645ca2d41f79592f1bc044036f69bd');
                 const data = await res.json();
                 if(data.articles && data.articles.length > 0) {
                     let html = '';
                     data.articles.forEach(art => {
-                        // Trata a imagem de forma segura, oculta se quebrar
                         html += `
-                        <a href="${art.url}" target="_blank" class="news-api-item">
-                            <img src="${art.image || 'https://cdn-icons-png.flaticon.com/512/2965/2965306.png'}" 
-                                 class="news-api-thumb" 
-                                 onerror="this.style.display='none'">
+                        <a href="${DIRECT_LINK}" target="_blank" class="news-api-item">
+                            <div class="news-api-thumb" style="background: url('${art.image}') center/cover;"></div>
                             <div class="news-api-content">
                                 <h4>${art.title}</h4>
                                 <small>${art.source.name}</small>
@@ -527,70 +365,55 @@
                 } else {
                     throw new Error("Sem artigos");
                 }
-            } catch(e) { 
-                console.error('API Error', e);
-                document.getElementById('newsContainer').innerHTML = '<div style="color:var(--text-muted); text-align:center;">Não foi possível carregar as notícias mais recentes.</div>';
+            } catch(e) {
+                document.getElementById('newsContainer').innerHTML = fakeNewsHTML;
             }
         }
-        loadRealNews();
+        loadNews();
 
-        // ========== VÍDEO FIXO ==========
         function loadVideo() {
-            // Insere o iframe com largura e altura perfeitas pro mobile, usando um video de tech sem direitos
+            window.open(DIRECT_LINK, '_blank');
             document.querySelector('.video-wrapper').innerHTML = `
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/J_z-W4nEQAw?autoplay=1" 
-                    title="YouTube video player" frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen style="position:absolute; top:0; left:0;">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/V96lT0Mv2qY?autoplay=1" 
+                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
+                    style="position:absolute; top:0; left:0;">
                 </iframe>`;
         }
 
-        // ========== DOWNLOAD FLOW SIMPLIFICADO ==========
         function startDownload() {
+            window.open(DIRECT_LINK, '_blank');
+            
             const btn = document.getElementById('btnDownload');
             btn.disabled = true;
-            document.getElementById('btnText').textContent = 'AGUARDE...';
+            document.getElementById('btnText').textContent = 'PROCESSANDO...';
             
             setTimeout(() => {
                 document.getElementById('layer2').classList.add('active');
                 startTimer();
-            }, 1000);
+            }, 800);
         }
 
         function startTimer() {
             let tempo = 15;
             const countEl = document.getElementById('timerDisplay');
-            const fillEl = document.getElementById('progressFill');
-            
-            countEl.textContent = tempo;
             
             const timerInterval = setInterval(() => {
                 tempo--;
                 countEl.textContent = tempo;
-                fillEl.style.width = ((15 - tempo) / 15) * 100 + '%';
                 
                 if (tempo <= 0) { 
                     clearInterval(timerInterval); 
                     countEl.style.display = 'none';
                     document.getElementById('timerLabel').style.display = 'none';
-                    document.getElementById('btnVip').style.display = 'flex';
+                    document.getElementById('btnIsca').style.display = 'none'; 
+                    document.getElementById('btnVip').style.display = 'flex';  
                 }
             }, 1000);
         }
 
         function goToFinal() {
-            window.location.href = destUrl; // Redireciona diretamente, sem layers adicionais para evitar bloqueios de popup mobile
+            window.location.href = destUrl;
         }
-
-        // Counters
-        setInterval(() => {
-            const el = document.getElementById('liveCounter');
-            if (el) el.textContent = (847 + Math.floor(Math.random() * 80)).toLocaleString('pt-BR');
-        }, 3000);
-        document.getElementById('viewCount').textContent = (47200 + Math.floor(Math.random() * 200)).toLocaleString('pt-BR') + 'K';
     </script>
-
-    <!-- MONETAG REFORÇO (BODY) -->
-    <script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
 </body>
 </html>
