@@ -2,592 +2,322 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Encurtador Pro</title>
-<script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false" defer></script>
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
-
-/* HEADER */
-.header{background:linear-gradient(135deg,#0f172a,#020617);border-bottom:1px solid #334155;padding:1rem;text-align:center;position:sticky;top:0;z-index:100}
-.logo{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,#6366f1,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-
-/* CONTAINER */
-.container{max-width:800px;margin:0 auto;padding:1rem;padding-bottom:2rem}
-
-/* AD SLOTS */
-.ad-slot{display:none;background:#1e293b;border:1px dashed #334155;border-radius:12px;min-height:90px;margin:1rem 0;align-items:center;justify-content:center;color:#64748b;font-size:0.75rem;position:relative;overflow:hidden}
-.ad-slot::before{content:"AD";position:absolute;top:5px;right:8px;font-size:0.6rem;background:#334155;padding:2px 6px;border-radius:4px}
-
-/* BREADCRUMB */
-.breadcrumb{color:#64748b;font-size:0.85rem;margin-bottom:0.8rem;padding:0 0.5rem}
-.breadcrumb a{color:#64748b;text-decoration:none}
-.breadcrumb a:hover{color:#06b6d4}
-
-/* CONTENT INFO - ESTILO NIGANPRO */
-.content-header{margin-bottom:1rem}
-.content-title{font-size:1.8rem;font-weight:800;line-height:1.3;margin-bottom:0.5rem}
-.content-version{color:#94a3b8;font-size:1.2rem;margin-bottom:1rem}
-
-/* TAGS */
-.tags{display:flex;gap:0.6rem;margin-bottom:1.5rem;flex-wrap:wrap}
-.tag{background:#06b6d4;color:#fff;padding:0.4rem 1rem;border-radius:20px;font-size:0.85rem;font-weight:600}
-
-/* MAIN LAYOUT - 2 COLUNAS NO DESKTOP */
-.main-layout{display:flex;gap:1.5rem;flex-wrap:wrap}
-.main-left{flex:1;min-width:280px;max-width:400px}
-.main-right{flex:2;min-width:280px}
-
-/* APP IMAGE */
-.app-img{width:100%;border-radius:20px;background:#1e293b;overflow:hidden;margin-bottom:1rem}
-.app-img img{width:100%;height:auto;display:block;object-fit:cover}
-
-/* ACTION BUTTONS */
-.action-buttons{display:flex;flex-direction:column;gap:0.8rem}
-.btn-download{width:100%;background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;border:none;padding:1rem;font-size:1rem;font-weight:700;border-radius:14px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.5rem;text-decoration:none;-webkit-tap-highlight-color:transparent}
-.btn-download:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(6,182,212,0.4)}
-.btn-download .icon{font-size:1.2rem}
-.btn-telegram{width:100%;background:#1e293b;color:#06b6d4;border:2px solid #06b6d4;padding:1rem;font-size:1rem;font-weight:700;border-radius:14px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.5rem;text-decoration:none;-webkit-tap-highlight-color:transparent}
-.btn-telegram:hover{background:#06b6d4;color:#fff}
-
-/* INFO CARD - ESTILO NIGANPRO */
-.info-card{background:#1e293b;border-radius:20px;padding:0;overflow:hidden;margin-bottom:1.5rem}
-.info-row{display:flex;align-items:center;justify-content:space-between;padding:0.9rem 1.2rem;border-bottom:1px solid #334155}
-.info-row:last-child{border-bottom:none}
-.info-label{display:flex;align-items:center;gap:0.6rem;color:#94a3b8;font-size:0.9rem;font-weight:600}
-.info-label .icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:1rem}
-.info-value{color:#e2e8f0;font-size:0.9rem;text-align:right;word-break:break-word;max-width:60%}
-.info-value a{color:#06b6d4;text-decoration:none}
-.info-value a:hover{text-decoration:underline}
-
-/* REPORT */
-.report-link{text-align:center;margin:1rem 0}
-.report-link a{color:#64748b;text-decoration:none;font-size:0.85rem;display:inline-flex;align-items:center;gap:0.3rem;transition:color 0.3s}
-.report-link a:hover{color:#ef4444}
-
-/* SOCIAL SHARE */
-.social-share{display:flex;justify-content:center;gap:0.6rem;margin:1.5rem 0}
-.social-btn{width:48px;height:48px;border-radius:50%;background:#1e293b;border:1px solid #334155;color:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;transition:all 0.3s;text-decoration:none}
-.social-btn:hover{background:#334155;transform:translateY(-2px)}
-
-/* GOOGLE PLAY */
-.google-play{display:flex;align-items:center;gap:0.8rem;background:#1e293b;border-radius:12px;padding:0.8rem 1rem;margin:1rem 0}
-.google-play svg{width:30px;height:30px}
-.google-play-text{flex:1}
-.google-play-text .small{font-size:0.75rem;color:#64748b}
-.google-play-text .big{font-size:1rem;color:#94a3b8;font-weight:600}
-
-/* TIMER / VERIFICAÇÃO */
-.timer-box{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:2rem;margin:2rem 0;text-align:center;position:relative;overflow:hidden}
-.timer-box::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(99,102,241,0.1) 0%,transparent 70%);animation:pulse-bg 4s ease-in-out infinite}
-@keyframes pulse-bg{0%,100%{transform:scale(1);opacity:0.5}50%{transform:scale(1.1);opacity:0.8}}
-.timer-label{position:relative;z-index:1;color:#94a3b8;font-size:0.9rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:0.5rem}
-.timer-num{position:relative;z-index:1;font-size:4rem;font-weight:800;color:#f59e0b;font-family:'Courier New',monospace}
-.timer-text{position:relative;z-index:1;color:#64748b;font-size:0.85rem;margin-top:0.5rem}
-.progress-bar{background:#0f172a;border-radius:50px;height:12px;margin:1.5rem 0;overflow:hidden;position:relative;z-index:1}
-.progress-fill{background:linear-gradient(90deg,#6366f1,#06b6d4);height:100%;width:0%;border-radius:50px;transition:width 1s linear}
-
-/* BOTÕES ISCA */
-.btn-isca{position:relative;z-index:1;display:inline-block;background:linear-gradient(135deg,#475569,#334155);color:#fff;border:2px dashed #64748b;padding:1rem 2rem;font-size:1rem;font-weight:700;border-radius:12px;cursor:pointer;text-decoration:none;margin:0.5rem;transition:all 0.3s;-webkit-tap-highlight-color:transparent}
-.btn-isca:hover{border-color:#f59e0b;color:#f59e0b;transform:scale(1.02)}
-.btn-vip{position:relative;z-index:1;display:none;background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;border:none;padding:1.2rem 3rem;font-size:1.2rem;font-weight:800;border-radius:15px;cursor:pointer;text-decoration:none;box-shadow:0 6px 0 #0e7490,0 0 20px rgba(6,182,212,0.6);transition:all 0.2s;text-transform:uppercase;animation:pulse-green 2s infinite;margin-top:1rem}
-@keyframes pulse-green{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
-.btn-vip:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(6,182,212,0.8)}
-.status-text{position:relative;z-index:1;color:#10b981;font-size:0.95rem;margin-top:1rem;min-height:1.5rem}
-
-/* FINAL - ACESSO LIBERADO */
-.final-box{display:none;background:#1e293b;border:2px solid #10b981;border-radius:20px;padding:2rem;margin:2rem 0;text-align:center}
-.final-box.show{display:block;animation:fadeIn 0.5s ease}
-.final-icon{font-size:3rem;margin-bottom:1rem}
-.final-title{color:#10b981;font-size:1.5rem;font-weight:800;margin-bottom:0.5rem}
-.final-desc{color:#94a3b8;margin-bottom:1.5rem}
-
-/* NO DATA */
-.no-data{text-align:center;padding:3rem 1rem}
-.no-data h2{color:#e2e8f0;margin-bottom:1rem}
-.no-data p{color:#64748b;margin-bottom:1.5rem;line-height:1.6}
-.no-data a{color:#6366f1;text-decoration:none;font-weight:600}
-
-/* TOAST */
-.toast{position:fixed;bottom:1rem;right:1rem;background:#1e293b;border:1px solid #334155;border-radius:12px;padding:1rem 1.5rem;display:none;align-items:center;gap:0.5rem;z-index:10000;box-shadow:0 10px 30px rgba(0,0,0,0.5);animation:slideIn 0.3s ease;max-width:90%}
-.toast.show{display:flex}
-
-/* AD OVERLAY */
-.ad-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:9999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
-.ad-overlay.show{display:flex}
-.ad-overlay-content{background:#1e293b;border-radius:16px;padding:1.5rem;max-width:90%;width:320px;text-align:center;border:1px solid #334155}
-.ad-overlay-title{color:#f59e0b;font-size:1.2rem;font-weight:700;margin-bottom:0.5rem}
-.ad-overlay-text{color:#94a3b8;font-size:0.9rem;margin-bottom:1rem}
-.ad-overlay-close{background:#ef4444;color:#fff;border:none;padding:0.6rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600}
-
-/* FOOTER */
-.footer{text-align:center;padding:2rem 1rem;color:#64748b;font-size:0.85rem;border-top:1px solid #334155;margin-top:2rem}
-.footer-brand{font-weight:700;color:#94a3b8;margin-bottom:0.3rem}
-.footer-copy{font-size:0.75rem}
-
-@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
-@media(max-width:768px){
-  .main-layout{flex-direction:column}
-  .main-left{max-width:100%}
-  .timer-num{font-size:3rem}
-  .content-title{font-size:1.4rem}
-  .btn-isca{padding:0.8rem 1.5rem;font-size:0.9rem}
-  .btn-vip{padding:1rem 2rem;font-size:1rem}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
-@media(max-width:480px){
-  .container{padding:0.8rem}
-  .info-value{max-width:50%;font-size:0.8rem}
-  .info-label{font-size:0.8rem}
-  .content-title{font-size:1.2rem}
+
+body{
+  background:#0f172a;
+  color:#fff;
+  font-family:'Segoe UI',sans-serif;
+  min-height:100vh;
 }
+
+.container{
+  max-width:850px;
+  margin:0 auto;
+  padding:1rem;
+}
+
+.card{
+  background:#1e293b;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.card img{
+  width:100%;
+  display:block;
+}
+
+.content{
+  padding:1.5rem;
+}
+
+.title{
+  font-size:2rem;
+  font-weight:800;
+  margin-bottom:.8rem;
+}
+
+.desc{
+  color:#94a3b8;
+  line-height:1.7;
+  margin-bottom:1rem;
+}
+
+.tags{
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+  margin-bottom:1rem;
+}
+
+.tag{
+  background:#06b6d4;
+  padding:.4rem .9rem;
+  border-radius:30px;
+  font-size:.8rem;
+}
+
+.info{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  margin-bottom:2rem;
+}
+
+.info div{
+  background:#0f172a;
+  padding:.7rem 1rem;
+  border-radius:12px;
+}
+
+.timer-box{
+  margin-top:2rem;
+  background:#1e293b;
+  border-radius:20px;
+  padding:2rem;
+  text-align:center;
+}
+
+.timer{
+  font-size:5rem;
+  font-weight:800;
+  color:#f59e0b;
+}
+
+.progress{
+  height:12px;
+  background:#0f172a;
+  border-radius:30px;
+  overflow:hidden;
+  margin:1.5rem 0;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#6366f1,#06b6d4);
+}
+
+.btn{
+  border:none;
+  background:linear-gradient(135deg,#06b6d4,#0891b2);
+  color:#fff;
+  padding:1rem 2rem;
+  border-radius:14px;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.final{
+  display:none;
+}
+
+.no-data{
+  text-align:center;
+  padding:4rem 1rem;
+}
+
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="logo">⚡ Encurtador Pro</div>
-</header>
-
 <div class="container">
 
-  <!-- AD TOP -->
-  <div class="ad-slot" id="adTop"></div>
-
-  <!-- CONTEÚDO -->
-  <div id="conteudoSection" style="display:none">
-
-    <div class="content-header">
-      <div class="breadcrumb"><a href="#">Home</a> / <span id="breadTag">App</span></div>
-      <h1 class="content-title" id="contentTitle">Carregando...</h1>
-      <div class="content-version" id="contentVersion"></div>
-      <div class="tags" id="contentTags"></div>
-    </div>
-
-    <div class="main-layout">
-      <!-- LADO ESQUERDO: IMAGEM + BOTOES -->
-      <div class="main-left">
-        <div class="app-img">
-          <img id="contentImg" src="" alt="App" style="display:none">
-        </div>
-
-        <div class="action-buttons">
-          <button class="btn-download" id="btnDownload" onclick="handleDownload()">
-            <span class="icon">⬇️</span> DOWNLOAD APK
-          </button>
-          <a href="#" class="btn-telegram" id="btnTelegram" target="_blank" style="display:none">
-            <span>✈️</span> TELEGRAM
-          </a>
-        </div>
-
-        <div class="report-link">
-          <a href="#" onclick="reportApp();return false">⚠️ Report</a>
-        </div>
-
-        <!-- GOOGLE PLAY -->
-        <div class="google-play">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z" fill="none"/><path d="M7 3l12 9-5 3.5L7 3z" fill="#EA4335"/><path d="M7 21l12-9-5-3.5L7 21z" fill="#34A853"/><path d="M19 12l-5 3.5V8.5l5 3.5z" fill="#FBBC04"/><path d="M7 3v18l5-9-5-9z" fill="#4285F4"/></svg>
-          <div class="google-play-text">
-            <div class="small">Get it on</div>
-            <div class="big">Google Play</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- LADO DIREITO: INFO CARD -->
-      <div class="main-right">
-        <div class="info-card">
-          <div class="info-row">
-            <div class="info-label"><span class="icon" style="background:#10b98120;color:#10b981">📦</span> Package name</div>
-            <div class="info-value" id="infoPackage">App Mod</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label"><span class="icon" style="background:#06b6d420;color:#06b6d4">🔖</span> Version</div>
-            <div class="info-value" id="infoVersion">-</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label"><span class="icon" style="background:#f59e0b20;color:#f59e0b">💾</span> Size</div>
-            <div class="info-value" id="infoSize">-</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label"><span class="icon" style="background:#8b5cf620;color:#8b5cf6">⚙️</span> Requirements</div>
-            <div class="info-value" id="infoRequirements">-</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label"><span class="icon" style="background:#ec489920;color:#ec4899">⬇️</span> Downloads</div>
-            <div class="info-value" id="infoDownloads">-</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label"><span class="icon" style="background:#6366f120;color:#6366f1">👤</span> Developer</div>
-            <div class="info-value" id="infoDeveloper">-</div>
-          </div>
-        </div>
-
-        <!-- SOCIAL SHARE -->
-        <div class="social-share">
-          <a href="#" class="social-btn" onclick="shareFacebook();return false" title="Facebook">f</a>
-          <a href="#" class="social-btn" onclick="shareTwitter();return false" title="Twitter">𝕏</a>
-          <a href="#" class="social-btn" onclick="sharePinterest();return false" title="Pinterest">📌</a>
-          <a href="#" class="social-btn" onclick="shareTelegram();return false" title="Telegram">✈️</a>
-          <a href="#" class="social-btn" onclick="shareWhatsApp();return false" title="WhatsApp">📱</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- NO DATA -->
-  <div id="noDataSection" style="display:none">
-    <div class="no-data">
-      <h2>🚀 Bem-vindo ao Encurtador Pro</h2>
-      <p>Esta página exibe o conteúdo protegido por anúncios.<br>Use o painel para criar links encurtados.</p>
-      <div style="background:#1e293b;border-radius:16px;padding:1.5rem;text-align:left;max-width:500px;margin:0 auto">
-        <h3 style="color:#6366f1;margin-bottom:1rem;font-size:1rem">📋 Como usar:</h3>
-        <ol style="color:#64748b;padding-left:1.2rem;line-height:2">
-          <li>Acesse o <strong>painel</strong> e preencha os dados</li>
-          <li>Adicione título, descrição, versão, tamanho, etc</li>
-          <li>Coloque o link direto de download e uma imagem</li>
-          <li>Gere o link curto e compartilhe</li>
-          <li>Quem clicar verá anúncios + timer</li>
-          <li>Após o timer, download liberado!</li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
-  <!-- AD MIDDLE -->
-  <div class="ad-slot" id="adMiddle"></div>
-
-  <!-- TIMER / VERIFICAÇÃO -->
-  <div class="timer-box" id="timerBox">
-    <div class="timer-label">⏱️ VERIFICAÇÃO DE SEGURANÇA</div>
-    <div class="timer-num" id="timerNum">15</div>
-    <div class="timer-text">segundos restantes</div>
-
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-
-    <div style="background:#0f172a;border:1px dashed #334155;border-radius:12px;padding:1.5rem;margin:1rem 0;min-height:100px;display:flex;align-items:center;justify-content:center;color:#64748b;position:relative;z-index:1">
-      <!-- Espaço para anúncio -->
-    </div>
-
-    <a href="https://omg10.com/4/11044679" target="_blank" class="btn-isca" id="btnIsca1">🚀 ACELERAR (SERVIDOR 1)</a>
-    <a href="https://omg10.com/4/11047687" target="_blank" class="btn-isca" id="btnIsca2" style="display:none">⚡ ACELERAR (SERVIDOR 2)</a>
-    <a href="https://omg10.com/4/11047689" target="_blank" class="btn-isca" id="btnIsca3" style="display:none">🔥 ACELERAR (SERVIDOR 3)</a>
-
-    <button class="btn-vip" id="btnVip" onclick="liberar()">CONTINUAR</button>
-
-    <div class="status-text" id="statusText"></div>
-  </div>
-
-  <!-- AD BOTTOM -->
-  <div class="ad-slot" id="adBottom"></div>
-
-  <!-- FINAL / DOWNLOAD LIBERADO -->
-  <div class="final-box" id="finalBox">
-    <div class="final-icon">✅</div>
-    <div class="final-title">Acesso Liberado!</div>
-    <div class="final-desc">Seu download está pronto. Clique abaixo para iniciar.</div>
-    <button class="btn-download" onclick="startDownload()" style="max-width:320px;margin:0 auto">
-      <span class="icon">⬇️</span> INICIAR DOWNLOAD
-    </button>
-  </div>
+  <div id="app"></div>
 
 </div>
-
-<!-- AD OVERLAY -->
-<div class="ad-overlay" id="adOverlay">
-  <div class="ad-overlay-content">
-    <div class="ad-overlay-title">⚠️ Anúncio em andamento</div>
-    <div class="ad-overlay-text">Por favor, aguarde enquanto verificamos sua sessão...</div>
-    <button class="ad-overlay-close" onclick="closeAdOverlay()">Fechar Anúncio</button>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-brand">StartStatic Encurtador</div>
-  <div class="footer-copy">© 2026 - Todos os direitos reservados</div>
-</footer>
-
-<div class="toast" id="toast"><span id="toastText">...</span></div>
 
 <script>
-// ===== CONFIG =====
-var SESS_PREFIX='enc_';
-var TEMPO=15;
-var destinoUrl=null;
-var downloadStarted=false;
-var appData=null;
-
-// ===== CARREGAR DADOS =====
-function carregar(){
-  try{
-    var params=new URLSearchParams(location.search);
-    var id=params.get('id');
-
-    if(id){
-      var dados=sessionStorage.getItem(SESS_PREFIX+id)||localStorage.getItem(SESS_PREFIX+id);
-      if(dados){
-        var data=JSON.parse(dados);
-        appData=data;
-        destinoUrl=data.u||null;
-        mostrarConteudo(data);
-        iniciarTimer();
-        return;
-      }
-    }
-
-    // Fallback: dados na URL (base64)
-    var b64=params.get('d');
-    if(b64){
-      try{
-        var json=atob(b64);
-        var data=JSON.parse(json);
-        appData=data;
-        destinoUrl=data.u||null;
-        mostrarConteudo(data);
-        iniciarTimer();
-        return;
-      }catch(e){}
-    }
-
-    // Sem dados
-    $('noDataSection').style.display='block';
-    $('timerBox').style.display='none';
-
-  }catch(e){
-    console.error(e);
-    $('noDataSection').style.display='block';
-    $('timerBox').style.display='none';
-  }
-}
-
-function mostrarConteudo(data){
-  $('conteudoSection').style.display='block';
-
-  // Título
-  if(data.t){
-    $('contentTitle').textContent=data.t;
-    $('infoPackage').textContent=data.t;
-  }
-
-  // Versão
-  if(data.v){
-    $('contentVersion').textContent=data.v;
-    $('infoVersion').textContent=data.v;
-  } else {
-    var versionMatch=data.t?data.t.match(/v?[\d]+\.[\d]+(\.[\d]+)?/i):null;
-    if(versionMatch){
-      $('contentVersion').textContent=versionMatch[0];
-      $('infoVersion').textContent=versionMatch[0];
-    }
-  }
-
-  // Tags
-  var tagsHtml='';
-  if(data.tg1) tagsHtml+='<span class="tag">'+escapeHtml(data.tg1)+'</span>';
-  if(data.tg2) tagsHtml+='<span class="tag">'+escapeHtml(data.tg2)+'</span>';
-  if(!tagsHtml) tagsHtml='<span class="tag">App</span><span class="tag">Mod</span>';
-  $('contentTags').innerHTML=tagsHtml;
-  if(data.tg1) $('breadTag').textContent=data.tg1;
-
-  // Info card
-  if(data.s) $('infoSize').textContent=data.s;
-  if(data.r) $('infoRequirements').textContent=data.r;
-  if(data.dl) $('infoDownloads').textContent=data.dl;
-  if(data.dev) $('infoDeveloper').textContent=data.dev;
-
-  // Imagem
-  if(data.i){
-    var img=$('contentImg');
-    img.src=data.i;
-    img.style.display='block';
-    img.onerror=function(){img.style.display='none'};
-  }
-
-  // Telegram
-  if(data.tel){
-    var btnTel=$('btnTelegram');
-    btnTel.href=data.tel;
-    btnTel.style.display='flex';
-  }
-}
 
 function escapeHtml(text){
-  if(!text) return '';
-  var div=document.createElement('div');
-  div.textContent=text;
+
+  const div = document.createElement('div');
+  div.textContent = text;
+
   return div.innerHTML;
+
 }
 
-// ===== TIMER =====
-var tempoRestante=TEMPO;
-var timerInterval;
-var redirectTimeout;
-var iscaAtual=0;
+function carregar(){
 
-function iniciarTimer(){
-  var num=$('timerNum');
-  var fill=$('progressFill');
-  var status=$('statusText');
+  try{
 
-  rotacionarIsca();
-  var iscaInt=setInterval(rotacionarIsca,5000);
+    const params = new URLSearchParams(location.search);
 
-  timerInterval=setInterval(function(){
-    tempoRestante--;
-    num.textContent=tempoRestante;
-    fill.style.width=((TEMPO-tempoRestante)/TEMPO)*100+'%';
+    const b64 = params.get('d');
 
-    if(tempoRestante>10)status.textContent='Verificando...';
-    else if(tempoRestante>5)status.textContent='Quase lá...';
-    else if(tempoRestante>0)status.textContent='Finalizando...';
+    if(!b64){
 
-    if(tempoRestante<=5)num.style.color='#ef4444';
+      document.getElementById('app').innerHTML = `
+        <div class="no-data">
+          <h1>Sem dados</h1>
+        </div>
+      `;
 
-    if(tempoRestante<=0){
-      clearInterval(timerInterval);
-      clearInterval(iscaInt);
-      finalizar();
+      return;
+
     }
-  },1000);
-}
 
-function rotacionarIsca(){
-  iscaAtual=(iscaAtual%3)+1;
-  for(var i=1;i<=3;i++){
-    $('btnIsca'+i).style.display=(i===iscaAtual)?'inline-block':'none';
-  }
-}
+    const json =
+      decodeURIComponent(
+        escape(
+          atob(b64)
+        )
+      );
 
-function finalizar(){
-  $('timerNum').style.display='none';
-  $('statusText').textContent='✅ Pronto!';
-  $('statusText').style.color='#10b981';
-  $('btnVip').style.display='inline-block';
+    const data = JSON.parse(json);
 
-  for(var i=1;i<=3;i++)$('btnIsca'+i).style.display='none';
+    render(data);
 
-  toast('🎉 Acesso liberado!');
+  }catch(e){
 
-  var seg=3;
-  $('statusText').textContent='Redirecionando em '+seg+'s...';
-  redirectTimeout=setInterval(function(){
-    seg--;
-    if(seg>0){
-      $('statusText').textContent='Redirecionando em '+seg+'s...';
-    }else{
-      clearInterval(redirectTimeout);
-      showFinalBox();
-    }
-  },1000);
-}
+    console.error(e);
 
-function liberar(){
-  if(!destinoUrl){toast('❌ Link inválido');return}
-  if(redirectTimeout)clearInterval(redirectTimeout);
-  showFinalBox();
-}
+    document.getElementById('app').innerHTML = `
+      <div class="no-data">
+        <h1>Erro ao carregar</h1>
+      </div>
+    `;
 
-function showFinalBox(){
-  $('timerBox').style.display='none';
-  $('finalBox').classList.add('show');
-}
-
-// ===== DOWNLOAD =====
-function handleDownload(){
-  if(!destinoUrl){toast('❌ Link inválido');return}
-
-  if($('timerBox').style.display!=='none' && tempoRestante>0){
-    toast('⏳ Aguarde a verificação de segurança!');
-    return;
   }
 
-  startDownload();
 }
 
-function startDownload(){
-  if(!destinoUrl){toast('❌ Link inválido');return}
+function render(data){
 
-  downloadStarted=true;
-  toast('⬇️ Iniciando download...');
+  document.getElementById('app').innerHTML = `
 
-  // Forçar download
-  var a=document.createElement('a');
-  a.href=destinoUrl;
-  a.download='';
-  a.style.display='none';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  <div class="card">
 
-  // Fallback: abrir em nova aba após 1s
-  setTimeout(function(){
-    window.open(destinoUrl,'_blank');
-  },1000);
+    <img src="${data.i}">
+
+    <div class="content">
+
+      <div class="title">
+        ${escapeHtml(data.t)}
+      </div>
+
+      <div class="desc">
+        ${escapeHtml(data.d)}
+      </div>
+
+      <div class="tags">
+
+        ${
+          data.tg1
+          ? `<div class="tag">${escapeHtml(data.tg1)}</div>`
+          : ''
+        }
+
+        ${
+          data.tg2
+          ? `<div class="tag">${escapeHtml(data.tg2)}</div>`
+          : ''
+        }
+
+      </div>
+
+      <div class="info">
+
+        ${
+          data.v
+          ? `<div>📦 ${escapeHtml(data.v)}</div>`
+          : ''
+        }
+
+        ${
+          data.s
+          ? `<div>💾 ${escapeHtml(data.s)}</div>`
+          : ''
+        }
+
+      </div>
+
+      <div class="timer-box" id="timerBox">
+
+        <div style="margin-bottom:1rem;color:#94a3b8">
+          ⏱️ Aguarde a verificação
+        </div>
+
+        <div class="timer" id="timer">
+          15
+        </div>
+
+        <div class="progress">
+          <div class="progress-fill" id="fill"></div>
+        </div>
+
+        <button class="btn final" id="btnFinal">
+          ⬇️ DOWNLOAD
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  `;
+
+  iniciarTimer(data.u);
+
 }
 
-// ===== AD OVERLAY =====
-function showAdOverlay(){
-  $('adOverlay').classList.add('show');
-  setTimeout(closeAdOverlay,5000);
-}
-function closeAdOverlay(){
-  $('adOverlay').classList.remove('show');
-}
+function iniciarTimer(url){
 
-// Interceptar popups
-(function(){
-  var originalOpen=window.open;
-  window.open=function(url,target,features){
-    if(url && (url.includes('quge5') || url.includes('omg10'))){
-      showAdOverlay();
-      return null;
+  let tempo = 15;
+
+  const timer =
+  document.getElementById('timer');
+
+  const fill =
+  document.getElementById('fill');
+
+  const btn =
+  document.getElementById('btnFinal');
+
+  const interval = setInterval(()=>{
+
+    tempo--;
+
+    timer.textContent = tempo;
+
+    fill.style.width =
+    ((15-tempo)/15)*100 + '%';
+
+    if(tempo <= 0){
+
+      clearInterval(interval);
+
+      timer.style.display='none';
+
+      btn.style.display='inline-block';
+
+      btn.onclick = ()=>{
+
+        window.open(url,'_blank');
+
+      };
+
     }
-    return originalOpen.apply(window,arguments);
-  };
-})();
 
-// ===== SOCIAL SHARE =====
-function shareFacebook(){
-  window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank');
-}
-function shareTwitter(){
-  window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&text='+encodeURIComponent($('contentTitle').textContent),'_blank');
-}
-function sharePinterest(){
-  window.open('https://pinterest.com/pin/create/button/?url='+encodeURIComponent(location.href),'_blank');
-}
-function shareTelegram(){
-  window.open('https://t.me/share/url?url='+encodeURIComponent(location.href)+'&text='+encodeURIComponent($('contentTitle').textContent),'_blank');
-}
-function shareWhatsApp(){
-  window.open('https://wa.me/?text='+encodeURIComponent($('contentTitle').textContent+' '+location.href),'_blank');
+  },1000);
+
 }
 
-// ===== REPORT =====
-function reportApp(){
-  toast('⚠️ Report enviado! Obrigado.');
-}
-
-// ===== UTILS =====
-function $(id){return document.getElementById(id)}
-function toast(msg){
-  var t=$('toast');$('toastText').textContent=msg;t.classList.add('show');
-  setTimeout(function(){t.classList.remove('show')},2500)
-}
-
-// ===== INIT =====
 carregar();
 
-window.addEventListener('error',function(e){
-  if(e.message && e.message.includes('quge5')){
-    e.preventDefault();
-  }
-});
-
-console.log('Encurtador Pro v2.0 - Destino carregado');
 </script>
 
 </body>
