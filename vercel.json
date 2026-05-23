@@ -2,11 +2,7 @@
   "version": 2,
   "routes": [
     { "src": "/", "dest": "/index.html" },
-    { "src": "/painel", "dest": "/painel.html" },
-    { "src": "/sobre", "dest": "/sobre.html" },
-    { "src": "/contato", "dest": "/contato.html" },
-    { "src": "/politica", "dest": "/politica.html" },
-    { "src": "/dmca", "dest": "/dmca.html" },
+    { "src": "/painel", "dest": "/encurtador.html" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
