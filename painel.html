@@ -65,7 +65,6 @@
             font-size: 0.8rem;
         }
 
-        /* TABS DE TIPO DE CONTEÚDO */
         .content-type-tabs {
             display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
             background: var(--dark); padding: 0.4rem; border-radius: 10px;
@@ -79,7 +78,6 @@
         }
         .content-type-tab.active { background: var(--primary); color: white; }
 
-        /* UPLOAD DE IMAGEM */
         .upload-tabs {
             display: flex; gap: 0.5rem; margin-bottom: 1rem;
         }
@@ -309,7 +307,9 @@
                     </div>
                     <div class="form-group">
                         <label>Descrição completa <span class="required">*</span></label>
-                        <textarea id="appDesc" placeholder="Digite a descrição completa...&#10;Pode incluir senhas, instruções, links, etc.&#10;Suporta quebras de linha." oninput="updatePreview()"></textarea>
+                        <textarea id="appDesc" placeholder="Digite a descrição completa...
+Pode incluir senhas, instruções, links, etc.
+Suporta quebras de linha." oninput="updatePreview()"></textarea>
                         <small>Esta descrição aparecerá exatamente como digitada na landing page.</small>
                     </div>
                 </div>
@@ -317,13 +317,11 @@
                 <div class="form-section">
                     <div class="section-title">🖼️ Imagem / Capa</div>
 
-                    <!-- Tabs de upload -->
                     <div class="upload-tabs">
                         <button class="upload-tab active" onclick="setUploadMode('file')" id="tabFile">📱 Do Celular</button>
                         <button class="upload-tab" onclick="setUploadMode('url')" id="tabUrl">🔗 Link URL</button>
                     </div>
 
-                    <!-- Upload do celular -->
                     <div id="uploadFileSection">
                         <div class="upload-area" id="uploadArea" onclick="document.getElementById('imgInput').click()">
                             <input type="file" id="imgInput" class="upload-input" accept="image/*" onchange="handleImageUpload(event)">
@@ -345,7 +343,6 @@
                         </div>
                     </div>
 
-                    <!-- Link URL -->
                     <div id="uploadUrlSection" style="display:none;">
                         <div class="form-group" style="margin-bottom:0;">
                             <label>Cole o link direto da imagem (URL)</label>
@@ -426,9 +423,10 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'techzone_landings_v5';
+        const STORAGE_KEY = 'techzone_landings_v6';
+        const SESSION_PREFIX = 'tz_lp_';
         let appImageBase64 = null;
-        let uploadMode = 'file'; // 'file' ou 'url'
+        let uploadMode = 'file';
         let contentType = 'app';
 
         function getLandings() {
@@ -498,7 +496,6 @@
             document.getElementById('previewLink').textContent = url.substring(0, 40) + (url.length > 40 ? '...' : '');
         }
 
-        // ========== UPLOAD DO CELULAR ==========
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -511,13 +508,11 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 appImageBase64 = e.target.result;
-
                 document.getElementById('uploadPlaceholder').style.display = 'none';
                 document.getElementById('uploadPreview').style.display = 'block';
                 document.getElementById('uploadArea').classList.add('has-image');
                 document.getElementById('previewImg').src = appImageBase64;
                 document.getElementById('compressInfo').classList.add('show');
-
                 const bytes = Math.round((appImageBase64.length - 22) * 3 / 4);
                 const kb = (bytes / 1024).toFixed(1);
                 showToast('✅ Imagem carregada: ' + kb + 'KB');
@@ -526,7 +521,6 @@
             reader.readAsDataURL(file);
         }
 
-        // ========== UPLOAD POR URL ==========
         function handleImageUrl(url) {
             if (!url || !url.startsWith('http')) {
                 document.getElementById('urlPreviewContainer').style.display = 'none';
@@ -534,7 +528,6 @@
                 updatePreview();
                 return;
             }
-
             appImageBase64 = url;
             const img = document.getElementById('urlPreviewImg');
             img.src = url;
@@ -546,23 +539,18 @@
 
         function removeImage() {
             appImageBase64 = null;
-
-            // Limpa upload file
             document.getElementById('imgInput').value = '';
             document.getElementById('uploadPlaceholder').style.display = 'block';
             document.getElementById('uploadPreview').style.display = 'none';
             document.getElementById('uploadArea').classList.remove('has-image');
             document.getElementById('compressInfo').classList.remove('show');
-
-            // Limpa upload URL
             document.getElementById('imgUrlInput').value = '';
             document.getElementById('urlPreviewContainer').style.display = 'none';
             document.getElementById('urlPreviewImg').src = '';
-
             updatePreview();
         }
 
-        // ========== GERAR LINK ==========
+        // ========== GERAR LINK COM SESSIONSTORAGE ==========
         function gerarLink() {
             const name = document.getElementById('appName').value.trim();
             const ver = document.getElementById('appVersion').value.trim();
@@ -589,21 +577,20 @@
                     d: desc,
                     u: url
                 };
+                if (appImageBase64) data.img = appImageBase64;
 
-                if (appImageBase64) {
-                    data.img = appImageBase64;
-                }
+                // Salva no sessionStorage com ID curto para evitar URI_TOO_LONG
+                const id = 'lp' + Date.now().toString(36);
+                sessionStorage.setItem(SESSION_PREFIX + id, JSON.stringify(data));
 
-                // Encode Base64 robusto com UTF-8
-                const jsonStr = JSON.stringify(data);
-                const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
-
-                const baseUrl = window.location.origin + '/index.html';
-                const finalLink = `${baseUrl}?d=${encoded}`;
+                // URL curta: só o ID
+                const baseUrl = getBaseUrl();
+                const finalLink = baseUrl + '?id=' + id;
 
                 const landings = getLandings();
                 landings.unshift({
                     id: Date.now(),
+                    sid: id,
                     title: name + ' ' + (ver || ''),
                     finalLink: finalLink,
                     created: new Date().toLocaleString('pt-BR'),
@@ -623,19 +610,63 @@
             }, 600);
         }
 
+        function getBaseUrl() {
+            // Detecta se index.html está na mesma pasta ou não
+            const loc = window.location;
+            let path = loc.pathname;
+            if (path.endsWith('painel.html')) {
+                path = path.replace('painel.html', 'index.html');
+            } else if (path.endsWith('/')) {
+                path += 'index.html';
+            } else {
+                path = path.substring(0, path.lastIndexOf('/') + 1) + 'index.html';
+            }
+            return loc.origin + path;
+        }
+
+        // ========== COPIAR ROBUSTO ==========
         function copiarLink() {
             const el = document.getElementById('outputLink');
-            el.select();
-            navigator.clipboard.writeText(el.value).then(() => {
-                const btn = document.getElementById('btnCopy');
-                btn.textContent = '✅ COPIADO!';
-                btn.classList.add('copied');
-                showToast('📋 Link copiado!');
-                setTimeout(() => { btn.textContent = '📋 COPIAR'; btn.classList.remove('copied'); }, 2000);
-            }).catch(() => {
-                document.execCommand('copy');
-                showToast('📋 Link copiado!');
-            });
+            const text = el.value;
+            if (!text) return;
+
+            // Método 1: Clipboard API
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopied();
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            // Cria textarea temporário visível no DOM
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none;';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            ta.setSelectionRange(0, 99999);
+            try {
+                const ok = document.execCommand('copy');
+                if (ok) showCopied();
+                else showToast('❌ Falha ao copiar. Copie manualmente.');
+            } catch (e) {
+                showToast('❌ Falha ao copiar. Copie manualmente.');
+            }
+            document.body.removeChild(ta);
+        }
+
+        function showCopied() {
+            const btn = document.getElementById('btnCopy');
+            btn.textContent = '✅ COPIADO!';
+            btn.classList.add('copied');
+            showToast('📋 Link copiado!');
+            setTimeout(() => { btn.textContent = '📋 COPIAR'; btn.classList.remove('copied'); }, 2000);
         }
 
         function abrirLink() {
@@ -646,7 +677,7 @@
         function encurtarLink() {
             const url = document.getElementById('outputLink').value;
             if(!url) return;
-            window.open(`https://tinyurl.com/create.php?url=${encodeURIComponent(url)}`, '_blank');
+            window.open('https://tinyurl.com/create.php?url=' + encodeURIComponent(url), '_blank');
         }
 
         function renderLinks() {
@@ -662,17 +693,32 @@
             links.forEach(link => {
                 const imgTag = link.hasImg ? '🖼️ ' : '';
                 const typeEmoji = link.type === 'txt' ? '📝 ' : link.type === 'outro' ? '📁 ' : '📱 ';
-                html += `<tr>
-                    <td><strong>${typeEmoji}${imgTag}${link.title}</strong><br><small style="color:var(--text-muted)">${link.finalLink.substring(0,40)}...</small></td>
-                    <td>${link.created}</td>
-                    <td>
-                        <button class="btn-small" onclick="navigator.clipboard.writeText('${link.finalLink}');showToast('Copiado!')">📋</button>
-                        <button class="btn-small" onclick="window.open('${link.finalLink}','_blank')">🔗</button>
-                    </td>
-                </tr>`;
+                // Escapa aspas para não quebrar o HTML inline
+                const safeUrl = link.finalLink.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                html += '<tr>' +
+                    '<td><strong>' + typeEmoji + imgTag + escapeHtml(link.title) + '</strong><br><small style="color:var(--text-muted)">' + escapeHtml(link.finalLink.substring(0,40)) + '...</small></td>' +
+                    '<td>' + escapeHtml(link.created) + '</td>' +
+                    '<td>' +
+                    '<button class="btn-small" onclick="copyFromList('' + safeUrl + '')">📋</button> ' +
+                    '<button class="btn-small" onclick="window.open('' + safeUrl + '','_blank')">🔗</button>' +
+                    '</td>' +
+                '</tr>';
             });
             html += '</tbody></table></div>';
             container.innerHTML = html;
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        function copyFromList(url) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(url).then(() => showToast('📋 Copiado!'))
+                .catch(() => fallbackCopy(url));
+            } else {
+                fallbackCopy(url);
+            }
         }
 
         function showToast(msg) {
@@ -682,7 +728,6 @@
             setTimeout(() => toast.classList.remove('show'), 2500);
         }
 
-        // Init
         updatePreview();
     </script>
 </body>
