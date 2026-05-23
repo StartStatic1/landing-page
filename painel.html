@@ -55,6 +55,7 @@
             width: 100%; background: var(--dark); border: 1px solid var(--border);
             color: var(--text); padding: 0.9rem; border-radius: 10px;
             font-size: 1rem; outline: none; transition: all 0.3s;
+            -webkit-appearance: none; appearance: none;
         }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
@@ -94,13 +95,16 @@
             border-radius: 16px;
             padding: 2rem 1rem;
             text-align: center;
-            cursor: pointer;
             transition: all 0.3s;
             background: var(--dark);
             position: relative;
             overflow: hidden;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .upload-area:hover {
+        .upload-area:hover, .upload-area:active {
             border-color: var(--primary);
             background: rgba(99,102,241,0.05);
         }
@@ -108,13 +112,22 @@
             border-style: solid;
             border-color: var(--success);
             padding: 0;
+            display: block;
         }
+        /* Input file invisível cobre TODA a área - principal fix */
         .upload-input {
-            position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 100px; /* garante que o input seja grande o suficiente */
         }
-        .upload-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .upload-text { color: var(--text-muted); font-size: 0.9rem; }
-        .upload-hint { color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem; }
+        .upload-icon { font-size: 2.5rem; margin-bottom: 0.5rem; pointer-events: none; }
+        .upload-text { color: var(--text-muted); font-size: 0.9rem; pointer-events: none; }
+        .upload-hint { color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem; pointer-events: none; }
 
         .preview-img-container {
             width: 100%;
@@ -138,6 +151,7 @@
             padding: 2rem 0.8rem 0.8rem;
             font-size: 0.8rem; color: #fff;
             text-align: center;
+            pointer-events: none;
         }
         .btn-remove-img {
             position: absolute; top: 8px; right: 8px;
@@ -145,7 +159,8 @@
             width: 32px; height: 32px; border-radius: 50%;
             cursor: pointer; font-size: 1rem; display: flex;
             align-items: center; justify-content: center;
-            z-index: 2;
+            z-index: 200;
+            pointer-events: auto;
         }
 
         .btn-generate {
@@ -154,9 +169,18 @@
             font-weight: 700; border-radius: 12px; cursor: pointer;
             transition: all 0.3s; box-shadow: 0 4px 15px rgba(99,102,241,0.4);
             display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
         .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.6); }
         .btn-generate:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-generate.loading {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
 
         .result-box {
             display: none; margin-top: 1.5rem; padding: 1.5rem;
@@ -177,6 +201,7 @@
             border: 1px solid var(--border); color: var(--text);
             padding: 0.7rem; border-radius: 8px; font-weight: 600;
             cursor: pointer; transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
         }
         .btn-copy:hover { background: var(--primary); color: white; }
         .btn-copy.copied { background: var(--success); color: white; }
@@ -206,6 +231,7 @@
             background: var(--dark); border: 1px solid var(--border);
             color: var(--text); padding: 0.3rem 0.6rem;
             border-radius: 6px; font-size: 0.75rem; cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
         .btn-small:hover { background: var(--primary); color: white; }
 
@@ -220,6 +246,7 @@
             border-radius: 8px; font-weight: 600; transition: all 0.3s;
             color: var(--text-muted); border: none; background: transparent;
             white-space: nowrap; min-width: 120px;
+            -webkit-tap-highlight-color: transparent;
         }
         .tab.active { background: var(--primary); color: white; }
         .panel { display: none; }
@@ -249,6 +276,19 @@
             font-size: 0.8rem; color: var(--success); display: none;
         }
         .compress-info.show { display: block; }
+
+        /* Debug info */
+        .debug-info {
+            background: rgba(239,68,68,0.1);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--danger);
+            display: none;
+        }
+        .debug-info.show { display: block; }
     </style>
 </head>
 <body>
@@ -257,8 +297,8 @@
         <div class="subtitle">Crie landing pages para qualquer conteúdo em segundos</div>
 
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('criar')">🚀 Criar Landing</button>
-            <button class="tab" onclick="switchTab('gerenciar')">📋 Meus Links</button>
+            <button class="tab active" data-tab="criar">🚀 Criar Landing</button>
+            <button class="tab" data-tab="gerenciar">📋 Meus Links</button>
         </div>
 
         <!-- PANEL CRIAR -->
@@ -269,9 +309,9 @@
                 <div class="form-section">
                     <div class="section-title">📦 Tipo de Conteúdo</div>
                     <div class="content-type-tabs">
-                        <button class="content-type-tab active" onclick="setContentType('app')">📱 App</button>
-                        <button class="content-type-tab" onclick="setContentType('txt')">📝 TXT / Senha</button>
-                        <button class="content-type-tab" onclick="setContentType('outro')">📁 Outro</button>
+                        <button class="content-type-tab active" data-type="app">📱 App</button>
+                        <button class="content-type-tab" data-type="txt">📝 TXT / Senha</button>
+                        <button class="content-type-tab" data-type="outro">📁 Outro</button>
                     </div>
                 </div>
 
@@ -280,21 +320,21 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label id="labelNome">Nome do App <span class="required">*</span></label>
-                            <input type="text" id="appName" placeholder="Ex: Notion Mod Pro" oninput="updatePreview()">
+                            <input type="text" id="appName" placeholder="Ex: Notion Mod Pro">
                         </div>
                         <div class="form-group">
                             <label>Versão / Info extra</label>
-                            <input type="text" id="appVersion" placeholder="Ex: v4.2.1 ou Senha: 1234" oninput="updatePreview()">
+                            <input type="text" id="appVersion" placeholder="Ex: v4.2.1 ou Senha: 1234">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Tamanho / Tipo</label>
-                            <input type="text" id="appSize" placeholder="Ex: 45.2 MB ou 2KB" oninput="updatePreview()">
+                            <input type="text" id="appSize" placeholder="Ex: 45.2 MB ou 2KB">
                         </div>
                         <div class="form-group">
                             <label>Categoria</label>
-                            <select id="appCategory" onchange="updatePreview()">
+                            <select id="appCategory">
                                 <option value="📱 Apps">📱 Apps</option>
                                 <option value="🎮 Jogos">🎮 Jogos</option>
                                 <option value="🔓 Mod APK">🔓 Mod APK</option>
@@ -309,7 +349,7 @@
                         <label>Descrição completa <span class="required">*</span></label>
                         <textarea id="appDesc" placeholder="Digite a descrição completa...
 Pode incluir senhas, instruções, links, etc.
-Suporta quebras de linha." oninput="updatePreview()"></textarea>
+Suporta quebras de linha."></textarea>
                         <small>Esta descrição aparecerá exatamente como digitada na landing page.</small>
                     </div>
                 </div>
@@ -318,20 +358,21 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
                     <div class="section-title">🖼️ Imagem / Capa</div>
 
                     <div class="upload-tabs">
-                        <button class="upload-tab active" onclick="setUploadMode('file')" id="tabFile">📱 Do Celular</button>
-                        <button class="upload-tab" onclick="setUploadMode('url')" id="tabUrl">🔗 Link URL</button>
+                        <button class="upload-tab active" data-upload="file" id="tabFile">📱 Do Celular</button>
+                        <button class="upload-tab" data-upload="url" id="tabUrl">🔗 Link URL</button>
                     </div>
 
+                    <!-- Upload do celular -->
                     <div id="uploadFileSection">
-                        <div class="upload-area" id="uploadArea" onclick="document.getElementById('imgInput').click()">
-                            <input type="file" id="imgInput" class="upload-input" accept="image/*" onchange="handleImageUpload(event)">
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="imgInput" class="upload-input" accept="image/*" capture="environment">
                             <div id="uploadPlaceholder">
                                 <div class="upload-icon">📸</div>
                                 <div class="upload-text">Toque para enviar foto do celular</div>
                                 <div class="upload-hint">Qualquer proporção • JPEG/PNG • Máx 5MB</div>
                             </div>
-                            <div id="uploadPreview" style="display:none; position: relative;">
-                                <button type="button" class="btn-remove-img" onclick="event.stopPropagation(); removeImage()">×</button>
+                            <div id="uploadPreview" style="display:none;">
+                                <button type="button" class="btn-remove-img" id="btnRemoveImg">×</button>
                                 <div class="preview-img-container">
                                     <img id="previewImg" class="preview-img" src="" alt="Preview">
                                     <div class="preview-img-label">📱 Preview</div>
@@ -343,16 +384,17 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
                         </div>
                     </div>
 
+                    <!-- Link URL -->
                     <div id="uploadUrlSection" style="display:none;">
                         <div class="form-group" style="margin-bottom:0;">
                             <label>Cole o link direto da imagem (URL)</label>
-                            <input type="text" id="imgUrlInput" placeholder="https://exemplo.com/imagem.jpg" oninput="handleImageUrl(this.value)">
+                            <input type="text" id="imgUrlInput" placeholder="https://exemplo.com/imagem.jpg">
                             <small>Ex: link do Imgur, Postimg, Telegram, etc.</small>
                         </div>
                         <div id="urlPreviewContainer" style="margin-top:1rem; display:none;">
                             <div class="preview-img-container" style="position:relative;">
-                                <button type="button" class="btn-remove-img" onclick="removeImage()">×</button>
-                                <img id="urlPreviewImg" class="preview-img" src="" alt="Preview URL" onerror="this.style.display='none'" onload="this.style.display='block'">
+                                <button type="button" class="btn-remove-img" id="btnRemoveUrlImg">×</button>
+                                <img id="urlPreviewImg" class="preview-img" src="" alt="Preview URL" style="display:none;">
                                 <div class="preview-img-label">🔗 Preview da URL</div>
                             </div>
                         </div>
@@ -372,30 +414,32 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
                     <div class="section-title">👁️ Preview da Landing</div>
                     <div class="preview-box" id="previewBox">
                         <h4>📄 Como vai aparecer:</h4>
-                        <div class="preview-item"><span>Título:</span><span id="previewTitle">Notion Mod Pro v4.2.1</span></div>
-                        <div class="preview-item"><span>Categoria:</span><span id="previewCat">📱 Apps</span></div>
-                        <div class="preview-item"><span>Tamanho:</span><span id="previewSize">45.2 MB</span></div>
-                        <div class="preview-item"><span>Descrição:</span><span id="previewDesc">Versão modificada com recursos premium desbloqueados.</span></div>
+                        <div class="preview-item"><span>Título:</span><span id="previewTitle">-</span></div>
+                        <div class="preview-item"><span>Categoria:</span><span id="previewCat">-</span></div>
+                        <div class="preview-item"><span>Tamanho:</span><span id="previewSize">-</span></div>
+                        <div class="preview-item"><span>Descrição:</span><span id="previewDesc">-</span></div>
                         <div class="preview-item"><span>Imagem:</span><span id="previewImgStatus">Nenhuma</span></div>
-                        <div class="preview-item"><span>Link:</span><span id="previewLink">Não definido</span></div>
+                        <div class="preview-item"><span>Link:</span><span id="previewLink">-</span></div>
                     </div>
                 </div>
 
-                <button class="btn-generate" id="btnGenerate" onclick="gerarLink()">
+                <button class="btn-generate" id="btnGenerate">
                     🔐 GERAR LANDING PAGE
                 </button>
+
+                <div class="debug-info" id="debugInfo"></div>
 
                 <div class="result-box" id="resultBox">
                     <div class="result-label">✅ Landing page gerada! Copie o link:</div>
                     <textarea class="result-url" id="outputLink" readonly></textarea>
                     <div style="display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap;">
-                        <button class="btn-copy" style="flex:1; min-width:100px; margin-top:0;" id="btnCopy" onclick="copiarLink()">
+                        <button class="btn-copy" style="flex:1; min-width:100px; margin-top:0;" id="btnCopy">
                             📋 COPIAR
                         </button>
-                        <button class="btn-copy" style="flex:1; min-width:100px; margin-top:0;" onclick="abrirLink()">
+                        <button class="btn-copy" style="flex:1; min-width:100px; margin-top:0;" id="btnOpen">
                             🔗 ABRIR
                         </button>
-                        <button class="btn-copy" style="flex:1; min-width:100px; margin-top:0;" onclick="encurtarLink()">
+                        <button class="btn-copy" style="flex:1; min-width:100px; margin-top:0;" id="btnShorten">
                             ✂️ ENCURTAR
                         </button>
                     </div>
@@ -423,42 +467,61 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
     </div>
 
     <script>
-        const STORAGE_KEY = 'techzone_landings_v6';
+        // ========== CONFIG ==========
+        const STORAGE_KEY = 'techzone_landings_v7';
         const SESSION_PREFIX = 'tz_lp_';
         let appImageBase64 = null;
         let uploadMode = 'file';
         let contentType = 'app';
 
+        // ========== STORAGE ==========
         function getLandings() {
             try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
             catch(e) { return []; }
         }
-        function saveLandings(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('panel-' + tab).classList.add('active');
-            if(tab === 'gerenciar') renderLinks();
+        function saveLandings(data) { 
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+            catch(e) { console.error('localStorage error:', e); }
         }
 
-        function setContentType(type) {
-            contentType = type;
-            document.querySelectorAll('.content-type-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+        // ========== TABS ==========
+        function initTabs() {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.dataset.tab;
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById('panel-' + target).classList.add('active');
+                    if(target === 'gerenciar') renderLinks();
+                });
+            });
+        }
 
+        // ========== CONTENT TYPE ==========
+        function initContentType() {
+            document.querySelectorAll('.content-type-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    contentType = this.dataset.type;
+                    document.querySelectorAll('.content-type-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    updateFormLabels();
+                    updatePreview();
+                });
+            });
+        }
+
+        function updateFormLabels() {
             const labelNome = document.getElementById('labelNome');
             const infoTitle = document.getElementById('infoTitle');
             const appName = document.getElementById('appName');
             const appCategory = document.getElementById('appCategory');
 
-            if (type === 'app') {
+            if (contentType === 'app') {
                 infoTitle.textContent = '📱 Informações do App';
                 labelNome.innerHTML = 'Nome do App <span class="required">*</span>';
                 appName.placeholder = 'Ex: Notion Mod Pro';
-                appCategory.value = '📱 Apps';
-            } else if (type === 'txt') {
+            } else if (contentType === 'txt') {
                 infoTitle.textContent = '📝 Informações do TXT';
                 labelNome.innerHTML = 'Título / Nome <span class="required">*</span>';
                 appName.placeholder = 'Ex: Acesso VIP - Senhas';
@@ -469,56 +532,104 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
                 appName.placeholder = 'Ex: Pack Completo';
                 appCategory.value = '📁 Outro';
             }
-            updatePreview();
         }
 
-        function setUploadMode(mode) {
-            uploadMode = mode;
-            document.getElementById('tabFile').classList.toggle('active', mode === 'file');
-            document.getElementById('tabUrl').classList.toggle('active', mode === 'url');
-            document.getElementById('uploadFileSection').style.display = mode === 'file' ? 'block' : 'none';
-            document.getElementById('uploadUrlSection').style.display = mode === 'url' ? 'block' : 'none';
+        // ========== UPLOAD MODE ==========
+        function initUploadMode() {
+            document.querySelectorAll('.upload-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    uploadMode = this.dataset.upload;
+                    document.getElementById('tabFile').classList.toggle('active', uploadMode === 'file');
+                    document.getElementById('tabUrl').classList.toggle('active', uploadMode === 'url');
+                    document.getElementById('uploadFileSection').style.display = uploadMode === 'file' ? 'block' : 'none';
+                    document.getElementById('uploadUrlSection').style.display = uploadMode === 'url' ? 'block' : 'none';
+                });
+            });
         }
 
+        // ========== PREVIEW ==========
         function updatePreview() {
-            const name = document.getElementById('appName').value || 'Notion Mod Pro';
-            const ver = document.getElementById('appVersion').value || 'v4.2.1';
-            const size = document.getElementById('appSize').value || '45.2 MB';
+            const name = document.getElementById('appName').value.trim() || '-';
+            const ver = document.getElementById('appVersion').value.trim();
+            const size = document.getElementById('appSize').value.trim() || '-';
             const cat = document.getElementById('appCategory').value;
-            const desc = document.getElementById('appDesc').value || 'Versão modificada com recursos premium desbloqueados.';
-            const url = document.getElementById('destUrl').value || 'Não definido';
+            const desc = document.getElementById('appDesc').value.trim();
+            const url = document.getElementById('destUrl').value.trim();
 
-            document.getElementById('previewTitle').textContent = name + ' ' + ver;
+            document.getElementById('previewTitle').textContent = name + (ver ? ' ' + ver : '');
             document.getElementById('previewCat').textContent = cat;
             document.getElementById('previewSize').textContent = size;
-            document.getElementById('previewDesc').textContent = desc.substring(0, 80) + (desc.length > 80 ? '...' : '');
+            document.getElementById('previewDesc').textContent = desc ? (desc.substring(0, 60) + (desc.length > 60 ? '...' : '')) : '-';
             document.getElementById('previewImgStatus').textContent = appImageBase64 ? '✅ Enviada' : 'Nenhuma';
-            document.getElementById('previewLink').textContent = url.substring(0, 40) + (url.length > 40 ? '...' : '');
+            document.getElementById('previewLink').textContent = url ? (url.substring(0, 35) + (url.length > 35 ? '...' : '')) : '-';
         }
 
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            if (file.size > 5 * 1024 * 1024) {
-                showToast('❌ Imagem muito grande! Máx 5MB.');
-                return;
+        function initPreviewListeners() {
+            ['appName', 'appVersion', 'appSize', 'destUrl'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', updatePreview);
+                    el.addEventListener('change', updatePreview);
+                    el.addEventListener('keyup', updatePreview);
+                }
+            });
+            const desc = document.getElementById('appDesc');
+            if (desc) {
+                desc.addEventListener('input', updatePreview);
+                desc.addEventListener('change', updatePreview);
+                desc.addEventListener('keyup', updatePreview);
             }
+            const cat = document.getElementById('appCategory');
+            if (cat) {
+                cat.addEventListener('change', updatePreview);
+            }
+        }
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                appImageBase64 = e.target.result;
-                document.getElementById('uploadPlaceholder').style.display = 'none';
-                document.getElementById('uploadPreview').style.display = 'block';
-                document.getElementById('uploadArea').classList.add('has-image');
-                document.getElementById('previewImg').src = appImageBase64;
-                document.getElementById('compressInfo').classList.add('show');
-                const bytes = Math.round((appImageBase64.length - 22) * 3 / 4);
-                const kb = (bytes / 1024).toFixed(1);
-                showToast('✅ Imagem carregada: ' + kb + 'KB');
-                updatePreview();
-            };
-            reader.readAsDataURL(file);
+        // ========== IMAGE UPLOAD ==========
+        function initImageUpload() {
+            const input = document.getElementById('imgInput');
+            if (!input) return;
+
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) {
+                    showDebug('Nenhum arquivo selecionado');
+                    return;
+                }
+
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('❌ Imagem muito grande! Máx 5MB.');
+                    return;
+                }
+
+                showToast('⏳ Carregando imagem...');
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    appImageBase64 = e.target.result;
+                    document.getElementById('uploadPlaceholder').style.display = 'none';
+                    document.getElementById('uploadPreview').style.display = 'block';
+                    document.getElementById('uploadArea').classList.add('has-image');
+                    document.getElementById('previewImg').src = appImageBase64;
+                    document.getElementById('compressInfo').classList.add('show');
+                    const bytes = Math.round((appImageBase64.length - 22) * 3 / 4);
+                    const kb = (bytes / 1024).toFixed(1);
+                    showToast('✅ Imagem: ' + kb + 'KB');
+                    updatePreview();
+                };
+                reader.onerror = function() {
+                    showToast('❌ Erro ao ler imagem');
+                    showDebug('FileReader error');
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // Botão remover
+            document.getElementById('btnRemoveImg').addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                removeImage();
+            });
         }
 
         function handleImageUrl(url) {
@@ -537,6 +648,19 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
             updatePreview();
         }
 
+        function initUrlImage() {
+            const input = document.getElementById('imgUrlInput');
+            if (input) {
+                input.addEventListener('input', function() { handleImageUrl(this.value); });
+                input.addEventListener('change', function() { handleImageUrl(this.value); });
+            }
+            document.getElementById('btnRemoveUrlImg').addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                removeImage();
+            });
+        }
+
         function removeImage() {
             appImageBase64 = null;
             document.getElementById('imgInput').value = '';
@@ -550,87 +674,139 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
             updatePreview();
         }
 
-        // ========== GERAR LINK COM SESSIONSTORAGE ==========
-        function gerarLink() {
-            const name = document.getElementById('appName').value.trim();
-            const ver = document.getElementById('appVersion').value.trim();
-            const size = document.getElementById('appSize').value.trim();
-            const cat = document.getElementById('appCategory').value;
-            const desc = document.getElementById('appDesc').value.trim();
-            const url = document.getElementById('destUrl').value.trim();
-
-            if(!name) { showToast('❌ Digite o nome!'); return; }
-            if(!desc) { showToast('❌ Digite a descrição!'); return; }
-            if(!url) { showToast('❌ Cole o link do destino!'); return; }
-            if(!url.startsWith('http')) { showToast('❌ Link deve começar com http://'); return; }
-
+        // ========== GERAR LINK ==========
+        function initGenerate() {
             const btn = document.getElementById('btnGenerate');
-            btn.disabled = true;
-            btn.innerHTML = '⏳ Gerando...';
+            btn.addEventListener('click', gerarLink);
+            // Também suportar touch para mobile
+            btn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                gerarLink();
+            });
+        }
 
-            setTimeout(() => {
-                const data = {
-                    n: name,
-                    v: ver || '',
-                    s: size || 'N/A',
-                    c: cat,
-                    d: desc,
-                    u: url
-                };
-                if (appImageBase64) data.img = appImageBase64;
+        function gerarLink() {
+            try {
+                const name = document.getElementById('appName').value.trim();
+                const ver = document.getElementById('appVersion').value.trim();
+                const size = document.getElementById('appSize').value.trim();
+                const cat = document.getElementById('appCategory').value;
+                const desc = document.getElementById('appDesc').value.trim();
+                const url = document.getElementById('destUrl').value.trim();
 
-                // Salva no sessionStorage com ID curto para evitar URI_TOO_LONG
-                const id = 'lp' + Date.now().toString(36);
-                sessionStorage.setItem(SESSION_PREFIX + id, JSON.stringify(data));
+                if(!name) { showToast('❌ Digite o nome!'); return; }
+                if(!desc) { showToast('❌ Digite a descrição!'); return; }
+                if(!url) { showToast('❌ Cole o link do destino!'); return; }
+                if(!url.startsWith('http')) { showToast('❌ Link deve começar com http://'); return; }
 
-                // URL curta: só o ID
-                const baseUrl = getBaseUrl();
-                const finalLink = baseUrl + '?id=' + id;
+                const btn = document.getElementById('btnGenerate');
+                btn.disabled = true;
+                btn.classList.add('loading');
+                btn.innerHTML = '⏳ Gerando...';
 
-                const landings = getLandings();
-                landings.unshift({
-                    id: Date.now(),
-                    sid: id,
-                    title: name + ' ' + (ver || ''),
-                    finalLink: finalLink,
-                    created: new Date().toLocaleString('pt-BR'),
-                    clicks: 0,
-                    hasImg: !!appImageBase64,
-                    type: contentType
-                });
-                saveLandings(landings);
+                setTimeout(() => {
+                    try {
+                        const data = {
+                            n: name,
+                            v: ver || '',
+                            s: size || 'N/A',
+                            c: cat,
+                            d: desc,
+                            u: url
+                        };
+                        if (appImageBase64) data.img = appImageBase64;
 
-                document.getElementById('resultBox').classList.add('show');
-                document.getElementById('outputLink').value = finalLink;
+                        // Testar sessionStorage
+                        let storageOk = false;
+                        let id = 'lp' + Date.now().toString(36);
+                        try {
+                            sessionStorage.setItem(SESSION_PREFIX + id, JSON.stringify(data));
+                            storageOk = true;
+                        } catch(e) {
+                            // Fallback: usar localStorage
+                            try {
+                                localStorage.setItem(SESSION_PREFIX + id, JSON.stringify(data));
+                                storageOk = true;
+                            } catch(e2) {
+                                showToast('❌ Erro de armazenamento. Tente modo anônimo.');
+                                showDebug('Storage error: ' + e2.message);
+                                btn.disabled = false;
+                                btn.classList.remove('loading');
+                                btn.innerHTML = '🔐 GERAR LANDING PAGE';
+                                return;
+                            }
+                        }
 
-                btn.disabled = false;
-                btn.innerHTML = '🔐 GERAR LANDING PAGE';
+                        const baseUrl = getBaseUrl();
+                        const finalLink = baseUrl + '?id=' + id;
 
-                setTimeout(() => copiarLink(), 500);
-            }, 600);
+                        const landings = getLandings();
+                        landings.unshift({
+                            id: Date.now(),
+                            sid: id,
+                            title: name + ' ' + (ver || ''),
+                            finalLink: finalLink,
+                            created: new Date().toLocaleString('pt-BR'),
+                            clicks: 0,
+                            hasImg: !!appImageBase64,
+                            type: contentType
+                        });
+                        saveLandings(landings);
+
+                        document.getElementById('resultBox').classList.add('show');
+                        document.getElementById('outputLink').value = finalLink;
+
+                        btn.disabled = false;
+                        btn.classList.remove('loading');
+                        btn.innerHTML = '🔐 GERAR LANDING PAGE';
+
+                        showToast('✅ Landing gerada!');
+                        setTimeout(() => copiarLink(), 800);
+                    } catch(err) {
+                        showToast('❌ Erro: ' + err.message);
+                        showDebug('Generate error: ' + err.message);
+                        btn.disabled = false;
+                        btn.classList.remove('loading');
+                        btn.innerHTML = '🔐 GERAR LANDING PAGE';
+                    }
+                }, 600);
+            } catch(err) {
+                showToast('❌ Erro inesperado: ' + err.message);
+                showDebug('Fatal error: ' + err.message);
+            }
         }
 
         function getBaseUrl() {
-            // Detecta se index.html está na mesma pasta ou não
             const loc = window.location;
             let path = loc.pathname;
+            // Se estamos em painel.html, ir para index.html na mesma pasta
             if (path.endsWith('painel.html')) {
-                path = path.replace('painel.html', 'index.html');
+                path = path.replace(/painel\.html$/i, 'index.html');
             } else if (path.endsWith('/')) {
                 path += 'index.html';
             } else {
-                path = path.substring(0, path.lastIndexOf('/') + 1) + 'index.html';
+                const lastSlash = path.lastIndexOf('/');
+                if (lastSlash >= 0) {
+                    path = path.substring(0, lastSlash + 1) + 'index.html';
+                } else {
+                    path = '/index.html';
+                }
             }
             return loc.origin + path;
         }
 
-        // ========== COPIAR ROBUSTO ==========
+        // ========== COPY / OPEN / SHORTEN ==========
+        function initResultButtons() {
+            document.getElementById('btnCopy').addEventListener('click', copiarLink);
+            document.getElementById('btnOpen').addEventListener('click', abrirLink);
+            document.getElementById('btnShorten').addEventListener('click', encurtarLink);
+        }
+
         function copiarLink() {
             const el = document.getElementById('outputLink');
             const text = el.value;
             if (!text) return;
 
-            // Método 1: Clipboard API
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(text).then(() => {
                     showCopied();
@@ -643,10 +819,9 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
         }
 
         function fallbackCopy(text) {
-            // Cria textarea temporário visível no DOM
             const ta = document.createElement('textarea');
             ta.value = text;
-            ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none;';
+            ta.style.cssText = 'position:fixed;top:0;left:0;width:2px;height:2px;opacity:0;';
             document.body.appendChild(ta);
             ta.focus();
             ta.select();
@@ -654,9 +829,13 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
             try {
                 const ok = document.execCommand('copy');
                 if (ok) showCopied();
-                else showToast('❌ Falha ao copiar. Copie manualmente.');
+                else {
+                    showToast('❌ Falha ao copiar. Selecione e copie manualmente.');
+                    el.focus();
+                    el.select();
+                }
             } catch (e) {
-                showToast('❌ Falha ao copiar. Copie manualmente.');
+                showToast('❌ Falha ao copiar. Selecione e copie manualmente.');
             }
             document.body.removeChild(ta);
         }
@@ -680,6 +859,7 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
             window.open('https://tinyurl.com/create.php?url=' + encodeURIComponent(url), '_blank');
         }
 
+        // ========== LINKS LIST ==========
         function renderLinks() {
             const links = getLandings();
             const container = document.getElementById('linksList');
@@ -693,7 +873,6 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
             links.forEach(link => {
                 const imgTag = link.hasImg ? '🖼️ ' : '';
                 const typeEmoji = link.type === 'txt' ? '📝 ' : link.type === 'outro' ? '📁 ' : '📱 ';
-                // Escapa aspas para não quebrar o HTML inline
                 const safeUrl = link.finalLink.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
                 html += '<tr>' +
                     '<td><strong>' + typeEmoji + imgTag + escapeHtml(link.title) + '</strong><br><small style="color:var(--text-muted)">' + escapeHtml(link.finalLink.substring(0,40)) + '...</small></td>' +
@@ -721,6 +900,7 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
             }
         }
 
+        // ========== UTILITIES ==========
         function showToast(msg) {
             const toast = document.getElementById('toast');
             document.getElementById('toastText').textContent = msg;
@@ -728,7 +908,31 @@ Suporta quebras de linha." oninput="updatePreview()"></textarea>
             setTimeout(() => toast.classList.remove('show'), 2500);
         }
 
-        updatePreview();
+        function showDebug(msg) {
+            const el = document.getElementById('debugInfo');
+            el.textContent = 'Debug: ' + msg;
+            el.classList.add('show');
+            console.log('[TechZone Debug]', msg);
+        }
+
+        // ========== INIT ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                initTabs();
+                initContentType();
+                initUploadMode();
+                initPreviewListeners();
+                initImageUpload();
+                initUrlImage();
+                initGenerate();
+                initResultButtons();
+                updatePreview();
+                console.log('TechZone Painel v7 inicializado');
+            } catch(e) {
+                showDebug('Init error: ' + e.message);
+                console.error(e);
+            }
+        });
     </script>
 </body>
 </html>
