@@ -31,9 +31,7 @@
             border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem;
             box-shadow: 0 25px 50px rgba(0,0,0,0.3);
         }
-        @media (min-width: 640px) {
-            .form-card { padding: 2.5rem; }
-        }
+        @media (min-width: 640px) { .form-card { padding: 2.5rem; } }
         .form-section {
             margin-bottom: 1.5rem; padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--border);
@@ -46,9 +44,7 @@
         .form-row {
             display: grid; grid-template-columns: 1fr; gap: 1rem;
         }
-        @media (min-width: 640px) {
-            .form-row { grid-template-columns: 1fr 1fr; }
-        }
+        @media (min-width: 640px) { .form-row { grid-template-columns: 1fr 1fr; } }
         .form-group { margin-bottom: 1rem; }
         .form-group label {
             display: block; margin-bottom: 0.5rem; font-weight: 600;
@@ -63,13 +59,38 @@
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
         }
-        .form-group textarea { min-height: 80px; resize: vertical; }
+        .form-group textarea { min-height: 120px; resize: vertical; font-family: inherit; }
         .form-group small {
             display: block; margin-top: 0.3rem; color: var(--text-muted);
             font-size: 0.8rem;
         }
 
+        /* TABS DE TIPO DE CONTEÚDO */
+        .content-type-tabs {
+            display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
+            background: var(--dark); padding: 0.4rem; border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        .content-type-tab {
+            flex: 1; padding: 0.7rem; text-align: center; cursor: pointer;
+            border-radius: 8px; font-weight: 600; font-size: 0.9rem;
+            transition: all 0.3s; color: var(--text-muted);
+            border: none; background: transparent;
+        }
+        .content-type-tab.active { background: var(--primary); color: white; }
+
         /* UPLOAD DE IMAGEM */
+        .upload-tabs {
+            display: flex; gap: 0.5rem; margin-bottom: 1rem;
+        }
+        .upload-tab {
+            flex: 1; padding: 0.6rem; text-align: center; cursor: pointer;
+            border-radius: 8px; font-weight: 600; font-size: 0.85rem;
+            transition: all 0.3s; color: var(--text-muted);
+            border: 1px solid var(--border); background: var(--dark);
+        }
+        .upload-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
         .upload-area {
             border: 2px dashed var(--border);
             border-radius: 16px;
@@ -99,7 +120,7 @@
 
         .preview-img-container {
             width: 100%;
-            max-width: 280px;
+            max-width: 100%;
             margin: 0 auto;
             border-radius: 12px;
             overflow: hidden;
@@ -108,10 +129,10 @@
         }
         .preview-img {
             width: 100%;
-            aspect-ratio: 9 / 16;
-            object-fit: cover;
-            display: block;
+            height: auto;
             max-height: 500px;
+            object-fit: contain;
+            display: block;
         }
         .preview-img-label {
             position: absolute; bottom: 0; left: 0; right: 0;
@@ -169,8 +190,8 @@
         .preview-box h4 { color: var(--primary); margin-bottom: 1rem; font-size: 0.9rem; }
         .preview-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .preview-item:last-child { border-bottom: none; }
-        .preview-item span:first-child { color: var(--text-muted); }
-        .preview-item span:last-child { color: var(--text); font-weight: 600; word-break: break-word; text-align: right; max-width: 60%; }
+        .preview-item span:first-child { color: var(--text-muted); flex-shrink: 0; }
+        .preview-item span:last-child { color: var(--text); font-weight: 600; word-break: break-word; text-align: right; max-width: 65%; }
 
         .links-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
         .links-table th {
@@ -235,7 +256,7 @@
 <body>
     <div class="panel-container">
         <div class="logo">⚡ TechZone Painel</div>
-        <div class="subtitle">Crie landing pages monetizadas em segundos</div>
+        <div class="subtitle">Crie landing pages para qualquer conteúdo em segundos</div>
 
         <div class="tabs">
             <button class="tab active" onclick="switchTab('criar')">🚀 Criar Landing</button>
@@ -245,22 +266,33 @@
         <!-- PANEL CRIAR -->
         <div class="panel active" id="panel-criar">
             <div class="form-card">
+
+                <!-- TIPO DE CONTEÚDO -->
                 <div class="form-section">
-                    <div class="section-title">📱 Informações do App</div>
+                    <div class="section-title">📦 Tipo de Conteúdo</div>
+                    <div class="content-type-tabs">
+                        <button class="content-type-tab active" onclick="setContentType('app')">📱 App</button>
+                        <button class="content-type-tab" onclick="setContentType('txt')">📝 TXT / Senha</button>
+                        <button class="content-type-tab" onclick="setContentType('outro')">📁 Outro</button>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title" id="infoTitle">📱 Informações</div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Nome do App <span class="required">*</span></label>
+                            <label id="labelNome">Nome do App <span class="required">*</span></label>
                             <input type="text" id="appName" placeholder="Ex: Notion Mod Pro" oninput="updatePreview()">
                         </div>
                         <div class="form-group">
-                            <label>Versão</label>
-                            <input type="text" id="appVersion" placeholder="Ex: v4.2.1" oninput="updatePreview()">
+                            <label>Versão / Info extra</label>
+                            <input type="text" id="appVersion" placeholder="Ex: v4.2.1 ou Senha: 1234" oninput="updatePreview()">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Tamanho</label>
-                            <input type="text" id="appSize" placeholder="Ex: 45.2 MB" oninput="updatePreview()">
+                            <label>Tamanho / Tipo</label>
+                            <input type="text" id="appSize" placeholder="Ex: 45.2 MB ou 2KB" oninput="updatePreview()">
                         </div>
                         <div class="form-group">
                             <label>Categoria</label>
@@ -270,36 +302,62 @@
                                 <option value="🔓 Mod APK">🔓 Mod APK</option>
                                 <option value="💻 Windows">💻 Windows</option>
                                 <option value="🍎 macOS">🍎 macOS</option>
-                                <option value="📦 Outro">📦 Outro</option>
+                                <option value="📝 TXT">📝 TXT / Senha</option>
+                                <option value="📁 Outro">📁 Outro</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Descrição curta</label>
-                        <textarea id="appDesc" placeholder="Breve descrição do que o app faz..." oninput="updatePreview()"></textarea>
+                        <label>Descrição completa <span class="required">*</span></label>
+                        <textarea id="appDesc" placeholder="Digite a descrição completa...&#10;Pode incluir senhas, instruções, links, etc.&#10;Suporta quebras de linha." oninput="updatePreview()"></textarea>
+                        <small>Esta descrição aparecerá exatamente como digitada na landing page.</small>
                     </div>
                 </div>
 
                 <div class="form-section">
-                    <div class="section-title">🖼️ Capa do App (9:16)</div>
-                    <div class="form-group">
+                    <div class="section-title">🖼️ Imagem / Capa</div>
+
+                    <!-- Tabs de upload -->
+                    <div class="upload-tabs">
+                        <button class="upload-tab active" onclick="setUploadMode('file')" id="tabFile">📱 Do Celular</button>
+                        <button class="upload-tab" onclick="setUploadMode('url')" id="tabUrl">🔗 Link URL</button>
+                    </div>
+
+                    <!-- Upload do celular -->
+                    <div id="uploadFileSection">
                         <div class="upload-area" id="uploadArea" onclick="document.getElementById('imgInput').click()">
                             <input type="file" id="imgInput" class="upload-input" accept="image/*" onchange="handleImageUpload(event)">
                             <div id="uploadPlaceholder">
                                 <div class="upload-icon">📸</div>
                                 <div class="upload-text">Toque para enviar foto do celular</div>
-                                <div class="upload-hint">Proporção 9:16 (vertical) • Máx 2MB • JPEG/PNG</div>
+                                <div class="upload-hint">Qualquer proporção • JPEG/PNG • Máx 5MB</div>
                             </div>
                             <div id="uploadPreview" style="display:none; position: relative;">
                                 <button type="button" class="btn-remove-img" onclick="event.stopPropagation(); removeImage()">×</button>
                                 <div class="preview-img-container">
                                     <img id="previewImg" class="preview-img" src="" alt="Preview">
-                                    <div class="preview-img-label">📱 9:16 Compactado para Mobile</div>
+                                    <div class="preview-img-label">📱 Preview</div>
                                 </div>
                             </div>
                         </div>
                         <div class="compress-info" id="compressInfo">
-                            ✅ Imagem compactada e pronta para mobile
+                            ✅ Imagem carregada e pronta
+                        </div>
+                    </div>
+
+                    <!-- Link URL -->
+                    <div id="uploadUrlSection" style="display:none;">
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label>Cole o link direto da imagem (URL)</label>
+                            <input type="text" id="imgUrlInput" placeholder="https://exemplo.com/imagem.jpg" oninput="handleImageUrl(this.value)">
+                            <small>Ex: link do Imgur, Postimg, Telegram, etc.</small>
+                        </div>
+                        <div id="urlPreviewContainer" style="margin-top:1rem; display:none;">
+                            <div class="preview-img-container" style="position:relative;">
+                                <button type="button" class="btn-remove-img" onclick="removeImage()">×</button>
+                                <img id="urlPreviewImg" class="preview-img" src="" alt="Preview URL" onerror="this.style.display='none'" onload="this.style.display='block'">
+                                <div class="preview-img-label">🔗 Preview da URL</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -307,7 +365,7 @@
                 <div class="form-section">
                     <div class="section-title">🔗 Link Final</div>
                     <div class="form-group">
-                        <label>Link do Telegram / Download <span class="required">*</span></label>
+                        <label>Link de destino (Telegram, Download, etc) <span class="required">*</span></label>
                         <input type="text" id="destUrl" placeholder="https://t.me/seu_canal">
                         <small>Este é o destino final após o usuário passar pelos anúncios.</small>
                     </div>
@@ -322,6 +380,7 @@
                         <div class="preview-item"><span>Tamanho:</span><span id="previewSize">45.2 MB</span></div>
                         <div class="preview-item"><span>Descrição:</span><span id="previewDesc">Versão modificada com recursos premium desbloqueados.</span></div>
                         <div class="preview-item"><span>Imagem:</span><span id="previewImgStatus">Nenhuma</span></div>
+                        <div class="preview-item"><span>Link:</span><span id="previewLink">Não definido</span></div>
                     </div>
                 </div>
 
@@ -361,15 +420,16 @@
         </div>
     </div>
 
-    <!-- TOAST -->
     <div class="toast" id="toast">
         <div id="toastIcon">✅</div>
         <div id="toastText">Operação realizada!</div>
     </div>
 
     <script>
-        const STORAGE_KEY = 'techzone_landings_v4';
+        const STORAGE_KEY = 'techzone_landings_v5';
         let appImageBase64 = null;
+        let uploadMode = 'file'; // 'file' ou 'url'
+        let contentType = 'app';
 
         function getLandings() {
             try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
@@ -385,21 +445,60 @@
             if(tab === 'gerenciar') renderLinks();
         }
 
+        function setContentType(type) {
+            contentType = type;
+            document.querySelectorAll('.content-type-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const labelNome = document.getElementById('labelNome');
+            const infoTitle = document.getElementById('infoTitle');
+            const appName = document.getElementById('appName');
+            const appCategory = document.getElementById('appCategory');
+
+            if (type === 'app') {
+                infoTitle.textContent = '📱 Informações do App';
+                labelNome.innerHTML = 'Nome do App <span class="required">*</span>';
+                appName.placeholder = 'Ex: Notion Mod Pro';
+                appCategory.value = '📱 Apps';
+            } else if (type === 'txt') {
+                infoTitle.textContent = '📝 Informações do TXT';
+                labelNome.innerHTML = 'Título / Nome <span class="required">*</span>';
+                appName.placeholder = 'Ex: Acesso VIP - Senhas';
+                appCategory.value = '📝 TXT';
+            } else {
+                infoTitle.textContent = '📁 Informações';
+                labelNome.innerHTML = 'Nome do Conteúdo <span class="required">*</span>';
+                appName.placeholder = 'Ex: Pack Completo';
+                appCategory.value = '📁 Outro';
+            }
+            updatePreview();
+        }
+
+        function setUploadMode(mode) {
+            uploadMode = mode;
+            document.getElementById('tabFile').classList.toggle('active', mode === 'file');
+            document.getElementById('tabUrl').classList.toggle('active', mode === 'url');
+            document.getElementById('uploadFileSection').style.display = mode === 'file' ? 'block' : 'none';
+            document.getElementById('uploadUrlSection').style.display = mode === 'url' ? 'block' : 'none';
+        }
+
         function updatePreview() {
             const name = document.getElementById('appName').value || 'Notion Mod Pro';
             const ver = document.getElementById('appVersion').value || 'v4.2.1';
             const size = document.getElementById('appSize').value || '45.2 MB';
             const cat = document.getElementById('appCategory').value;
             const desc = document.getElementById('appDesc').value || 'Versão modificada com recursos premium desbloqueados.';
+            const url = document.getElementById('destUrl').value || 'Não definido';
 
             document.getElementById('previewTitle').textContent = name + ' ' + ver;
             document.getElementById('previewCat').textContent = cat;
             document.getElementById('previewSize').textContent = size;
-            document.getElementById('previewDesc').textContent = desc;
-            document.getElementById('previewImgStatus').textContent = appImageBase64 ? '✅ 9:16 Enviada' : 'Nenhuma';
+            document.getElementById('previewDesc').textContent = desc.substring(0, 80) + (desc.length > 80 ? '...' : '');
+            document.getElementById('previewImgStatus').textContent = appImageBase64 ? '✅ Enviada' : 'Nenhuma';
+            document.getElementById('previewLink').textContent = url.substring(0, 40) + (url.length > 40 ? '...' : '');
         }
 
-        // ========== UPLOAD E COMPRESSÃO 9:16 ==========
+        // ========== UPLOAD DO CELULAR ==========
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -411,69 +510,55 @@
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    // Canvas: força proporção 9:16, largura 450px
-                    const targetWidth = 450;
-                    const targetHeight = Math.round(targetWidth * 16 / 9); // 800px
+                appImageBase64 = e.target.result;
 
-                    const canvas = document.createElement('canvas');
-                    canvas.width = targetWidth;
-                    canvas.height = targetHeight;
-                    const ctx = canvas.getContext('2d');
+                document.getElementById('uploadPlaceholder').style.display = 'none';
+                document.getElementById('uploadPreview').style.display = 'block';
+                document.getElementById('uploadArea').classList.add('has-image');
+                document.getElementById('previewImg').src = appImageBase64;
+                document.getElementById('compressInfo').classList.add('show');
 
-                    // Fill dark background
-                    ctx.fillStyle = '#0f172a';
-                    ctx.fillRect(0, 0, targetWidth, targetHeight);
-
-                    // Calculate cover crop (centralizado)
-                    const imgRatio = img.width / img.height;
-                    const canvasRatio = targetWidth / targetHeight;
-                    let drawWidth, drawHeight, drawX, drawY;
-
-                    if (imgRatio > canvasRatio) {
-                        drawHeight = targetHeight;
-                        drawWidth = img.width * (targetHeight / img.height);
-                        drawX = (targetWidth - drawWidth) / 2;
-                        drawY = 0;
-                    } else {
-                        drawWidth = targetWidth;
-                        drawHeight = img.height * (targetWidth / img.width);
-                        drawX = 0;
-                        drawY = (targetHeight - drawHeight) / 2;
-                    }
-
-                    ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-
-                    // Compressão JPEG 0.65
-                    const compressed = canvas.toDataURL('image/jpeg', 0.65);
-                    appImageBase64 = compressed;
-
-                    // UI update
-                    document.getElementById('uploadPlaceholder').style.display = 'none';
-                    document.getElementById('uploadPreview').style.display = 'block';
-                    document.getElementById('uploadArea').classList.add('has-image');
-                    document.getElementById('previewImg').src = compressed;
-                    document.getElementById('compressInfo').classList.add('show');
-
-                    // Calcula tamanho aproximado
-                    const bytes = Math.round((compressed.length - 22) * 3 / 4);
-                    const kb = (bytes / 1024).toFixed(1);
-                    showToast('✅ Imagem compactada: ' + kb + 'KB (9:16)');
-                    updatePreview();
-                };
-                img.src = e.target.result;
+                const bytes = Math.round((appImageBase64.length - 22) * 3 / 4);
+                const kb = (bytes / 1024).toFixed(1);
+                showToast('✅ Imagem carregada: ' + kb + 'KB');
+                updatePreview();
             };
             reader.readAsDataURL(file);
         }
 
+        // ========== UPLOAD POR URL ==========
+        function handleImageUrl(url) {
+            if (!url || !url.startsWith('http')) {
+                document.getElementById('urlPreviewContainer').style.display = 'none';
+                appImageBase64 = null;
+                updatePreview();
+                return;
+            }
+
+            appImageBase64 = url;
+            const img = document.getElementById('urlPreviewImg');
+            img.src = url;
+            img.style.display = 'block';
+            document.getElementById('urlPreviewContainer').style.display = 'block';
+            showToast('✅ URL da imagem adicionada');
+            updatePreview();
+        }
+
         function removeImage() {
             appImageBase64 = null;
+
+            // Limpa upload file
             document.getElementById('imgInput').value = '';
             document.getElementById('uploadPlaceholder').style.display = 'block';
             document.getElementById('uploadPreview').style.display = 'none';
             document.getElementById('uploadArea').classList.remove('has-image');
             document.getElementById('compressInfo').classList.remove('show');
+
+            // Limpa upload URL
+            document.getElementById('imgUrlInput').value = '';
+            document.getElementById('urlPreviewContainer').style.display = 'none';
+            document.getElementById('urlPreviewImg').src = '';
+
             updatePreview();
         }
 
@@ -486,7 +571,8 @@
             const desc = document.getElementById('appDesc').value.trim();
             const url = document.getElementById('destUrl').value.trim();
 
-            if(!name) { showToast('❌ Digite o nome do app!'); return; }
+            if(!name) { showToast('❌ Digite o nome!'); return; }
+            if(!desc) { showToast('❌ Digite a descrição!'); return; }
             if(!url) { showToast('❌ Cole o link do destino!'); return; }
             if(!url.startsWith('http')) { showToast('❌ Link deve começar com http://'); return; }
 
@@ -497,10 +583,10 @@
             setTimeout(() => {
                 const data = {
                     n: name,
-                    v: ver || 'v1.0',
+                    v: ver || '',
                     s: size || 'N/A',
                     c: cat,
-                    d: desc || 'Download disponível.',
+                    d: desc,
                     u: url
                 };
 
@@ -508,13 +594,9 @@
                     data.img = appImageBase64;
                 }
 
+                // Encode Base64 robusto com UTF-8
                 const jsonStr = JSON.stringify(data);
-                let encoded;
-                try {
-                    encoded = btoa(jsonStr);
-                } catch (e) {
-                    encoded = btoa(unescape(encodeURIComponent(jsonStr)));
-                }
+                const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
 
                 const baseUrl = window.location.origin + '/index.html';
                 const finalLink = `${baseUrl}?d=${encoded}`;
@@ -526,7 +608,8 @@
                     finalLink: finalLink,
                     created: new Date().toLocaleString('pt-BR'),
                     clicks: 0,
-                    hasImg: !!appImageBase64
+                    hasImg: !!appImageBase64,
+                    type: contentType
                 });
                 saveLandings(landings);
 
@@ -575,13 +658,13 @@
                 return;
             }
 
-            let html = '<div style="overflow-x:auto;"><table class="links-table"><thead><tr><th>App</th><th>Criado</th><th>Cliques</th><th>Ações</th></tr></thead><tbody>';
+            let html = '<div style="overflow-x:auto;"><table class="links-table"><thead><tr><th>Conteúdo</th><th>Criado</th><th>Ações</th></tr></thead><tbody>';
             links.forEach(link => {
                 const imgTag = link.hasImg ? '🖼️ ' : '';
+                const typeEmoji = link.type === 'txt' ? '📝 ' : link.type === 'outro' ? '📁 ' : '📱 ';
                 html += `<tr>
-                    <td><strong>${imgTag}${link.title}</strong><br><small style="color:var(--text-muted)">${link.finalLink.substring(0,40)}...</small></td>
+                    <td><strong>${typeEmoji}${imgTag}${link.title}</strong><br><small style="color:var(--text-muted)">${link.finalLink.substring(0,40)}...</small></td>
                     <td>${link.created}</td>
-                    <td>${link.clicks || 0}</td>
                     <td>
                         <button class="btn-small" onclick="navigator.clipboard.writeText('${link.finalLink}');showToast('Copiado!')">📋</button>
                         <button class="btn-small" onclick="window.open('${link.finalLink}','_blank')">🔗</button>
