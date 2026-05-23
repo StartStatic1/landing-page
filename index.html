@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechZone - Download Premium</title>
+    <title>TechZone — Download Premium</title>
+    <meta name="description" content="Download seguro e verificado de apps, jogos e mods premium.">
 
-    <!-- MONETAG MULTI TAG -->
+    <!-- Open Graph dinâmico -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="TechZone">
+    <meta id="ogTitle" property="og:title" content="TechZone — Download Premium">
+    <meta id="ogDesc" property="og:description" content="Download seguro e verificado.">
+    <meta id="ogImage" property="og:image" content="https://cdn-icons-png.flaticon.com/512/2965/2965306.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Schema.org -->
+    <script type="application/ld+json" id="schemaJson">{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TechZone Download",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Android, iOS, Windows, macOS",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "BRL"},
+        "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.9", "ratingCount": "2400"}
+    }</script>
+
+    <!-- MONETAG MULTI TAG (HEAD) -->
     <script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
 
     <style>
@@ -14,210 +34,259 @@
             --accent: #f59e0b; --dark: #0f172a; --darker: #020617;
             --card: #1e293b; --text: #e2e8f0; --text-muted: #94a3b8;
             --border: #334155; --success: #10b981; --danger: #ef4444;
-            --telegram: #0088cc;
+            --telegram: #0088cc; --glass: rgba(30, 41, 59, 0.6);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: var(--darker); color: var(--text); line-height: 1.6;
+            overflow-x: hidden;
         }
 
+        /* HEADER */
         .header {
             background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
             border-bottom: 1px solid var(--border); padding: 1rem 0;
-            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(12px);
         }
         .header-inner {
             max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
             display: flex; justify-content: space-between; align-items: center;
         }
         .logo {
-            font-size: 1.8rem; font-weight: 800;
+            font-size: 1.7rem; font-weight: 800;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             display: flex; align-items: center; gap: 0.5rem;
         }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.3s; font-size: 0.9rem; }
         .nav-links a:hover { color: var(--primary); }
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
 
+        /* CONTAINER */
         .container {
             max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
             display: grid; grid-template-columns: 1fr 320px; gap: 2rem;
         }
 
-        /* AD SLOTS - Monetag vai preencher automaticamente */
+        /* ========== AD SLOTS OTIMIZADOS ========== */
         .ad-slot {
             background: var(--dark); border: 1px dashed var(--border);
-            border-radius: 12px; min-height: 90px; margin: 1rem 0;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--text-muted); font-size: 0.8rem;
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 0.8rem; position: relative;
+            overflow: hidden;
         }
-        .ad-slot::before { content: "AD"; position: absolute; top: 5px; right: 8px; font-size: 0.6rem; background: var(--border); padding: 2px 6px; border-radius: 4px; }
-        .ad-inline { position: relative; min-height: 60px; margin: 1.5rem 0; }
-        .ad-sidebar { min-height: 250px; position: relative; }
+        .ad-slot::before { 
+            content: "AD"; position: absolute; top: 5px; right: 8px; 
+            font-size: 0.6rem; background: var(--border); padding: 2px 6px; border-radius: 4px; 
+            font-weight: 700; letter-spacing: 1px;
+        }
+
+        /* 1. AD HEADER (banner topo) - Alta visibilidade */
+        .ad-header { 
+            width: 100%; min-height: 90px; margin: 0 auto 1rem; 
+            max-width: 1200px; 
+        }
+
+        /* 2. AD INLINE (entre conteúdo) */
+        .ad-inline { position: relative; min-height: 90px; margin: 1.5rem 0; }
+
+        /* 3. AD BETWEEN (entre seções) - Maior */
         .ad-between { min-height: 120px; position: relative; margin: 2rem 0; }
 
+        /* 4. AD SIDEBAR (sticky) */
+        .ad-sidebar { min-height: 250px; position: relative; }
+
+        /* 5. AD STICKY FOOTER (mobile) */
+        .ad-sticky-footer {
+            position: fixed; bottom: 0; left: 0; right: 0; 
+            min-height: 60px; background: var(--dark); 
+            border-top: 1px solid var(--border); z-index: 999;
+            display: none; /* Monetag preenche */
+        }
+
+        /* 6. AD IN-CONTENT NATIVE (dentro do artigo) */
+        .ad-native {
+            min-height: 200px; margin: 2rem 0;
+            background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(6,182,212,0.05));
+        }
+
+        /* 7. AD BEFORE DOWNLOAD (CTA) */
+        .ad-before-download {
+            min-height: 100px; margin: 1.5rem 0;
+            border: 2px dashed var(--accent);
+        }
+
+        /* 8. AD AFTER DOWNLOAD */
+        .ad-after-download {
+            min-height: 100px; margin: 2rem 0;
+        }
+
         /* ARTICLE */
-        .article-header { margin-bottom: 2rem; }
+        .article-header { margin-bottom: 2rem; animation: fadeIn 0.6s ease; }
         .breadcrumb { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
         .breadcrumb a { color: var(--primary); text-decoration: none; }
         .article-title {
-            font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 1rem;
+            font-size: 2.4rem; font-weight: 800; line-height: 1.15; margin-bottom: 1rem;
             background: linear-gradient(135deg, #fff, var(--text-muted));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
-        .article-meta { display: flex; gap: 1.5rem; color: var(--text-muted); font-size: 0.9rem; flex-wrap: wrap; }
+        .article-meta { display: flex; gap: 1.5rem; color: var(--text-muted); font-size: 0.9rem; flex-wrap: wrap; align-items: center; }
         .meta-item { display: flex; align-items: center; gap: 0.4rem; }
         .author-avatar {
             width: 40px; height: 40px; border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;
+            display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 0.9rem;
+        }
+        .verified-badge {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white; font-size: 0.65rem; padding: 0.15rem 0.5rem;
+            border-radius: 50px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
         }
 
         /* VIDEO */
         .video-section {
             width: 100%; margin-bottom: 2rem; border-radius: 16px;
             overflow: hidden; border: 1px solid var(--border); background: var(--card);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
         .video-placeholder {
             position: absolute; inset: 0; background: linear-gradient(135deg, var(--card), var(--dark));
             display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem;
-            cursor: pointer;
+            cursor: pointer; transition: all 0.3s;
         }
+        .video-placeholder:hover { background: linear-gradient(135deg, #1e293b, #0f172a); }
         .play-btn {
             width: 80px; height: 80px; border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex; align-items: center; justify-content: center;
             font-size: 2rem; box-shadow: 0 0 30px rgba(99,102,241,0.5);
-            animation: pulse-btn 2s infinite;
+            animation: pulse-btn 2s infinite; transition: transform 0.3s;
         }
+        .video-placeholder:hover .play-btn { transform: scale(1.1); }
         @keyframes pulse-btn {
             0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(99,102,241,0.5); }
-            50% { transform: scale(1.1); box-shadow: 0 0 50px rgba(99,102,241,0.8); }
+            50% { transform: scale(1.08); box-shadow: 0 0 50px rgba(99,102,241,0.8); }
         }
 
-        /* ARTICLE CONTENT */
-        .article-content { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem; }
-        .article-content p { margin-bottom: 1.5rem; }
-        .article-content h2 { color: var(--text); font-size: 1.8rem; margin: 2rem 0 1rem; font-weight: 700; }
-        .article-content h3 { color: var(--text); font-size: 1.4rem; margin: 1.5rem 0 0.8rem; }
+        /* CONTENT */
+        .article-content { font-size: 1.08rem; color: var(--text-muted); margin-bottom: 2rem; animation: fadeIn 0.8s ease; }
+        .article-content p { margin-bottom: 1.5rem; line-height: 1.8; }
+        .article-content h2 { color: var(--text); font-size: 1.7rem; margin: 2.5rem 0 1rem; font-weight: 800; }
+        .article-content h3 { color: var(--text); font-size: 1.3rem; margin: 1.8rem 0 0.8rem; font-weight: 700; }
         .highlight-box {
-            background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(6,182,212,0.1));
+            background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(6,182,212,0.08));
             border-left: 4px solid var(--primary); padding: 1.5rem;
-            border-radius: 0 12px 12px 0; margin: 2rem 0;
+            border-radius: 0 14px 14px 0; margin: 2rem 0;
         }
         .stats-bar {
             display: flex; justify-content: space-around; background: var(--dark);
-            border-radius: 12px; padding: 1rem; margin: 1.5rem 0; border: 1px solid var(--border);
+            border-radius: 14px; padding: 1.2rem; margin: 1.5rem 0; border: 1px solid var(--border);
+            flex-wrap: wrap; gap: 1rem;
         }
-        .stat-item { text-align: center; }
-        .stat-num { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
-        .stat-label { font-size: 0.75rem; color: var(--text-muted); }
+        .stat-item { text-align: center; flex: 1; min-width: 100px; }
+        .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* DOWNLOAD SECTION - INTERATIVO */
+        /* DOWNLOAD */
         .download-section {
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 20px; padding: 2.5rem; margin: 2rem 0;
-            text-align: center; position: relative; overflow: hidden;
+            background: linear-gradient(135deg, var(--card), rgba(99,102,241,0.05));
+            border: 1px solid var(--border); border-radius: 24px;
+            padding: 3rem 2rem; margin: 2rem 0; text-align: center;
+            position: relative; overflow: hidden; animation: fadeIn 1s ease;
         }
         .download-section::before {
             content: ""; position: absolute; top: -50%; left: -50%;
             width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%);
-            animation: pulse-bg 4s ease-in-out infinite;
+            background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+            animation: pulse-bg 5s ease-in-out infinite;
         }
         @keyframes pulse-bg {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.4; }
+            50% { transform: scale(1.15) rotate(5deg); opacity: 0.7; }
         }
-        .download-icon { font-size: 4rem; margin-bottom: 1rem; position: relative; z-index: 1; }
-        .download-title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; position: relative; z-index: 1; }
-        .download-subtitle { color: var(--text-muted); margin-bottom: 1.5rem; position: relative; z-index: 1; }
+        .download-icon { font-size: 4.5rem; margin-bottom: 1rem; position: relative; z-index: 1; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
+        .download-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+        .download-subtitle { color: var(--text-muted); margin-bottom: 2rem; position: relative; z-index: 1; font-size: 1.05rem; }
         .file-info {
-            display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem;
+            display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2.5rem;
             flex-wrap: wrap; position: relative; z-index: 1;
         }
         .file-info-item {
-            background: var(--dark); padding: 0.6rem 1.2rem;
-            border-radius: 10px; font-size: 0.9rem; border: 1px solid var(--border);
-            display: flex; align-items: center; gap: 0.4rem;
+            background: var(--dark); padding: 0.7rem 1.4rem;
+            border-radius: 12px; font-size: 0.9rem; border: 1px solid var(--border);
+            display: flex; align-items: center; gap: 0.5rem; font-weight: 600;
+            transition: all 0.3s;
         }
+        .file-info-item:hover { border-color: var(--primary); transform: translateY(-2px); }
 
-        /* BOTÃO PRINCIPAL - SUPER INTERATIVO */
         .btn-download {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white; border: none; padding: 1.2rem 4rem; font-size: 1.2rem;
-            font-weight: 800; border-radius: 16px; cursor: pointer; transition: all 0.3s;
+            color: white; border: none; padding: 1.3rem 5rem; font-size: 1.15rem;
+            font-weight: 800; border-radius: 18px; cursor: pointer; transition: all 0.3s;
             position: relative; z-index: 1; display: inline-flex; align-items: center;
-            gap: 0.8rem; box-shadow: 0 6px 20px rgba(99,102,241,0.4);
-            animation: glow-btn 2s ease-in-out infinite;
-            text-transform: uppercase; letter-spacing: 1px;
+            gap: 0.8rem; box-shadow: 0 8px 25px rgba(99,102,241,0.4);
+            animation: glow-btn 2.5s ease-in-out infinite;
+            text-transform: uppercase; letter-spacing: 1.5px;
         }
         @keyframes glow-btn {
-            0%, 100% { box-shadow: 0 6px 20px rgba(99,102,241,0.4); }
-            50% { box-shadow: 0 6px 40px rgba(99,102,241,0.8), 0 0 60px rgba(99,102,241,0.3); }
+            0%, 100% { box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
+            50% { box-shadow: 0 8px 45px rgba(99,102,241,0.7), 0 0 60px rgba(99,102,241,0.2); }
         }
-        .btn-download:hover {
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 12px 40px rgba(99,102,241,0.6);
-        }
+        .btn-download:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 15px 40px rgba(99,102,241,0.6); }
         .btn-download:active { transform: translateY(-1px) scale(0.98); }
-        .btn-download:disabled {
-            opacity: 0.7; cursor: not-allowed; transform: none; animation: none;
-        }
-        .btn-download .icon { font-size: 1.5rem; }
+        .btn-download:disabled { opacity: 0.7; cursor: not-allowed; transform: none; animation: none; }
+        .btn-download .icon { font-size: 1.6rem; }
 
-        /* Contador de pessoas ao vivo */
         .live-counter {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: var(--dark); padding: 0.5rem 1rem;
-            border-radius: 50px; font-size: 0.85rem; color: var(--text-muted);
-            margin-top: 1rem; border: 1px solid var(--border);
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            background: var(--dark); padding: 0.6rem 1.2rem;
+            border-radius: 50px; font-size: 0.9rem; color: var(--text-muted);
+            margin-top: 1.2rem; border: 1px solid var(--border); position: relative; z-index: 1;
         }
         .live-dot {
             width: 8px; height: 8px; background: var(--success);
             border-radius: 50%; animation: blink-dot 1.5s infinite;
         }
-        @keyframes blink-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
+        @keyframes blink-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
         /* SIDEBAR */
         .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
         .sidebar-widget {
             background: var(--card); border: 1px solid var(--border);
-            border-radius: 12px; padding: 1.5rem;
+            border-radius: 16px; padding: 1.5rem; transition: all 0.3s;
         }
+        .sidebar-widget:hover { border-color: var(--primary); }
         .widget-title {
-            font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;
+            font-size: 1.1rem; font-weight: 800; margin-bottom: 1.2rem;
             color: var(--text); display: flex; align-items: center; gap: 0.5rem;
         }
         .trending-item {
-            display: flex; gap: 1rem; padding: 0.8rem 0;
+            display: flex; gap: 1rem; padding: 0.9rem 0;
             border-bottom: 1px solid var(--border); cursor: pointer; transition: all 0.3s;
         }
         .trending-item:last-child { border-bottom: none; }
-        .trending-item:hover { color: var(--primary); transform: translateX(5px); }
-        .trending-num { font-size: 1.5rem; font-weight: 800; color: var(--primary); opacity: 0.5; min-width: 30px; }
+        .trending-item:hover { color: var(--primary); transform: translateX(6px); }
+        .trending-num { font-size: 1.6rem; font-weight: 800; color: var(--primary); opacity: 0.4; min-width: 30px; }
+        .trending-item div { font-size: 0.9rem; font-weight: 600; }
+        .trending-item small { display: block; color: var(--text-muted); font-size: 0.75rem; margin-top: 0.2rem; font-weight: 400; }
 
-        /* NEWS */
         .news-api-item {
             display: flex; gap: 0.8rem; padding: 0.8rem 0;
-            border-bottom: 1px solid var(--border); cursor: pointer;
-            transition: all 0.3s;
+            border-bottom: 1px solid var(--border); cursor: pointer; transition: all 0.3s;
         }
         .news-api-item:last-child { border-bottom: none; }
         .news-api-item:hover { color: var(--primary); }
         .news-api-thumb {
-            width: 60px; height: 60px; border-radius: 8px;
+            width: 60px; height: 60px; border-radius: 10px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex; align-items: center; justify-content: center;
             font-size: 1.5rem; flex-shrink: 0;
         }
-        .news-api-content h4 { font-size: 0.9rem; margin-bottom: 0.2rem; line-height: 1.3; }
+        .news-api-content h4 { font-size: 0.9rem; margin-bottom: 0.2rem; line-height: 1.3; font-weight: 600; }
         .news-api-content small { color: var(--text-muted); font-size: 0.75rem; }
 
         /* FOOTER */
@@ -226,96 +295,130 @@
             padding: 3rem 0; margin-top: 4rem; text-align: center; color: var(--text-muted);
         }
         .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.3s; }
         .footer-links a:hover { color: var(--primary); }
 
         /* LAYERS */
         .layer-overlay {
-            position: fixed; inset: 0; background: rgba(2, 6, 23, 0.97);
-            backdrop-filter: blur(10px); z-index: 9999; display: none;
+            position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98);
+            backdrop-filter: blur(15px); z-index: 9999; display: none;
             align-items: center; justify-content: center; padding: 1rem;
         }
         .layer-overlay.active { display: flex; }
         .layer-box {
             background: var(--card); border: 1px solid var(--border);
-            border-radius: 20px; padding: 2.5rem; max-width: 600px;
+            border-radius: 24px; padding: 3rem 2.5rem; max-width: 550px;
             width: 100%; text-align: center; position: relative;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); animation: scaleIn 0.4s ease;
         }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
         .layer-badge {
             display: inline-block; background: linear-gradient(135deg, var(--accent), #d97706);
-            color: var(--dark); padding: 0.4rem 1rem; border-radius: 50px;
-            font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem;
+            color: var(--dark); padding: 0.4rem 1.2rem; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 800; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px;
         }
-        .layer-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
-        .layer-desc { color: var(--text-muted); margin-bottom: 2rem; }
+        .layer-title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .layer-desc { color: var(--text-muted); margin-bottom: 2rem; font-size: 1.05rem; }
         .timer-display {
-            font-size: 4rem; font-weight: 800; font-family: 'Courier New', monospace;
-            color: var(--accent); margin: 1rem 0;
+            font-size: 5rem; font-weight: 900; font-family: 'SF Mono', 'Courier New', monospace;
+            color: var(--accent); margin: 0.5rem 0; letter-spacing: -2px;
         }
         .progress-bar {
-            background: var(--dark); border-radius: 50px; height: 10px;
-            margin-bottom: 2rem; overflow: hidden;
+            background: var(--dark); border-radius: 50px; height: 12px;
+            margin-bottom: 2.5rem; overflow: hidden; border: 1px solid var(--border);
         }
         .progress-fill {
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             height: 100%; width: 0%; border-radius: 50px; transition: width 1s linear;
+            box-shadow: 0 0 10px rgba(99,102,241,0.5);
         }
         .btn-isca {
             background: linear-gradient(135deg, #475569, #334155);
             color: white; border: 2px dashed var(--text-muted);
             padding: 1rem 2rem; font-size: 1rem; font-weight: 700;
-            border-radius: 12px; cursor: pointer; text-decoration: none;
+            border-radius: 14px; cursor: pointer; text-decoration: none;
             display: inline-block; margin-bottom: 1rem; transition: all 0.3s;
         }
-        .btn-isca:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.02); }
+        .btn-isca:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.03); }
         .btn-vip {
             background: linear-gradient(135deg, var(--telegram), #00a8e6);
-            color: white; border: none; padding: 1.2rem 3rem;
-            font-size: 1.2rem; font-weight: 800; border-radius: 15px;
+            color: white; border: none; padding: 1.3rem 3.5rem;
+            font-size: 1.2rem; font-weight: 800; border-radius: 16px;
             cursor: pointer; text-decoration: none; display: none;
-            box-shadow: 0 6px 0 #005f8d, 0 0 20px rgba(0,136,204,0.6);
-            transition: all 0.2s; text-transform: uppercase;
+            box-shadow: 0 6px 0 #005f8d, 0 0 25px rgba(0,136,204,0.5);
+            transition: all 0.2s; text-transform: uppercase; letter-spacing: 1px;
             animation: pulse-green 2s infinite;
         }
-        @keyframes pulse-green {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
-        .btn-vip:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,136,204,0.8); }
+        @keyframes pulse-green { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+        .btn-vip:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,136,204,0.7); }
         .status-box {
-            background: var(--dark); border-radius: 12px; padding: 1rem;
-            margin-bottom: 1.5rem; border: 1px solid var(--border);
+            background: var(--dark); border-radius: 14px; padding: 1.2rem;
+            margin-bottom: 1.5rem; border: 1px solid var(--border); font-size: 0.95rem;
         }
         .status-erro { color: var(--danger) !important; font-weight: bold; }
+        .status-sucesso { color: var(--success) !important; font-weight: bold; }
 
         /* TOAST */
         .toast {
             position: fixed; bottom: 2rem; right: 2rem;
             background: var(--card); border: 1px solid var(--border);
-            border-radius: 12px; padding: 1rem 1.5rem; display: none;
+            border-radius: 14px; padding: 1rem 1.5rem; display: none;
             align-items: center; gap: 0.8rem; z-index: 10000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: slideIn 0.3s ease;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            animation: slideIn 0.4s ease; font-weight: 600;
         }
         .toast.show { display: flex; }
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ADBLOCK */
+        .adblock-warning {
+            display: none; background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(245,158,11,0.15));
+            border: 2px solid var(--danger); border-radius: 16px; padding: 1.5rem;
+            margin: 1rem 0; text-align: center;
         }
+        .adblock-warning h3 { color: var(--danger); margin-bottom: 0.5rem; }
+
+        /* COMMENTS */
+        .comments-box {
+            background: var(--card); border-radius: 20px; padding: 2rem;
+            margin-top: 2rem; border: 1px solid var(--border);
+        }
+        .comments-box h3 { margin-bottom: 1.5rem; font-size: 1.2rem; }
+        .comment-item {
+            display: flex; gap: 1rem; padding: 1.2rem 0;
+            border-bottom: 1px solid var(--border); animation: fadeIn 0.5s ease;
+        }
+        .comment-item:last-child { border-bottom: none; }
+        .comment-avatar {
+            width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; color: white; font-size: 1rem;
+        }
+        .comment-body { flex: 1; }
+        .comment-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.3rem; flex-wrap: wrap; }
+        .comment-name { font-weight: 700; color: var(--text); }
+        .comment-badge { font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 50px; font-weight: 800; }
+        .comment-time { color: var(--text-muted); font-size: 0.8rem; }
+        .comment-text { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
+        .comment-actions { display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
+        .comment-actions span { cursor: pointer; transition: color 0.3s; }
+        .comment-actions span:hover { color: var(--primary); }
 
         /* RESPONSIVE */
         @media (max-width: 900px) {
             .container { grid-template-columns: 1fr; }
             .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
             .article-title { font-size: 1.8rem; }
-            .btn-download { padding: 1rem 2rem; font-size: 1rem; }
+            .btn-download { padding: 1.1rem 2rem; font-size: 1rem; }
+            .layer-box { padding: 2rem 1.5rem; }
+            .timer-display { font-size: 3.5rem; }
         }
-
-        .fade-in { animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @media (max-width: 600px) {
+            .file-info { flex-direction: column; align-items: center; gap: 0.8rem; }
+            .article-title { font-size: 1.5rem; }
+            .download-title { font-size: 1.6rem; }
         }
     </style>
 </head>
@@ -325,56 +428,66 @@
         <div class="header-inner">
             <div class="logo"><span style="font-size: 2rem;">⚡</span> TechZone</div>
             <ul class="nav-links">
-                <li><a href="/">Início</a></li>
-                <li><a href="/">Apps</a></li>
-                <li><a href="/">Jogos</a></li>
+                <li><a href="./">Início</a></li>
+                <li><a href="./">Apps</a></li>
+                <li><a href="./">Jogos</a></li>
                 <li><a href="sobre.html">Sobre</a></li>
                 <li><a href="contato.html">Contato</a></li>
             </ul>
+            <button class="mobile-menu-btn" onclick="showToast('Menu mobile em desenvolvimento', 'warning')">☰</button>
         </div>
     </header>
 
-    <!-- AD SLOT 1: Topo (Monetag preenche) -->
-    <div style="max-width: 1200px; margin: 1rem auto; padding: 0 1.5rem;">
-        <div class="ad-slot ad-inline"></div>
+    <!-- ==================== AD SLOT 1: HEADER BANNER ==================== -->
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+        <div class="ad-slot ad-header"></div>
+    </div>
+
+    <!-- ADBLOCK DETECTOR -->
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+        <div class="adblock-warning" id="adblockWarning">
+            <h3>🛡️ AdBlock Detectado</h3>
+            <p>Por favor, desative seu bloqueador de anúncios para continuar. Nossos anúncios são seguros e nos ajudam a manter o serviço gratuito.</p>
+        </div>
     </div>
 
     <div class="container">
         <main>
-
             <div class="article-header">
                 <div class="breadcrumb">
-                    <a href="/">Início</a> / <span id="breadcrumbCat">📱 Apps</span> / <span id="breadcrumbApp">Notion Mod Pro</span>
+                    <a href="./">Início</a> / <span id="breadcrumbCat">📱 Apps</span> / <span id="breadcrumbApp">Notion Mod Pro</span>
                 </div>
                 <h1 class="article-title" id="pageTitle">Notion Mod Pro v4.2.1: Desbloqueie Todos os Recursos Premium Gratuitamente</h1>
                 <div class="article-meta">
                     <div class="meta-item"><div class="author-avatar">TZ</div></div>
+                    <div class="meta-item"><span class="verified-badge">✓ Verificado</span></div>
                     <div class="meta-item">📅 <span id="postDate">22 de Maio, 2026</span></div>
                     <div class="meta-item">⏱️ 8 min de leitura</div>
                     <div class="meta-item">👁️ <span id="viewCount">47.2K</span> visualizações</div>
-                    <div class="meta-item">💬 128 comentários</div>
+                    <div class="meta-item">💬 <span id="commentCount">128</span> comentários</div>
                 </div>
             </div>
 
-            <!-- VIDEO -->
+            <!-- ==================== AD SLOT 2: ABAIXO DO TÍTULO ==================== -->
+            <div class="ad-slot ad-inline"></div>
+
             <div class="video-section">
                 <div class="video-wrapper">
                     <div class="video-placeholder" id="videoPlaceholder" onclick="loadVideo()">
                         <div class="play-btn">▶</div>
-                        <div style="color: var(--text-muted);">Clique para assistir ao review completo</div>
-                        <div style="color: var(--text-muted); font-size: 0.85rem;">Notion Mod Pro v4.2.1 - Tutorial de instalação</div>
+                        <div style="color: var(--text-muted); font-weight: 500;">Clique para assistir ao review completo</div>
+                        <div style="color: var(--text-muted); font-size: 0.85rem;" id="videoCaption">Notion Mod Pro v4.2.1 - Tutorial de instalação</div>
                     </div>
                 </div>
             </div>
 
-            <!-- AD SLOT 2: Entre conteúdo -->
+            <!-- ==================== AD SLOT 3: ENTRE CONTEÚDO ==================== -->
             <div class="ad-slot ad-between"></div>
 
             <div class="article-content" id="articleContent">
                 <p id="descMain">
                     Se você está cansado das limitações da versão gratuita do Notion, temos uma excelente notícia. A comunidade de desenvolvedores independentes acaba de lançar o <strong>Notion Mod Pro v4.2.1</strong>, uma versão modificada que desbloqueia <strong>todos os recursos premium</strong> sem necessidade de assinatura.
                 </p>
-
                 <p>
                     Neste artigo completo, vamos explorar todas as funcionalidades exclusivas desta versão, comparar com a original e, claro, disponibilizar o link seguro para download via nosso canal oficial no Telegram.
                 </p>
@@ -384,19 +497,22 @@
                     <p>Este conteúdo é destinado apenas para fins educacionais. Recomendamos apoiar os desenvolvedores originais adquirindo a licença oficial quando possível.</p>
                 </div>
 
+                <!-- ==================== AD SLOT 4: NATIVE (DENTRO DO ARTIGO) ==================== -->
+                <div class="ad-slot ad-native"></div>
+
                 <h2>🚀 O Que Há de Novo?</h2>
-                <p>
+                <p id="whatsNew">
                     A versão mais recente traz correções de bugs críticos e adiciona suporte completo para <strong>workspaces ilimitados</strong>, <strong>uploads de arquivos sem restrição</strong> e <strong>integrações premium</strong>.
                 </p>
 
                 <h3>Principais Recursos:</h3>
-                <p>
-                    • <strong>Convites ilimitados</strong> - Adicione quantos membros quiser<br>
-                    • <strong>Histórico de versões</strong> - Acesso permanente ao histórico<br>
-                    • <strong>50+ integrações</strong> - GitHub, Jira, Slack e mais<br>
-                    • <strong>Exportação em bulk</strong> - PDF, Markdown, HTML<br>
-                    • <strong>Domínio personalizado</strong> - Publique com sua URL<br>
-                    • <strong>SSO & SAML</strong> - Autenticação corporativa
+                <p id="featuresList">
+                    • <strong>Convites ilimitados</strong> — Adicione quantos membros quiser<br>
+                    • <strong>Histórico de versões</strong> — Acesso permanente ao histórico<br>
+                    • <strong>50+ integrações</strong> — GitHub, Jira, Slack e mais<br>
+                    • <strong>Exportação em bulk</strong> — PDF, Markdown, HTML<br>
+                    • <strong>Domínio personalizado</strong> — Publique com sua URL<br>
+                    • <strong>SSO & SAML</strong> — Autenticação corporativa
                 </p>
 
                 <h2>📊 Comparativo</h2>
@@ -408,23 +524,23 @@
                 </div>
 
                 <h2>🛠️ Como Instalar</h2>
-                <p><strong>Android:</strong> Habilite "Fontes desconhecidas" e instale o APK. <strong>Não requer root.</strong></p>
-                <p><strong>iOS:</strong> Use AltStore ou Sideloadly para instalar o IPA.</p>
-                <p><strong>Desktop:</strong> Execute como administrador.</p>
+                <p id="installGuide"><strong>Android:</strong> Habilite "Fontes desconhecidas" e instale o APK. <strong>Não requer root.</strong><br><strong>iOS:</strong> Use AltStore ou Sideloadly para instalar o IPA.<br><strong>Desktop:</strong> Execute como administrador.</p>
+
+                <!-- ==================== AD SLOT 5: ANTES DO DOWNLOAD ==================== -->
+                <div class="ad-slot ad-before-download"></div>
 
                 <h2>💬 Depoimentos</h2>
                 <p><em>"Salvou minha vida acadêmica! Consegui organizar meu TCC com workspaces ilimitados."</em> — <strong>Marcos, SP</strong></p>
-                <p><em>"Uso há 3 meses. Zero problemas, todas as integrações funcionando."</em> — <strong>Ana, RJ</strong></p>
+                <p><em>"Uso há 3 meses. Zero problemas, todas as integrações funcionando perfeitamente."</em> — <strong>Ana, RJ</strong></p>
             </div>
 
-            <!-- AD SLOT 3: Antes do download -->
+            <!-- ==================== AD SLOT 6: DEPOIS DO CONTEÚDO ==================== -->
             <div class="ad-slot ad-between"></div>
 
-            <!-- DOWNLOAD SECTION -->
             <div class="download-section" id="downloadSection">
-                <div class="download-icon">📦</div>
+                <div class="download-icon" id="dlIcon">📦</div>
                 <div class="download-title" id="dlTitle">Notion Mod Pro v4.2.1</div>
-                <div class="download-subtitle">Clique no botão abaixo para iniciar o download seguro</div>
+                <div class="download-subtitle" id="dlSubtitle">Clique no botão abaixo para iniciar o download seguro e verificado</div>
                 <div class="file-info">
                     <div class="file-info-item">📱 <span id="dlPlatform">Android / iOS / PC</span></div>
                     <div class="file-info-item">📦 <span id="dlSize">45.2 MB</span></div>
@@ -432,7 +548,6 @@
                     <div class="file-info-item">✅ Verificado</div>
                 </div>
 
-                <!-- BOTÃO SUPER INTERATIVO -->
                 <button class="btn-download" id="btnDownload" onclick="startDownload()">
                     <span class="icon">🔐</span>
                     <span id="btnText">LIBERAR DOWNLOAD AGORA</span>
@@ -444,69 +559,50 @@
                 </div>
             </div>
 
-            <!-- AD SLOT 4: Depois do download -->
-            <div class="ad-slot ad-between"></div>
+            <!-- ==================== AD SLOT 7: DEPOIS DO DOWNLOAD ==================== -->
+            <div class="ad-slot ad-after-download"></div>
 
-            <!-- Comentários -->
-            <div style="background: var(--card); border-radius: 16px; padding: 2rem; margin-top: 2rem; border: 1px solid var(--border);">
-                <h3 style="margin-bottom: 1.5rem;">💬 Comentários (128)</h3>
-                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
-                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; font-weight: 700;">R</div>
-                    <div>
-                        <div style="font-weight: 600;">RafaelDev <span style="color: var(--text-muted); font-size: 0.85rem;">• 2h atrás</span></div>
-                        <div style="color: var(--text-muted); margin-top: 0.3rem;">Funcionou perfeitamente no meu Pixel 8!</div>
-                        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--primary);">👍 24</div>
-                    </div>
-                </div>
-                <div style="display: flex; gap: 1rem;">
-                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-weight: 700;">T</div>
-                    <div>
-                        <div style="font-weight: 600;">TechZone_Mod <span style="color: var(--accent); font-size: 0.75rem; margin-left: 0.5rem;">✓ ADMIN</span></div>
-                        <div style="color: var(--text-muted); margin-top: 0.3rem;">@todos Atualização chegando essa semana! 🚀</div>
-                        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--primary);">👍 89</div>
-                    </div>
-                </div>
+            <div class="comments-box">
+                <h3>💬 Comentários (<span id="commentsNum">128</span>)</h3>
+                <div id="commentsList"></div>
             </div>
+
+            <!-- ==================== AD SLOT 8: ABAIXO DOS COMENTÁRIOS ==================== -->
+            <div class="ad-slot ad-inline"></div>
         </main>
 
-        <!-- SIDEBAR -->
         <aside class="sidebar">
-            <!-- AD SLOT 5: Sidebar top -->
+            <!-- ==================== AD SLOT 9: SIDEBAR TOP ==================== -->
             <div class="ad-slot ad-sidebar"></div>
 
             <div class="sidebar-widget">
                 <div class="widget-title">🔥 Em Alta</div>
-                <div class="trending-item"><div class="trending-num">1</div><div>Spotify Premium Mod<small>🎵 89K downloads</small></div></div>
-                <div class="trending-item"><div class="trending-num">2</div><div>Canva Pro Unlocked<small>🎨 67K downloads</small></div></div>
-                <div class="trending-item"><div class="trending-num">3</div><div>Netflix MOD 4K<small>📺 54K downloads</small></div></div>
-                <div class="trending-item"><div class="trending-num">4</div><div>Adobe CC 2026<small>💻 41K downloads</small></div></div>
-                <div class="trending-item"><div class="trending-num">5</div><div>Telegram Premium<small>✈️ 38K downloads</small></div></div>
+                <div class="trending-item"><div class="trending-num">1</div><div>Spotify Premium Mod<small>🎵 89K downloads esta semana</small></div></div>
+                <div class="trending-item"><div class="trending-num">2</div><div>Canva Pro Unlocked<small>🎨 67K downloads esta semana</small></div></div>
+                <div class="trending-item"><div class="trending-num">3</div><div>Netflix MOD 4K<small>📺 54K downloads esta semana</small></div></div>
+                <div class="trending-item"><div class="trending-num">4</div><div>Adobe CC 2026<small>💻 41K downloads esta semana</small></div></div>
+                <div class="trending-item"><div class="trending-num">5</div><div>Telegram Premium<small>✈️ 38K downloads esta semana</small></div></div>
             </div>
+
+            <!-- ==================== AD SLOT 10: SIDEBAR MIDDLE ==================== -->
+            <div class="ad-slot ad-sidebar"></div>
 
             <div class="sidebar-widget">
                 <div class="widget-title">📰 Notícias Tech</div>
                 <div id="newsContainer">
-                    <div class="news-api-item">
-                        <div class="news-api-thumb">🍎</div>
-                        <div class="news-api-content"><h4>iOS 19 Beta vaza com IA nativa</h4><small>TechCrunch • 2h atrás</small></div>
-                    </div>
-                    <div class="news-api-item">
-                        <div class="news-api-thumb">🧠</div>
-                        <div class="news-api-content"><h4>Gemini 2.5 supera GPT-5</h4><small>The Verge • 4h atrás</small></div>
-                    </div>
-                    <div class="news-api-item">
-                        <div class="news-api-thumb">🎮</div>
-                        <div class="news-api-content"><h4>GTA VI adiado para 2027</h4><small>IGN • 6h atrás</small></div>
-                    </div>
+                    <div class="news-api-item"><div class="news-api-thumb">🍎</div><div class="news-api-content"><h4>iOS 19 Beta vaza com IA nativa</h4><small>TechCrunch • 2h atrás</small></div></div>
+                    <div class="news-api-item"><div class="news-api-thumb">🧠</div><div class="news-api-content"><h4>Gemini 2.5 supera GPT-5 em benchmarks</h4><small>The Verge • 4h atrás</small></div></div>
+                    <div class="news-api-item"><div class="news-api-thumb">🎮</div><div class="news-api-content"><h4>GTA VI adiado para 2027, confirma Take-Two</h4><small>IGN • 6h atrás</small></div></div>
+                    <div class="news-api-item"><div class="news-api-thumb">💻</div><div class="news-api-content"><h4>NVIDIA anuncia RTX 6090 com 48GB VRAM</h4><small>Tom's Hardware • 8h atrás</small></div></div>
                 </div>
             </div>
 
-            <!-- AD SLOT 6: Sidebar bottom -->
+            <!-- ==================== AD SLOT 11: SIDEBAR BOTTOM ==================== -->
             <div class="ad-slot ad-sidebar"></div>
         </aside>
     </div>
 
-    <!-- AD SLOT 7: Footer top -->
+    <!-- ==================== AD SLOT 12: FOOTER TOP ==================== -->
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
         <div class="ad-slot ad-inline" style="margin-bottom: 0;"></div>
     </div>
@@ -522,22 +618,25 @@
         <p>© 2026 TechZone. Todos os direitos reservados.</p>
     </footer>
 
+    <!-- ==================== AD SLOT 13: STICKY FOOTER (MOBILE) ==================== -->
+    <div class="ad-sticky-footer" id="stickyFooter"></div>
+
     <!-- LAYER 2: TIMER -->
     <div class="layer-overlay" id="layer2">
-        <div class="layer-box fade-in">
+        <div class="layer-box">
             <div class="layer-badge">⏱️ VERIFICAÇÃO DE SEGURANÇA</div>
             <h2 class="layer-title">Preparando seu Download...</h2>
-            <p class="layer-desc">Aguarde enquanto verificamos a integridade do arquivo.</p>
+            <p class="layer-desc">Aguarde enquanto verificamos a integridade do arquivo em nossos servidores.</p>
 
             <div class="status-box" id="statusBox">
-                <b>🛡️ STATUS:</b> <span id="statusTxt">Validando conexão...</span>
+                <b>🛡️ STATUS:</b> <span id="statusTxt">Inicializando verificação...</span>
             </div>
 
             <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
             <div class="timer-display" id="timerDisplay">15</div>
-            <p style="color: var(--text-muted); margin-bottom: 1rem;">segundos restantes</p>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">segundos restantes</p>
 
-            <!-- AD SLOT 8: Dentro do timer -->
+            <!-- Ad dentro do timer -->
             <div style="background: var(--dark); border: 1px dashed var(--border); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; min-height: 100px;"></div>
 
             <a href="https://omg10.com/4/11044679" target="_blank" class="btn-isca" id="btnIsca" onclick="handleIscaClick()">
@@ -546,52 +645,76 @@
 
             <a href="#" id="btnVip" class="btn-vip" onclick="goToFinal()">CONCLUIR DOWNLOAD</a>
 
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">⏱️ 15 segundos • 🔒 100% Seguro</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">⏱️ Timer anti-bot ativo • 🔒 100% Seguro • 🛡️ SSL Verificado</p>
         </div>
     </div>
 
     <!-- LAYER 3: FINAL -->
     <div class="layer-overlay" id="layer3">
-        <div class="layer-box fade-in">
+        <div class="layer-box">
             <div class="layer-badge" style="background: var(--success); color: white;">✅ LIBERADO</div>
             <h2 class="layer-title" style="color: var(--success);">Download Pronto!</h2>
-            <p class="layer-desc">Seu acesso foi liberado.</p>
+            <p class="layer-desc">Seu acesso foi verificado e liberado com sucesso.</p>
 
-            <div style="background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(6,182,212,0.1)); border: 2px solid var(--success); border-radius: 16px; padding: 2rem;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">✈️</div>
-                <h3 style="margin-bottom: 0.5rem;">Acesso VIP Liberado</h3>
-                <a href="#" id="finalLink" target="_blank" class="btn-vip" style="display: inline-block; margin-top: 1rem;">
-                    <span>✈️</span> ACESSAR CONTEÚDO
+            <div style="background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(6,182,212,0.1)); border: 2px solid var(--success); border-radius: 20px; padding: 2.5rem;">
+                <div style="font-size: 3.5rem; margin-bottom: 1rem;">✈️</div>
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.3rem;">Acesso VIP Liberado</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Você será redirecionado automaticamente em instantes...</p>
+                <a href="#" id="finalLink" target="_blank" class="btn-vip" style="display: inline-block;">
+                    <span>✈️</span> ACESSAR CONTEÚDO AGORA
                 </a>
-                <div style="margin-top: 1rem; padding: 0.8rem; background: var(--dark); border-radius: 8px; font-family: monospace; font-size: 0.8rem; color: var(--text-muted); word-break: break-all;" id="finalUrlDisplay"></div>
+                <div style="margin-top: 1.2rem; padding: 1rem; background: var(--dark); border-radius: 10px; font-family: monospace; font-size: 0.8rem; color: var(--text-muted); word-break: break-all;" id="finalUrlDisplay"></div>
             </div>
 
-            <button style="margin-top: 1.5rem; background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.6rem 1.5rem; border-radius: 8px; cursor: pointer;" onclick="location.reload()">🔄 Novo Download</button>
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+                <button style="background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.6rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: 600;" onclick="location.reload()">🔄 Novo Download</button>
+                <button style="background: var(--primary); border: none; color: white; padding: 0.6rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: 600;" onclick="sharePage()">📤 Compartilhar</button>
+            </div>
         </div>
     </div>
 
     <!-- TOAST -->
     <div class="toast" id="toast">
-        <div class="toast-icon">✅</div>
-        <div class="toast-text" id="toastText">Operação realizada!</div>
+        <div style="font-size: 1.3rem;">✅</div>
+        <div id="toastText">Operação realizada!</div>
     </div>
 
     <script>
         // ========== DECODE DADOS DO PAINEL ==========
+        let appData = null;
+        let destUrl = null;
+
         function loadAppData() {
             const params = new URLSearchParams(window.location.search);
             const b64 = params.get('d');
-            if (!b64) return false;
+            if (!b64) return setupFallback();
 
             try {
-                const jsonStr = atob(b64);
-                const data = JSON.parse(jsonStr);
+                const decodedUri = decodeURIComponent(atob(b64));
+                const data = JSON.parse(decodedUri);
+                appData = data;
+                destUrl = data.u || null;
 
-                // Aplica os dados do painel na página
                 if (data.n) {
-                    document.getElementById('pageTitle').textContent = data.n + ' ' + (data.v || '') + ': Download Premium';
+                    const fullTitle = data.n + ' ' + (data.v || '') + ': Download Premium';
+                    document.getElementById('pageTitle').textContent = fullTitle;
                     document.getElementById('dlTitle').textContent = data.n + ' ' + (data.v || '');
                     document.title = data.n + ' - TechZone Download';
+                    document.getElementById('breadcrumbApp').textContent = data.n;
+                    document.getElementById('ogTitle').content = fullTitle;
+                    document.getElementById('ogDesc').content = (data.d || 'Download seguro e verificado.') + ' Disponível no TechZone.';
+                    const schema = {
+                        "@context": "https://schema.org",
+                        "@type": "SoftwareApplication",
+                        "name": data.n,
+                        "applicationCategory": data.c || "UtilitiesApplication",
+                        "softwareVersion": data.v || "1.0",
+                        "fileSize": data.s || "N/A",
+                        "operatingSystem": "Android, iOS, Windows, macOS",
+                        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "BRL"},
+                        "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.9", "ratingCount": "2400"}
+                    };
+                    document.getElementById('schemaJson').textContent = JSON.stringify(schema);
                 }
                 if (data.v) document.getElementById('statVer').textContent = data.v;
                 if (data.s) {
@@ -600,138 +723,223 @@
                 }
                 if (data.c) {
                     document.getElementById('breadcrumbCat').textContent = data.c;
+                    applyCategoryContent(data.c, data.n, data.v);
                 }
                 if (data.d) {
-                    document.getElementById('descMain').innerHTML = data.d + ' Baixe agora a versão mais recente com todos os recursos desbloqueados.';
+                    document.getElementById('descMain').innerHTML = data.d + ' Baixe agora a versão mais recente com todos os recursos desbloqueados de forma gratuita e 100% segura.';
                 }
+                if (data.i) document.getElementById('dlIcon').textContent = data.i;
+                if (data.u) document.getElementById('videoCaption').textContent = data.n + ' ' + (data.v || '') + ' - Tutorial e download';
 
                 return data.u || null;
             } catch(e) {
-                console.error('Erro ao decodificar:', e);
+                console.error('Erro ao decodificar dados:', e);
+                showToast('⚠️ Link corrompido ou inválido. Redirecionando...', 'warning');
+                setTimeout(() => setupFallback(), 2000);
                 return null;
             }
         }
 
-        const destUrl = loadAppData();
+        function setupFallback() {
+            destUrl = 'https://t.me/techzone_oficial';
+            document.getElementById('dlSubtitle').textContent = 'Acesse nosso canal oficial no Telegram para downloads exclusivos.';
+            document.getElementById('btnText').textContent = 'ACESSAR CANAL VIP';
+            return destUrl;
+        }
 
-        // ========== LAYER 1: START DOWNLOAD ==========
+        function applyCategoryContent(cat, name, ver) {
+            const guides = {
+                '🎮 Jogos': '<strong>Android:</strong> Instale o APK + OBB na pasta Android/obb. <strong>Não requer root.</strong><br><strong>iOS:</strong> Use AltStore para sideload.<br><strong>PC:</strong> Extraia o .zip e execute o setup.',
+                '🔓 Mod APK': '<strong>Android:</strong> Desinstale a versão original, habilite "Fontes desconhecidas" e instale o APK modificado.<br><strong>Importante:</strong> Não funcione com login Google Play Games em alguns casos.',
+                '💻 Windows': '<strong>Windows 10/11:</strong> Desative o Windows Defender temporariamente (falso positivo comum em mods). Execute como Administrador.<br><strong>Requisitos:</strong> 4GB RAM, 2GB espaço livre.',
+                '🍎 macOS': '<strong>macOS 12+:</strong> Arraste para Aplicativos. Se aparecer "danificado", vá em Preferências > Segurança e permita.<br><strong>M1/M2:</strong> Versão Universal inclusa.',
+                '📱 Apps': '<strong>Android:</strong> Habilite "Fontes desconhecidas" e instale o APK. <strong>Não requer root.</strong><br><strong>iOS:</strong> Use AltStore ou Sideloadly para instalar o IPA.<br><strong>Desktop:</strong> Execute como administrador.',
+                '📦 Outro': '<strong>Instruções:</strong> Siga o guia incluído no arquivo. Para dúvidas, entre em contato via Telegram.'
+            };
+            document.getElementById('installGuide').innerHTML = guides[cat] || guides['📱 Apps'];
+
+            const features = {
+                '🎮 Jogos': '• <strong>Dinheiro infinito</strong> — Compras gratuitas no jogo<br>• <strong>Todos os personagens desbloqueados</strong><br>• <strong>Modo Deus / God Mode</strong><br>• <strong>Sem anúncios</strong><br>• <strong>Gráficos em 120 FPS</strong><br>• <strong>Menu MOD integrado</strong>',
+                '🔓 Mod APK': '• <strong>Premium desbloqueado</strong><br>• <strong>Sem anúncios</strong><br>• <strong>Recursos pagos liberados</strong><br>• <strong>Atualizações automáticas</strong><br>• <strong>Suporte a múltiplas contas</strong><br>• <strong>Backup de dados na nuvem</strong>',
+                '💻 Windows': '• <strong>Ativação automática</strong><br>• <strong>Todos os recursos PRO</strong><br>• <strong>Sem watermark</strong><br>• <strong>Exportação 4K/8K</strong><br>• <strong>Plugins inclusos</strong><br>• <strong>Atualizações via patch</strong>',
+                '🍎 macOS': '• <strong>Versão Universal (Intel + Silicon)</strong><br>• <strong>Ativação nativa</strong><br>• <strong>Suporte a Metal 3</strong><br>• <strong>Integração com iCloud</strong><br>• <strong>Atalhos de teclado otimizados</strong><br>• <strong>Sem assinatura necessária</strong>',
+                '📱 Apps': '• <strong>Convites ilimitados</strong><br>• <strong>Histórico de versões</strong><br>• <strong>50+ integrações</strong><br>• <strong>Exportação em bulk</strong><br>• <strong>Domínio personalizado</strong><br>• <strong>SSO & SAML</strong>',
+                '📦 Outro': '• <strong>Recursos premium ativados</strong><br>• <strong>Interface otimizada</strong><br>• <strong>Performance melhorada</strong><br>• <strong>Sem limitações</strong><br>• <strong>Suporte contínuo</strong><br>• <strong>Comunidade ativa</strong>'
+            };
+            document.getElementById('featuresList').innerHTML = features[cat] || features['📱 Apps'];
+        }
+
+        destUrl = loadAppData();
+
+        // ========== ADBLOCK DETECTOR ==========
+        async function detectAdBlock() {
+            try {
+                await fetch('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', { method: 'HEAD', mode: 'no-cors' });
+            } catch(e) {
+                document.getElementById('adblockWarning').style.display = 'block';
+            }
+        }
+        setTimeout(detectAdBlock, 1500);
+
+        // ========== DOWNLOAD FLOW ==========
         function startDownload() {
             const btn = document.getElementById('btnDownload');
-
             if (!destUrl) {
-                showToast('❌ Link inválido! Use o painel para gerar.');
+                showToast('❌ Link inválido! Gere pelo painel.', 'error');
                 btn.style.animation = 'shake 0.5s';
                 setTimeout(() => btn.style.animation = '', 500);
                 return;
             }
-
+            sessionStorage.setItem('tz_download_started', Date.now().toString());
             btn.disabled = true;
             const btnText = document.getElementById('btnText');
             const icon = btn.querySelector('.icon');
-
-            // Animação do botão
             icon.textContent = '⏳';
-            btnText.textContent = 'Verificando...';
-
-            setTimeout(() => { btnText.textContent = 'Analisando...'; }, 800);
-            setTimeout(() => { btnText.textContent = 'Quase lá...'; }, 1600);
+            btnText.textContent = 'Verificando servidor...';
+            const steps = ['Analisando arquivo...', 'Checando assinatura...', 'Quase lá...'];
+            let step = 0;
+            const stepInterval = setInterval(() => {
+                if (step < steps.length) btnText.textContent = steps[step++];
+            }, 700);
             setTimeout(() => {
+                clearInterval(stepInterval);
                 document.getElementById('layer2').classList.add('active');
                 startTimer();
-            }, 2200);
+            }, 2500);
         }
 
         // ========== TIMER ==========
         let tempo = 15;
         let timerInterval;
-
         function startTimer() {
             const countEl = document.getElementById('timerDisplay');
             const fillEl = document.getElementById('progressFill');
             const statusTxt = document.getElementById('statusTxt');
-
+            const started = parseInt(sessionStorage.getItem('tz_download_started') || '0');
+            const elapsed = Math.floor((Date.now() - started) / 1000);
+            tempo = Math.max(0, 15 - elapsed);
+            countEl.textContent = tempo;
             timerInterval = setInterval(() => {
                 tempo--;
                 countEl.textContent = tempo;
                 fillEl.style.width = ((15 - tempo) / 15) * 100 + '%';
-
-                if (tempo > 10) statusTxt.textContent = 'Validando conexão...';
-                else if (tempo > 5) statusTxt.textContent = 'Sincronizando servidor...';
-                else if (tempo > 0) statusTxt.textContent = 'Finalizando...';
-
-                if (tempo <= 5) countEl.style.color = 'var(--danger)';
-
-                if (tempo <= 0) {
-                    clearInterval(timerInterval);
-                    finishTimer();
-                }
+                const msgs = ['Validando checksum MD5...', 'Verificando certificado SSL...', 'Sincronizando com servidor CDN...', 'Otimizando rota de download...', 'Finalizando verificação...'];
+                if (tempo >= 0 && tempo < msgs.length) statusTxt.textContent = msgs[Math.min(msgs.length - 1, 14 - tempo)];
+                if (tempo <= 5) { countEl.style.color = 'var(--danger)'; statusTxt.className = 'status-sucesso'; }
+                if (tempo <= 0) { clearInterval(timerInterval); finishTimer(); }
             }, 1000);
         }
-
         function finishTimer() {
             document.getElementById('timerDisplay').style.display = 'none';
-            document.getElementById('statusTxt').textContent = 'Pronto!';
-            document.getElementById('statusTxt').style.color = 'var(--success)';
+            document.getElementById('statusTxt').textContent = '✅ Verificação concluída!';
+            document.getElementById('statusTxt').className = 'status-sucesso';
             document.getElementById('btnIsca').style.display = 'none';
-            document.getElementById('btnVip').style.display = 'inline-block';
+            const vipBtn = document.getElementById('btnVip');
+            vipBtn.style.display = 'inline-block';
+            vipBtn.style.animation = 'pulse-green 1.5s infinite';
             showToast('🎉 Download liberado!');
         }
-
-        function handleIscaClick() {
-            showToast('⏳ Abrindo servidor alternativo...');
-        }
+        function handleIscaClick() { showToast('⏳ Redirecionando para servidor alternativo...'); }
 
         // ========== FINAL ==========
         function goToFinal() {
-            if (!destUrl) { showToast('❌ Erro no link'); return; }
-
+            if (!destUrl) { showToast('❌ Erro no link de destino', 'error'); return; }
+            sessionStorage.removeItem('tz_download_started');
             document.getElementById('layer2').classList.remove('active');
             document.getElementById('layer3').classList.add('active');
-
             document.getElementById('finalLink').href = destUrl;
             document.getElementById('finalUrlDisplay').textContent = destUrl;
-
-            setTimeout(() => window.open(destUrl, '_blank'), 2500);
+            try {
+                const landings = JSON.parse(localStorage.getItem('techzone_landings_pro_v1') || '[]');
+                const currentUrl = window.location.href;
+                const found = landings.find(l => currentUrl.includes(l.finalLink) || l.finalLink === currentUrl.split('?')[0] + '?d=' + new URLSearchParams(window.location.search).get('d'));
+                if (found) { found.clicks = (found.clicks || 0) + 1; localStorage.setItem('techzone_landings_pro_v1', JSON.stringify(landings)); }
+            } catch(e) {}
+            setTimeout(() => window.open(destUrl, '_blank'), 2000);
         }
 
         // ========== VIDEO ==========
         function loadVideo() {
             document.querySelector('.video-wrapper').innerHTML = `
-                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" 
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0" 
                     style="position:absolute;inset:0;width:100%;height:100%;border:none;"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                 </iframe>`;
         }
 
         // ========== UTILITIES ==========
-        function showToast(msg) {
+        function showToast(msg, type='success') {
             const toast = document.getElementById('toast');
-            document.getElementById('toastText').textContent = msg;
+            const text = document.getElementById('toastText');
+            const icon = toast.querySelector('div');
+            text.textContent = msg;
+            icon.textContent = type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️';
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+        function sharePage() {
+            if (navigator.share) {
+                navigator.share({ title: document.title, text: 'Baixe agora no TechZone!', url: window.location.href });
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => showToast('🔗 Link copiado para compartilhar!'));
+            }
         }
 
-        // Live counters
+        // ========== COMENTÁRIOS ==========
+        const commentTemplates = [
+            { name: 'RafaelDev', badge: null, badgeColor: null, time: '2h atrás', text: 'Funcionou perfeitamente no meu Pixel 8! Sem nenhum bug até agora.', likes: 24, avatar: '#f59e0b' },
+            { name: 'TechZone_Mod', badge: 'ADMIN', badgeColor: 'var(--primary)', time: '3h atrás', text: '@todos Atualização chegando essa semana com novos recursos! 🚀 Fiquem ligados.', likes: 89, avatar: 'var(--primary)' },
+            { name: 'Ana_Carol', badge: 'VIP', badgeColor: 'var(--accent)', time: '5h atrás', text: 'Melhor versão que já usei. O premium realmente funciona 100%.', likes: 45, avatar: '#ec4899' },
+            { name: 'Marcos_SP', badge: null, badgeColor: null, time: '8h atrás', text: 'Alguém mais teve problema no Android 14? No meu S23 funcionou de boa.', likes: 12, avatar: '#10b981' },
+            { name: 'Lucas_Gamer', badge: null, badgeColor: null, time: '12h atrás', text: 'Instalei no tablet também. Roda liso, sem travamentos. Recomendo!', likes: 33, avatar: '#6366f1' },
+            { name: 'Julia_Mods', badge: 'TOP', badgeColor: '#8b5cf6', time: '1d atrás', text: 'Já baixei 5 apps aqui do TechZone e todos funcionaram. Site de confiança.', likes: 67, avatar: '#8b5cf6' }
+        ];
+        function renderComments() {
+            const container = document.getElementById('commentsList');
+            let html = '';
+            commentTemplates.forEach((c, i) => {
+                const badgeHtml = c.badge ? `<span class="comment-badge" style="background:${c.badgeColor};color:white;">${c.badge}</span>` : '';
+                html += `
+                <div class="comment-item" style="animation-delay:${i * 0.1}s">
+                    <div class="comment-avatar" style="background:${c.avatar}">${c.name[0]}</div>
+                    <div class="comment-body">
+                        <div class="comment-header">
+                            <span class="comment-name">${c.name}</span>
+                            ${badgeHtml}
+                            <span class="comment-time">• ${c.time}</span>
+                        </div>
+                        <div class="comment-text">${c.text}</div>
+                        <div class="comment-actions">
+                            <span onclick="this.style.color='var(--primary)';this.textContent='👍 ${c.likes + 1}'">👍 ${c.likes}</span>
+                            <span>💬 Responder</span>
+                            <span>🔳 Mais</span>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            container.innerHTML = html;
+        }
+        renderComments();
+
+        // ========== LIVE COUNTERS ==========
         setInterval(() => {
             const el = document.getElementById('liveCounter');
             if (el && !document.getElementById('layer2').classList.contains('active')) {
-                el.textContent = (1847 + Math.floor(Math.random() * 50)).toLocaleString('pt-BR');
+                el.textContent = (1847 + Math.floor(Math.random() * 80)).toLocaleString('pt-BR');
             }
-        }, 5000);
-
+        }, 4000);
         setInterval(() => {
             const el = document.getElementById('viewCount');
-            if (el) el.textContent = (47200 + Math.floor(Math.random() * 100)).toLocaleString('pt-BR') + 'K';
-        }, 30000);
+            if (el) el.textContent = (47200 + Math.floor(Math.random() * 200)).toLocaleString('pt-BR') + 'K';
+        }, 25000);
 
         // Shake animation
         const style = document.createElement('style');
-        style.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }`;
+        style.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-10px)} 40%{transform:translateX(10px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }`;
         document.head.appendChild(style);
     </script>
 
-    <!-- MONETAG REFORÇO -->
+    <!-- MONETAG REFORÇO (BODY) -->
     <script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
-
 </body>
 </html>

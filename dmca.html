@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DMCA - TechZone</title>
+    <title>DMCA — TechZone</title>
     <meta name="description" content="Política DMCA da TechZone. Solicite a remoção de conteúdo protegido por direitos autorais.">
     <style>
         :root {
@@ -14,88 +14,94 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: var(--darker); color: var(--text); line-height: 1.6;
         }
         .header {
             background: var(--dark); border-bottom: 1px solid var(--border);
             padding: 1rem 0; position: sticky; top: 0; z-index: 1000;
+            backdrop-filter: blur(10px);
         }
         .header-inner {
             max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
             display: flex; justify-content: space-between; align-items: center;
         }
         .logo {
-            font-size: 1.8rem; font-weight: 800;
+            font-size: 1.7rem; font-weight: 800;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: flex; align-items: center; gap: 0.5rem;
         }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; }
         .nav-links a:hover { color: var(--primary); }
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
         .container {
             max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem;
         }
         .page-title {
-            font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;
+            font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem;
             background: linear-gradient(135deg, #fff, var(--text-muted));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .warning-box {
             background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(245,158,11,0.1));
             border-left: 4px solid var(--danger); padding: 1.5rem;
-            border-radius: 0 12px 12px 0; margin-bottom: 2rem;
+            border-radius: 0 14px 14px 0; margin-bottom: 2.5rem;
         }
-        .warning-box h3 { color: var(--danger); margin-bottom: 0.5rem; }
+        .warning-box h3 { color: var(--danger); margin-bottom: 0.5rem; font-size: 1.2rem; }
         .warning-box p { color: var(--text-muted); font-size: 0.95rem; }
         .content-box {
             background: var(--card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 2rem; margin-bottom: 2rem;
+            border-radius: 20px; padding: 2.5rem; margin-bottom: 2rem;
+            transition: all 0.3s;
         }
-        .content-box h2 { color: var(--text); margin: 1.5rem 0 1rem; font-size: 1.4rem; }
-        .content-box h3 { color: var(--primary); margin: 1.2rem 0 0.8rem; font-size: 1.15rem; }
-        .content-box p { color: var(--text-muted); margin-bottom: 1rem; font-size: 1rem; }
+        .content-box:hover { border-color: rgba(99,102,241,0.2); }
+        .content-box h2 { color: var(--text); margin: 2rem 0 1rem; font-size: 1.5rem; font-weight: 800; }
+        .content-box h2:first-child { margin-top: 0; }
+        .content-box h3 { color: var(--primary); margin: 1.5rem 0 0.8rem; font-size: 1.15rem; font-weight: 700; }
+        .content-box p { color: var(--text-muted); margin-bottom: 1.2rem; font-size: 1.02rem; line-height: 1.7; }
         .content-box ul { color: var(--text-muted); margin-left: 2rem; margin-bottom: 1rem; }
-        .content-box li { margin-bottom: 0.5rem; }
+        .content-box li { margin-bottom: 0.6rem; line-height: 1.6; }
         .content-box strong { color: var(--text); }
         .checklist {
-            background: var(--dark); border-radius: 12px; padding: 1.5rem;
-            margin: 1.5rem 0;
+            background: var(--dark); border-radius: 14px; padding: 1.5rem;
+            margin: 1.5rem 0; border: 1px solid var(--border);
         }
         .checklist-item {
-            display: flex; align-items: flex-start; gap: 0.8rem;
-            padding: 0.8rem 0; border-bottom: 1px solid var(--border);
+            display: flex; align-items: flex-start; gap: 1rem;
+            padding: 1rem 0; border-bottom: 1px solid var(--border);
         }
         .checklist-item:last-child { border-bottom: none; }
         .check-icon {
-            width: 24px; height: 24px; border-radius: 50%;
+            width: 28px; height: 28px; border-radius: 50%;
             background: var(--success); color: white;
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+            font-size: 0.8rem; font-weight: 800; flex-shrink: 0;
         }
         .form-dmca {
             background: var(--dark); border: 1px solid var(--border);
-            border-radius: 12px; padding: 2rem; margin-top: 1.5rem;
+            border-radius: 14px; padding: 2rem; margin-top: 1.5rem;
         }
         .form-group { margin-bottom: 1.2rem; }
         .form-group label {
-            display: block; margin-bottom: 0.5rem; font-weight: 600;
-            font-size: 0.9rem; color: var(--text);
+            display: block; margin-bottom: 0.5rem; font-weight: 700;
+            font-size: 0.85rem; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px;
         }
         .form-group input, .form-group textarea {
             width: 100%; background: var(--card); border: 1px solid var(--border);
-            color: var(--text); padding: 0.8rem; border-radius: 10px;
+            color: var(--text); padding: 1rem; border-radius: 12px;
             font-size: 1rem; outline: none; transition: all 0.3s;
         }
         .form-group input:focus, .form-group textarea:focus {
-            border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+            border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
         }
         .form-group textarea { min-height: 100px; resize: vertical; }
         .btn-submit {
             background: linear-gradient(135deg, var(--danger), #dc2626);
             color: white; border: none; padding: 1rem 2rem;
-            font-size: 1rem; font-weight: 700; border-radius: 10px;
-            cursor: pointer; transition: all 0.3s;
+            font-size: 1rem; font-weight: 800; border-radius: 12px;
+            cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
         }
         .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(239,68,68,0.4); }
         .timeline {
@@ -103,40 +109,56 @@
             margin: 1.5rem 0; position: relative;
         }
         .timeline::before {
-            content: ""; position: absolute; left: 15px; top: 0; bottom: 0;
+            content: ""; position: absolute; left: 18px; top: 0; bottom: 0;
             width: 2px; background: var(--border);
         }
         .timeline-item {
             display: flex; align-items: flex-start; gap: 1rem;
-            padding: 1rem 0; position: relative;
+            padding: 1.2rem 0; position: relative;
         }
         .timeline-dot {
-            width: 32px; height: 32px; border-radius: 50%;
+            width: 38px; height: 38px; border-radius: 50%;
             background: var(--card); border: 2px solid var(--primary);
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; z-index: 1; flex-shrink: 0;
+            font-size: 0.9rem; z-index: 1; flex-shrink: 0;
         }
-        .timeline-content h4 { color: var(--text); margin-bottom: 0.3rem; }
+        .timeline-content h4 { color: var(--text); margin-bottom: 0.3rem; font-weight: 700; }
         .timeline-content p { color: var(--text-muted); font-size: 0.9rem; }
         .footer {
             background: var(--dark); border-top: 1px solid var(--border);
-            padding: 2rem 0; text-align: center; color: var(--text-muted);
+            padding: 2.5rem 0; text-align: center; color: var(--text-muted);
         }
         .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; }
-        @media (max-width: 700px) { .nav-links { display: none; } }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--primary); }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem;
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1rem 1.5rem;
+            display: none; align-items: center; gap: 0.8rem; z-index: 10000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease; font-weight: 600;
+        }
+        .toast.show { display: flex; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @media (max-width: 700px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .page-title { font-size: 2rem; }
+        }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-inner">
-            <div class="logo">⚡ TechZone</div>
+            <div class="logo"><span style="font-size: 2rem;">⚡</span> TechZone</div>
             <ul class="nav-links">
                 <li><a href="index.html">Início</a></li>
                 <li><a href="sobre.html">Sobre</a></li>
                 <li><a href="contato.html">Contato</a></li>
                 <li><a href="politica.html">Privacidade</a></li>
             </ul>
+            <button class="mobile-menu-btn" onclick="alert('Menu mobile em desenvolvimento')">☰</button>
         </div>
     </header>
 
@@ -294,7 +316,7 @@
 
             <div class="form-dmca">
                 <h3>📝 Formulário Rápido de Requisição DMCA</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
                     Use este formulário como alternativa ao email. Ainda assim, recomendamos o envio formal por email para maior rastreabilidade.
                 </p>
                 <form onsubmit="event.preventDefault(); enviarDmca();">
@@ -355,10 +377,28 @@
         <p>© 2026 TechZone. Todos os direitos reservados.</p>
     </footer>
 
+    <div class="toast" id="toast">
+        <div style="font-size: 1.3rem;">✅</div>
+        <div id="toastText">Operação realizada!</div>
+    </div>
+
     <script>
         function enviarDmca() {
-            alert('✅ Requisição DMCA recebida! Nossa equipe analisará em até 72h. Você receberá uma confirmação no email fornecido.');
-            document.querySelector('form').reset();
+            const btn = document.querySelector('.btn-submit');
+            btn.disabled = true;
+            btn.textContent = '⏳ Enviando...';
+            setTimeout(() => {
+                showToast('✅ Requisição DMCA recebida! Nossa equipe analisará em até 72h.');
+                document.querySelector('form').reset();
+                btn.disabled = false;
+                btn.textContent = '📤 ENVIAR REQUISIÇÃO DMCA';
+            }, 1500);
+        }
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastText').textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
         }
     </script>
 </body>

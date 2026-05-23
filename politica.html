@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Política de Privacidade - TechZone</title>
-    <meta name="description" content="Política de Privacidade e Termos de Uso da TechZone.">
+    <title>Política de Privacidade — TechZone</title>
+    <meta name="description" content="Política de Privacidade e Termos de Uso da TechZone. LGPD/GDPR compliant.">
     <style>
         :root {
             --primary: #6366f1; --secondary: #06b6d4; --accent: #f59e0b;
@@ -13,72 +13,91 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: var(--darker); color: var(--text); line-height: 1.6;
         }
         .header {
             background: var(--dark); border-bottom: 1px solid var(--border);
             padding: 1rem 0; position: sticky; top: 0; z-index: 1000;
+            backdrop-filter: blur(10px);
         }
         .header-inner {
             max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
             display: flex; justify-content: space-between; align-items: center;
         }
         .logo {
-            font-size: 1.8rem; font-weight: 800;
+            font-size: 1.7rem; font-weight: 800;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: flex; align-items: center; gap: 0.5rem;
         }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; }
         .nav-links a:hover { color: var(--primary); }
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
         .container {
             max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem;
         }
         .page-title {
-            font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;
+            font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem;
             background: linear-gradient(135deg, #fff, var(--text-muted));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .last-updated {
-            color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;
-            padding: 0.8rem 1rem; background: var(--dark); border-radius: 8px;
-            border-left: 4px solid var(--accent);
+            color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2.5rem;
+            padding: 1rem 1.2rem; background: var(--dark); border-radius: 10px;
+            border-left: 4px solid var(--accent); display: flex; align-items: center; gap: 0.5rem;
         }
         .content-box {
             background: var(--card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 2rem; margin-bottom: 2rem;
+            border-radius: 20px; padding: 2.5rem; margin-bottom: 2rem;
+            transition: all 0.3s;
         }
-        .content-box h2 { color: var(--text); margin: 1.5rem 0 1rem; font-size: 1.4rem; }
-        .content-box h3 { color: var(--primary); margin: 1.2rem 0 0.8rem; font-size: 1.15rem; }
-        .content-box p { color: var(--text-muted); margin-bottom: 1rem; font-size: 1rem; }
+        .content-box:hover { border-color: rgba(99,102,241,0.2); }
+        .content-box h2 { color: var(--text); margin: 2rem 0 1rem; font-size: 1.5rem; font-weight: 800; }
+        .content-box h2:first-child { margin-top: 0; }
+        .content-box h3 { color: var(--primary); margin: 1.5rem 0 0.8rem; font-size: 1.15rem; font-weight: 700; }
+        .content-box p { color: var(--text-muted); margin-bottom: 1.2rem; font-size: 1.02rem; line-height: 1.7; }
         .content-box ul { color: var(--text-muted); margin-left: 2rem; margin-bottom: 1rem; }
-        .content-box li { margin-bottom: 0.5rem; }
+        .content-box li { margin-bottom: 0.6rem; line-height: 1.6; }
         .content-box strong { color: var(--text); }
         .highlight {
-            background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(6,182,212,0.1));
-            border-left: 4px solid var(--primary); padding: 1rem;
-            border-radius: 0 8px 8px 0; margin: 1rem 0;
+            background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(6,182,212,0.08));
+            border-left: 4px solid var(--primary); padding: 1.2rem;
+            border-radius: 0 12px 12px 0; margin: 1.5rem 0;
         }
         .footer {
             background: var(--dark); border-top: 1px solid var(--border);
-            padding: 2rem 0; text-align: center; color: var(--text-muted);
+            padding: 2.5rem 0; text-align: center; color: var(--text-muted);
         }
         .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; }
-        @media (max-width: 700px) { .nav-links { display: none; } }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--primary); }
+        .toc {
+            background: var(--dark); border-radius: 12px; padding: 1.5rem;
+            margin-bottom: 2rem; border: 1px solid var(--border);
+        }
+        .toc h3 { color: var(--primary); margin-bottom: 1rem; font-size: 1rem; }
+        .toc a { color: var(--text-muted); text-decoration: none; display: block; padding: 0.4rem 0; font-size: 0.9rem; transition: color 0.3s; }
+        .toc a:hover { color: var(--primary); }
+        @media (max-width: 700px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .page-title { font-size: 2rem; }
+        }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-inner">
-            <div class="logo">⚡ TechZone</div>
+            <div class="logo"><span style="font-size: 2rem;">⚡</span> TechZone</div>
             <ul class="nav-links">
                 <li><a href="index.html">Início</a></li>
                 <li><a href="sobre.html">Sobre</a></li>
                 <li><a href="contato.html">Contato</a></li>
                 <li><a href="politica.html">Privacidade</a></li>
             </ul>
+            <button class="mobile-menu-btn" onclick="alert('Menu mobile em desenvolvimento')">☰</button>
         </div>
     </header>
 
@@ -88,8 +107,23 @@
             📅 Última atualização: 22 de Maio de 2026 | 🌍 Vigência mundial
         </div>
 
+        <div class="toc">
+            <h3>📑 Índice Rápido</h3>
+            <a href="#sec1">1. Introdução</a>
+            <a href="#sec2">2. Informações que Coletamos</a>
+            <a href="#sec3">3. Cookies e Tecnologias</a>
+            <a href="#sec4">4. Parceiros Publicitários</a>
+            <a href="#sec5">5. Links Externos</a>
+            <a href="#sec6">6. Segurança dos Dados</a>
+            <a href="#sec7">7. Retenção e Exclusão</a>
+            <a href="#sec8">8. Direitos do Usuário (LGPD/GDPR)</a>
+            <a href="#sec9">9. Isenção de Responsabilidade</a>
+            <a href="#sec10">10. Alterações</a>
+            <a href="#sec11">11. Contato</a>
+        </div>
+
         <div class="content-box">
-            <h2>1. Introdução</h2>
+            <h2 id="sec1">1. Introdução</h2>
             <p>
                 A TechZone ("nós", "nosso" ou "site") valoriza a privacidade de seus usuários. Esta Política de Privacidade descreve como coletamos, usamos, armazenamos e protegemos suas informações pessoais quando você utiliza nossos serviços, incluindo nosso portal web, painel de links e canais de comunicação.
             </p>
@@ -97,7 +131,7 @@
                 Ao acessar ou utilizar a TechZone, você concorda com os termos aqui estabelecidos. Se não concordar com qualquer parte desta política, recomendamos que não utilize nossos serviços.
             </p>
 
-            <h2>2. Informações que Coletamos</h2>
+            <h2 id="sec2">2. Informações que Coletamos</h2>
             <h3>2.1 Informações Automáticas</h3>
             <p>Quando você visita nosso site, coletamos automaticamente:</p>
             <ul>
@@ -116,7 +150,7 @@
                 <li>Links que deseja encurtar (via painel gerador)</li>
             </ul>
 
-            <h2>3. Uso de Cookies e Tecnologias Similares</h2>
+            <h2 id="sec3">3. Uso de Cookies e Tecnologias Similares</h2>
             <p>
                 Utilizamos cookies e tecnologias de rastreamento para:
             </p>
@@ -131,7 +165,7 @@
                 <strong>🍪 Controle de Cookies:</strong> Você pode desativar cookies nas configurações do seu navegador. Note que algumas funcionalidades do site podem deixar de funcionar corretamente.
             </div>
 
-            <h2>4. Parceiros Publicitários</h2>
+            <h2 id="sec4">4. Parceiros Publicitários</h2>
             <p>
                 A TechZone utiliza redes de publicidade de terceiros para monetizar nossa plataforma e manter o serviço gratuito. Esses parceiros podem utilizar cookies, web beacons e outras tecnologias para coletar informações sobre suas visitas a este e outros sites, a fim de fornecer anúncios relevantes.
             </p>
@@ -145,15 +179,15 @@
                 Cada parceiro possui sua própria política de privacidade. Recomendamos que você as consulte diretamente para entender como seus dados são tratados.
             </p>
 
-            <h2>5. Links Externos e Redirecionamentos</h2>
+            <h2 id="sec5">5. Links Externos e Redirecionamentos</h2>
             <p>
                 Nosso site contém links para sites de terceiros, incluindo Telegram, serviços de download e parceiros. Não temos controle sobre o conteúdo ou práticas de privacidade desses sites. Recomendamos que você leia as políticas de privacidade de cada site que visitar.
             </p>
             <p>
-                Os links gerados através do nosso painel são codificados em Base64 e passam por uma página intermediária de verificação. O destino final é de responsabilidade exclusiva do usuário que gerou o link.
+                Os links gerados através do nosso painel são codificados em Base64 com suporte UTF-8 e passam por uma página intermediária de verificação. O destino final é de responsabilidade exclusiva do usuário que gerou o link.
             </p>
 
-            <h2>6. Segurança dos Dados</h2>
+            <h2 id="sec6">6. Segurança dos Dados</h2>
             <p>
                 Implementamos medidas de segurança técnicas e organizacionais para proteger suas informações:
             </p>
@@ -168,18 +202,18 @@
                 <strong>Importante:</strong> Nenhum sistema é 100% seguro. Embora nos esforcemos para proteger seus dados, não podemos garantir segurança absoluta contra todos os tipos de ataques cibernéticos.
             </p>
 
-            <h2>7. Retenção e Exclusão de Dados</h2>
+            <h2 id="sec7">7. Retenção e Exclusão de Dados</h2>
             <p>
                 Mantemos seus dados pessoais apenas pelo tempo necessário para cumprir as finalidades descritas nesta política, ou conforme exigido por lei. Você pode solicitar a exclusão de seus dados a qualquer momento através do nosso formulário de contato.
             </p>
             <ul>
                 <li><strong>Logs de acesso:</strong> Retidos por 90 dias para segurança</li>
                 <li><strong>Emails de inscrição:</strong> Retidos até o cancelamento</li>
-                <li><strong>Links gerados:</strong> Retidos indefinidamente (funcionalidade do serviço)</li>
+                <li><strong>Links gerados:</strong> Retidos no localStorage do navegador (apenas você tem acesso)</li>
                 <li><strong>Mensagens de contato:</strong> Retidas por 1 ano</li>
             </ul>
 
-            <h2>8. Direitos do Usuário (LGPD/GDPR)</h2>
+            <h2 id="sec8">8. Direitos do Usuário (LGPD/GDPR)</h2>
             <p>De acordo com a Lei Geral de Proteção de Dados (LGPD) e o GDPR, você tem direito a:</p>
             <ul>
                 <li><strong>Acesso:</strong> Solicitar uma cópia dos dados que mantemos sobre você</li>
@@ -193,7 +227,7 @@
                 Para exercer qualquer desses direitos, entre em contato através do email <strong>privacidade@techzone.app</strong> ou pelo formulário em nossa <a href="contato.html" style="color: var(--primary);">página de contato</a>.
             </p>
 
-            <h2>9. Isenção de Responsabilidade (Termos de Uso)</h2>
+            <h2 id="sec9">9. Isenção de Responsabilidade (Termos de Uso)</h2>
             <h3>9.1 Natureza do Serviço</h3>
             <p>
                 A TechZone funciona como um <strong>agregador de links</strong> e <strong>portal informativo</strong>. Não hospedamos, distribuímos ou possuímos os arquivos, apps ou conteúdos referenciados em nossos links. Todos os downloads são redirecionamentos para serviços de terceiros.
@@ -229,12 +263,12 @@
                 Violações resultarão em banimento permanente e, quando aplicável, notificação às autoridades competentes.
             </p>
 
-            <h2>10. Alterações nesta Política</h2>
+            <h2 id="sec10">10. Alterações nesta Política</h2>
             <p>
                 Podemos atualizar esta Política de Privacidade periodicamente. Alterações significativas serão notificadas através de banner no site e/ou email para usuários cadastrados. O uso continuado do site após alterações constitui aceitação dos novos termos.
             </p>
 
-            <h2>11. Contato</h2>
+            <h2 id="sec11">11. Contato</h2>
             <p>
                 Para questões relacionadas a esta política, entre em contato:<br><br>
                 <strong>Email:</strong> privacidade@techzone.app<br>

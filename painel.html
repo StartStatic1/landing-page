@@ -3,156 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechZone Painel - Gerador de Landing Pages</title>
+    <title>TechZone Painel Pro — Gerador Inteligente de Landings</title>
+    <meta name="description" content="Painel profissional para criar landing pages monetizadas com proteção, estatísticas e QR Code.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
     <style>
         :root {
             --primary: #6366f1; --primary-dark: #4f46e5; --secondary: #06b6d4;
             --accent: #f59e0b; --dark: #0f172a; --darker: #020617;
             --card: #1e293b; --text: #e2e8f0; --text-muted: #94a3b8;
             --border: #334155; --success: #10b981; --danger: #ef4444;
+            --warning: #f59e0b; --glass: rgba(30, 41, 59, 0.7);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, var(--darker), var(--dark));
-            color: var(--text); min-height: 100vh; padding: 2rem;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, #0a0f1d 50%, var(--dark) 100%);
+            color: var(--text); min-height: 100vh; padding: 2rem 1rem;
+            background-attachment: fixed;
         }
-        .panel-container { max-width: 800px; margin: 0 auto; }
+        .panel-container { max-width: 1100px; margin: 0 auto; }
+        .header-top {
+            text-align: center; margin-bottom: 2.5rem; position: relative;
+        }
         .logo {
-            font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-size: 2.2rem; font-weight: 900; letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: inline-flex; align-items: center; gap: 0.6rem;
         }
-        .subtitle { text-align: center; color: var(--text-muted); margin-bottom: 2rem; }
+        .badge-pro {
+            background: linear-gradient(135deg, var(--accent), #d97706);
+            color: var(--dark); font-size: 0.65rem; font-weight: 900;
+            padding: 0.2rem 0.6rem; border-radius: 50px; text-transform: uppercase;
+            letter-spacing: 1px; vertical-align: super;
+        }
+        .subtitle { text-align: center; color: var(--text-muted); margin-top: 0.5rem; font-size: 1.05rem; }
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem; margin-bottom: 2rem;
+        }
+        .stat-pill {
+            background: var(--glass); border: 1px solid var(--border);
+            backdrop-filter: blur(10px); border-radius: 14px; padding: 1rem;
+            text-align: center; transition: all 0.3s;
+        }
+        .stat-pill:hover { transform: translateY(-3px); border-color: var(--primary); }
+        .stat-pill .num { font-size: 1.6rem; font-weight: 800; color: var(--primary); }
+        .stat-pill .lbl { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+        .tabs {
+            display: flex; gap: 0.5rem; margin-bottom: 2rem;
+            background: var(--card); padding: 0.5rem; border-radius: 14px;
+            border: 1px solid var(--border); position: sticky; top: 1rem; z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        .tab {
+            flex: 1; padding: 0.9rem; text-align: center; cursor: pointer;
+            border-radius: 10px; font-weight: 700; transition: all 0.3s;
+            color: var(--text-muted); border: none; background: transparent;
+            font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+        }
+        .tab.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 15px rgba(99,102,241,0.3); }
+        .tab:hover:not(.active) { color: var(--text); background: rgba(99,102,241,0.1); }
+
+        .panel { display: none; animation: fadeIn 0.4s ease; }
+        .panel.active { display: block; }
 
         .form-card {
             background: var(--card); border: 1px solid var(--border);
-            border-radius: 20px; padding: 2.5rem; margin-bottom: 2rem;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            border-radius: 24px; padding: 2.5rem; margin-bottom: 2rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4); position: relative; overflow: hidden;
         }
-        .form-section {
-            margin-bottom: 1.5rem; padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border);
+        .form-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
         }
+        .form-section { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
         .form-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .section-title {
-            font-size: 1rem; font-weight: 700; color: var(--primary);
-            margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
+            font-size: 1.1rem; font-weight: 800; color: var(--primary);
+            margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem;
         }
-        .form-row {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
-        }
-        .form-group { margin-bottom: 1rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+        .form-group { margin-bottom: 1.2rem; position: relative; }
         .form-group label {
-            display: block; margin-bottom: 0.5rem; font-weight: 600;
-            font-size: 0.9rem; color: var(--text);
+            display: block; margin-bottom: 0.5rem; font-weight: 700;
+            font-size: 0.85rem; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px;
         }
         .form-group label .required { color: var(--danger); }
         .form-group input, .form-group select, .form-group textarea {
             width: 100%; background: var(--dark); border: 1px solid var(--border);
-            color: var(--text); padding: 0.9rem; border-radius: 10px;
-            font-size: 1rem; outline: none; transition: all 0.3s;
+            color: var(--text); padding: 1rem 1rem 1rem 2.8rem; border-radius: 12px;
+            font-size: 1rem; outline: none; transition: all 0.3s; font-family: inherit;
         }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+            border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
         }
-        .form-group textarea { min-height: 80px; resize: vertical; }
-        .form-group small {
-            display: block; margin-top: 0.3rem; color: var(--text-muted);
-            font-size: 0.8rem;
+        .form-group textarea { min-height: 90px; resize: vertical; padding-left: 1rem; }
+        .form-group small { display: block; margin-top: 0.4rem; color: var(--text-muted); font-size: 0.8rem; }
+        .input-icon {
+            position: absolute; left: 1rem; top: 2.7rem; font-size: 1.1rem; opacity: 0.5; pointer-events: none;
         }
+        .form-group input:focus + .input-icon, .form-group select:focus + .input-icon { opacity: 1; color: var(--primary); }
+
         .btn-generate {
             width: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white; border: none; padding: 1.2rem; font-size: 1.1rem;
-            font-weight: 700; border-radius: 12px; cursor: pointer;
-            transition: all 0.3s; box-shadow: 0 4px 15px rgba(99,102,241,0.4);
-            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            color: white; border: none; padding: 1.3rem; font-size: 1.15rem;
+            font-weight: 800; border-radius: 14px; cursor: pointer;
+            transition: all 0.3s; box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+            display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+            letter-spacing: 0.5px; position: relative; overflow: hidden;
         }
-        .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.6); }
+        .btn-generate:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(99,102,241,0.6); }
+        .btn-generate:active { transform: translateY(-1px); }
+        .btn-generate:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-generate .spinner {
+            display: none; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .result-box {
-            display: none; margin-top: 1.5rem; padding: 1.5rem;
-            background: var(--dark); border: 2px solid var(--success);
-            border-radius: 12px;
+            display: none; margin-top: 2rem; padding: 2rem;
+            background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(6,182,212,0.08));
+            border: 2px solid var(--success); border-radius: 16px; position: relative;
         }
-        .result-box.show { display: block; animation: fadeIn 0.5s ease; }
-        .result-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .result-box.show { display: block; animation: slideUp 0.5s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .result-label { font-size: 0.9rem; color: var(--success); font-weight: 700; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
         .result-url {
             width: 100%; background: var(--darker); border: 1px solid var(--border);
-            color: var(--success); padding: 1rem; border-radius: 8px;
-            font-family: 'Courier New', monospace; font-size: 0.85rem;
-            word-break: break-all; resize: none; min-height: 60px;
-            outline: none;
+            color: var(--success); padding: 1.2rem; border-radius: 10px;
+            font-family: 'SF Mono', 'Courier New', monospace; font-size: 0.85rem;
+            word-break: break-all; resize: none; min-height: 80px; outline: none;
+            margin-bottom: 1rem;
         }
+        .action-btns { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.6rem; }
         .btn-copy {
-            width: 100%; margin-top: 0.8rem; background: var(--card);
-            border: 1px solid var(--border); color: var(--text);
-            padding: 0.7rem; border-radius: 8px; font-weight: 600;
-            cursor: pointer; transition: all 0.3s;
+            background: var(--card); border: 1px solid var(--border); color: var(--text);
+            padding: 0.8rem; border-radius: 10px; font-weight: 700; cursor: pointer;
+            transition: all 0.3s; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;
         }
-        .btn-copy:hover { background: var(--primary); color: white; }
-        .btn-copy.copied { background: var(--success); color: white; }
+        .btn-copy:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); }
+        .btn-copy.copied { background: var(--success); color: white; border-color: var(--success); }
 
-        .preview-box {
-            background: var(--dark); border-radius: 12px; padding: 1.5rem;
-            margin-top: 1rem; border: 1px solid var(--border);
+        .qr-section {
+            display: flex; flex-direction: column; align-items: center; margin-top: 1.5rem;
+            padding-top: 1.5rem; border-top: 1px dashed var(--border);
         }
-        .preview-box h4 { color: var(--primary); margin-bottom: 1rem; font-size: 0.9rem; }
-        .preview-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-        .preview-item:last-child { border-bottom: none; }
-        .preview-item span:first-child { color: var(--text-muted); }
-        .preview-item span:last-child { color: var(--text); font-weight: 600; }
+        .qr-box {
+            background: white; padding: 1rem; border-radius: 12px; margin-bottom: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .qr-box img { display: block; width: 180px; height: 180px; }
+        .qr-label { font-size: 0.8rem; color: var(--text-muted); }
 
-        .links-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        .links-table th {
-            background: var(--dark); padding: 0.8rem; text-align: left;
-            font-size: 0.8rem; color: var(--text-muted); font-weight: 600;
-            border-bottom: 1px solid var(--border);
+        .preview-section {
+            background: var(--dark); border-radius: 16px; padding: 1.5rem;
+            margin-top: 1.5rem; border: 1px solid var(--border);
         }
-        .links-table td {
-            padding: 0.8rem; border-bottom: 1px solid var(--border);
-            font-size: 0.85rem; color: var(--text-muted);
+        .preview-phone {
+            max-width: 340px; margin: 0 auto; background: #000;
+            border: 8px solid var(--border); border-radius: 36px;
+            overflow: hidden; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
-        .btn-small {
+        .preview-notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 24px; background: var(--border); border-radius: 0 0 16px 16px; z-index: 10;
+        }
+        .preview-screen {
+            padding: 2.5rem 1.2rem 1.5rem; min-height: 400px;
+            background: linear-gradient(180deg, var(--darker), var(--dark));
+        }
+        .preview-app-icon {
+            width: 70px; height: 70px; border-radius: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; margin: 0 auto 1rem; box-shadow: 0 8px 20px rgba(99,102,241,0.3);
+        }
+        .preview-app-name { text-align: center; font-weight: 800; font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .preview-app-ver { text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem; }
+        .preview-badge {
+            display: inline-block; background: rgba(99,102,241,0.2); color: var(--primary);
+            padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
+            margin: 0 auto; display: block; width: fit-content;
+        }
+        .preview-meta {
+            display: flex; justify-content: center; gap: 1rem; margin: 1.2rem 0;
+            font-size: 0.75rem; color: var(--text-muted);
+        }
+        .preview-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; border: none; padding: 0.9rem; border-radius: 12px;
+            font-weight: 700; font-size: 0.85rem; width: 100%; text-align: center;
+            box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+        }
+
+        .links-dashboard {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.2rem; margin-top: 1rem;
+        }
+        .link-card {
             background: var(--dark); border: 1px solid var(--border);
-            color: var(--text); padding: 0.3rem 0.6rem;
-            border-radius: 6px; font-size: 0.75rem; cursor: pointer;
+            border-radius: 16px; padding: 1.5rem; transition: all 0.3s; position: relative;
         }
-        .btn-small:hover { background: var(--primary); color: white; }
+        .link-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .link-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .link-card-title { font-weight: 800; font-size: 1rem; color: var(--text); line-height: 1.3; }
+        .link-card-cat { font-size: 0.75rem; color: var(--primary); background: rgba(99,102,241,0.1); padding: 0.2rem 0.6rem; border-radius: 6px; font-weight: 700; }
+        .link-card-url {
+            font-family: monospace; font-size: 0.78rem; color: var(--text-muted);
+            word-break: break-all; margin-bottom: 1rem; line-height: 1.4;
+            background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 8px;
+        }
+        .link-card-stats { display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.8rem; color: var(--text-muted); }
+        .link-card-actions { display: flex; gap: 0.5rem; }
+        .link-card-actions button {
+            flex: 1; background: var(--card); border: 1px solid var(--border);
+            color: var(--text); padding: 0.5rem; border-radius: 8px;
+            font-size: 0.8rem; cursor: pointer; transition: all 0.3s; font-weight: 600;
+        }
+        .link-card-actions button:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-delete:hover { background: var(--danger) !important; border-color: var(--danger) !important; }
 
-        .empty-state { text-align: center; padding: 2rem; color: var(--text-muted); }
-        .tabs {
-            display: flex; gap: 0.5rem; margin-bottom: 2rem;
-            background: var(--card); padding: 0.5rem; border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-        .tab {
-            flex: 1; padding: 0.8rem; text-align: center; cursor: pointer;
-            border-radius: 8px; font-weight: 600; transition: all 0.3s;
-            color: var(--text-muted); border: none; background: transparent;
-        }
-        .tab.active { background: var(--primary); color: white; }
-        .panel { display: none; }
-        .panel.active { display: block; animation: fadeIn 0.3s ease; }
+        .empty-state { text-align: center; padding: 3rem 2rem; color: var(--text-muted); }
+        .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .export-bar {
+            display: flex; gap: 0.8rem; margin-bottom: 1.5rem; flex-wrap: wrap;
         }
-        @media (max-width: 600px) {
+        .export-bar button {
+            background: var(--dark); border: 1px solid var(--border); color: var(--text-muted);
+            padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.85rem; cursor: pointer;
+            transition: all 0.3s; font-weight: 600;
+        }
+        .export-bar button:hover { border-color: var(--primary); color: var(--primary); }
+
+        .toast-container {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 10000;
+            display: flex; flex-direction: column; gap: 0.8rem;
+        }
+        .toast {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1rem 1.5rem;
+            display: flex; align-items: center; gap: 0.8rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideInRight 0.3s ease; min-width: 280px;
+        }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+
+        .url-validator {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.8rem; margin-top: 0.4rem; min-height: 1.2rem;
+        }
+        .url-validator.valid { color: var(--success); }
+        .url-validator.invalid { color: var(--danger); }
+        .url-validator i { font-style: normal; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) {
             .form-row { grid-template-columns: 1fr; }
             .form-card { padding: 1.5rem; }
+            .links-dashboard { grid-template-columns: 1fr; }
+            .tabs { top: 0.5rem; }
+            .action-btns { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
     <div class="panel-container">
-        <div class="logo">⚡ TechZone Painel</div>
-        <div class="subtitle">Crie landing pages monetizadas em segundos</div>
+        <div class="header-top">
+            <div class="logo">⚡ TechZone <span class="badge-pro">Pro</span></div>
+            <div class="subtitle">Crie landing pages monetizadas inteligentes em segundos</div>
+        </div>
+
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-pill">
+                <div class="num" id="statTotal">0</div>
+                <div class="lbl">Links Criados</div>
+            </div>
+            <div class="stat-pill">
+                <div class="num" id="statClicks">0</div>
+                <div class="lbl">Cliques Totais</div>
+            </div>
+            <div class="stat-pill">
+                <div class="num" id="statToday">0</div>
+                <div class="lbl">Hoje</div>
+            </div>
+            <div class="stat-pill">
+                <div class="num" id="statConversion">0%</div>
+                <div class="lbl">Conversão Est.</div>
+            </div>
+        </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('criar')">🚀 Criar Landing</button>
-            <button class="tab" onclick="switchTab('gerenciar')">📋 Meus Links</button>
+            <button class="tab active" onclick="switchTab('criar', this)">🚀 Criar Landing</button>
+            <button class="tab" onclick="switchTab('gerenciar', this)">📋 Meus Links</button>
+            <button class="tab" onclick="switchTab('analytics', this)">📊 Analytics</button>
         </div>
 
         <!-- PANEL CRIAR -->
@@ -163,20 +313,24 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nome do App <span class="required">*</span></label>
-                            <input type="text" id="appName" placeholder="Ex: Notion Mod Pro" oninput="updatePreview()">
+                            <span class="input-icon">📦</span>
+                            <input type="text" id="appName" placeholder="Ex: Notion Mod Pro" oninput="updatePreview()" maxlength="60">
                         </div>
                         <div class="form-group">
                             <label>Versão</label>
-                            <input type="text" id="appVersion" placeholder="Ex: v4.2.1" oninput="updatePreview()">
+                            <span class="input-icon">🏷️</span>
+                            <input type="text" id="appVersion" placeholder="Ex: v4.2.1" oninput="updatePreview()" maxlength="20">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Tamanho</label>
-                            <input type="text" id="appSize" placeholder="Ex: 45.2 MB" oninput="updatePreview()">
+                            <span class="input-icon">💾</span>
+                            <input type="text" id="appSize" placeholder="Ex: 45.2 MB" oninput="updatePreview()" maxlength="20">
                         </div>
                         <div class="form-group">
                             <label>Categoria</label>
+                            <span class="input-icon">📂</span>
                             <select id="appCategory" onchange="updatePreview()">
                                 <option value="📱 Apps">📱 Apps</option>
                                 <option value="🎮 Jogos">🎮 Jogos</option>
@@ -189,47 +343,66 @@
                     </div>
                     <div class="form-group">
                         <label>Descrição curta</label>
-                        <textarea id="appDesc" placeholder="Breve descrição do que o app faz..." oninput="updatePreview()"></textarea>
+                        <textarea id="appDesc" placeholder="Breve descrição do que o app faz..." oninput="updatePreview()" maxlength="300"></textarea>
+                        <small id="descCounter">0/300 caracteres</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Emoji/Ícone do App</label>
+                        <span class="input-icon" style="top:2.7rem">🎨</span>
+                        <input type="text" id="appIcon" placeholder="Ex: 📝 (deixe em branco para ícone automático)" maxlength="10" oninput="updatePreview()">
+                        <small>Deixe em branco e usaremos um ícone inteligente baseado no nome.</small>
                     </div>
                 </div>
 
                 <div class="form-section">
-                    <div class="section-title">🔗 Link Final</div>
+                    <div class="section-title">🔗 Link Final (Destino)</div>
                     <div class="form-group">
-                        <label>Link do Telegram / Download <span class="required">*</span></label>
-                        <input type="text" id="destUrl" placeholder="https://t.me/seu_canal">
-                        <small>Este é o destino final após o usuário passar pelos anúncios.</small>
+                        <label>URL de Destino <span class="required">*</span></label>
+                        <span class="input-icon">🔗</span>
+                        <input type="text" id="destUrl" placeholder="https://t.me/seu_canal ou https://seusite.com/download" oninput="validateUrl()">
+                        <div class="url-validator" id="urlValidator"><i>⏳</i> Digite uma URL válida</div>
+                        <small>Este é o destino final após o usuário passar pelos anúncios. Suporta Telegram, Drive, MediaFire, etc.</small>
                     </div>
                 </div>
 
                 <div class="form-section">
                     <div class="section-title">👁️ Preview da Landing</div>
-                    <div class="preview-box" id="previewBox">
-                        <h4>📄 Como vai aparecer:</h4>
-                        <div class="preview-item"><span>Título:</span><span id="previewTitle">Notion Mod Pro v4.2.1</span></div>
-                        <div class="preview-item"><span>Categoria:</span><span id="previewCat">📱 Apps</span></div>
-                        <div class="preview-item"><span>Tamanho:</span><span id="previewSize">45.2 MB</span></div>
-                        <div class="preview-item"><span>Descrição:</span><span id="previewDesc">Versão modificada com recursos premium desbloqueados.</span></div>
+                    <div class="preview-section">
+                        <div class="preview-phone">
+                            <div class="preview-notch"></div>
+                            <div class="preview-screen">
+                                <div class="preview-app-icon" id="previewIcon">📦</div>
+                                <div class="preview-app-name" id="previewTitle">Notion Mod Pro</div>
+                                <div class="preview-app-ver" id="previewVer">v4.2.1 • 45.2 MB</div>
+                                <div class="preview-badge" id="previewCat">📱 Apps</div>
+                                <div class="preview-meta">
+                                    <span>⭐ 4.9</span>
+                                    <span>⬇️ 2.4M+</span>
+                                    <span>✅ Verificado</span>
+                                </div>
+                                <div class="preview-btn">🔐 LIBERAR DOWNLOAD</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <button class="btn-generate" onclick="gerarLink()">
-                    🔐 GERAR LANDING PAGE
+                <button class="btn-generate" id="btnGenerate" onclick="gerarLink()">
+                    <span class="spinner" id="btnSpinner"></span>
+                    <span id="btnText">🔐 GERAR LANDING PAGE PRO</span>
                 </button>
 
                 <div class="result-box" id="resultBox">
-                    <div class="result-label">✅ Landing page gerada! Copie o link:</div>
+                    <div class="result-label">✅ Landing page gerada com sucesso!</div>
                     <textarea class="result-url" id="outputLink" readonly></textarea>
-                    <div style="display: flex; gap: 0.5rem; margin-top: 0.8rem;">
-                        <button class="btn-copy" style="flex:1; margin-top:0;" id="btnCopy" onclick="copiarLink()">
-                            📋 COPIAR
-                        </button>
-                        <button class="btn-copy" style="flex:1; margin-top:0;" onclick="abrirLink()">
-                            🔗 ABRIR
-                        </button>
-                        <button class="btn-copy" style="flex:1; margin-top:0;" onclick="encurtarLink()">
-                            ✂️ ENCURTAR
-                        </button>
+                    <div class="action-btns">
+                        <button class="btn-copy" id="btnCopy" onclick="copiarLink()">📋 Copiar</button>
+                        <button class="btn-copy" onclick="abrirLink()">🔗 Abrir</button>
+                        <button class="btn-copy" onclick="compartilharLink()">📤 Compartilhar</button>
+                        <button class="btn-copy" onclick="encurtarLink()">✂️ Encurtar</button>
+                    </div>
+                    <div class="qr-section">
+                        <div class="qr-box" id="qrBox"></div>
+                        <div class="qr-label">Escaneie para acessar diretamente</div>
                     </div>
                 </div>
             </div>
@@ -238,19 +411,54 @@
         <!-- PANEL GERENCIAR -->
         <div class="panel" id="panel-gerenciar">
             <div class="form-card">
-                <h3 style="margin-bottom: 1rem; color: var(--text);">📋 Links Gerados</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:1rem;">
+                    <h3 style="color: var(--text); font-size: 1.3rem;">📋 Links Gerados</h3>
+                    <div class="export-bar">
+                        <button onclick="exportLinks('json')">⬇️ Exportar JSON</button>
+                        <button onclick="exportLinks('csv')">⬇️ Exportar CSV</button>
+                        <button onclick="clearAllLinks()" style="color:var(--danger);">🗑️ Limpar Tudo</button>
+                    </div>
+                </div>
                 <div id="linksList">
                     <div class="empty-state">
-                        <div style="font-size: 2rem;">📭</div>
-                        <div>Nenhum link ainda.</div>
+                        <div class="icon">📭</div>
+                        <div style="font-size:1.1rem; font-weight:700; margin-bottom:0.5rem;">Nenhum link ainda</div>
+                        <div>Crie sua primeira landing page na aba "Criar Landing"</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL ANALYTICS -->
+        <div class="panel" id="panel-analytics">
+            <div class="form-card">
+                <h3 style="color: var(--text); font-size: 1.3rem; margin-bottom: 1.5rem;">📊 Analytics Simplificado</h3>
+                <div id="analyticsContent">
+                    <div class="empty-state">
+                        <div class="icon">📊</div>
+                        <div>Gere links para ver estatísticas detalhadas</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="toast-container" id="toastContainer"></div>
+
     <script>
-        const STORAGE_KEY = 'techzone_landings_v3';
+        // ============ CONFIG & STORAGE ============
+        const STORAGE_KEY = 'techzone_landings_pro_v1';
+        const ICONS_MAP = {
+            'notion': '📝', 'spotify': '🎵', 'netflix': '🎬', 'youtube': '▶️',
+            'adobe': '🎨', 'photoshop': '🖌️', 'canva': '📐', 'telegram': '✈️',
+            'whatsapp': '💬', 'instagram': '📷', 'tiktok': '🎵', 'minecraft': '⛏️',
+            'gta': '🚗', 'fortnite': '🎮', 'free fire': '🔥', 'pubg': '🎯',
+            'office': '📊', 'windows': '🪟', 'excel': '📈', 'word': '📄',
+            'powerpoint': '📽️', 'chrome': '🌐', 'firefox': '🦊', 'edge': '⚡',
+            'vpn': '🔒', 'antivirus': '🛡️', 'cleaner': '🧹', 'editor': '✂️',
+            'game': '🎮', 'app': '📱', 'mod': '🔓', 'hack': '⚡', 'pro': '⭐',
+            'premium': '💎', 'plus': '➕', 'gold': '🥇', 'vip': '👑'
+        };
 
         function getLandings() {
             try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
@@ -258,27 +466,77 @@
         }
         function saveLandings(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
-        function switchTab(tab) {
+        // ============ UTILITIES ============
+        function showToast(msg, type='success', duration=3000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️';
+            toast.innerHTML = `<span style="font-size:1.2rem">${icon}</span><span style="font-weight:600">${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(100%)'; setTimeout(() => toast.remove(), 300); }, duration);
+        }
+
+        function getBaseUrl() {
+            const path = window.location.pathname;
+            const base = path.substring(0, path.lastIndexOf('/') + 1);
+            return window.location.origin + base + 'index.html';
+        }
+
+        function detectIcon(name) {
+            const lower = name.toLowerCase();
+            for (const [key, icon] of Object.entries(ICONS_MAP)) {
+                if (lower.includes(key)) return icon;
+            }
+            const cats = { '🎮 Jogos': '🎮', '🔓 Mod APK': '🔓', '💻 Windows': '🪟', '🍎 macOS': '🍎', '📱 Apps': '📱' };
+            return cats[document.getElementById('appCategory').value] || '📦';
+        }
+
+        // ============ VALIDATION ============
+        function validateUrl() {
+            const url = document.getElementById('destUrl').value.trim();
+            const validator = document.getElementById('urlValidator');
+            if (!url) { validator.innerHTML = '<i>⏳</i> Digite uma URL válida'; validator.className = 'url-validator'; return false; }
+
+            const regex = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+            const isValid = regex.test(url) && url.length > 10;
+
+            if (isValid) {
+                validator.innerHTML = '<i>✅</i> URL válida detectada'; validator.className = 'url-validator valid';
+            } else {
+                validator.innerHTML = '<i>❌</i> URL inválida ou incompleta'; validator.className = 'url-validator invalid';
+            }
+            return isValid;
+        }
+
+        // ============ TABS ============
+        function switchTab(tab, el) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            event.target.classList.add('active');
+            el.classList.add('active');
             document.getElementById('panel-' + tab).classList.add('active');
-            if(tab === 'gerenciar') renderLinks();
+            if (tab === 'gerenciar') renderLinks();
+            if (tab === 'analytics') renderAnalytics();
+            updateStatsBar();
         }
 
+        // ============ PREVIEW ============
         function updatePreview() {
-            const name = document.getElementById('appName').value || 'Notion Mod Pro';
-            const ver = document.getElementById('appVersion').value || 'v4.2.1';
-            const size = document.getElementById('appSize').value || '45.2 MB';
+            const name = document.getElementById('appName').value.trim() || 'Notion Mod Pro';
+            const ver = document.getElementById('appVersion').value.trim() || 'v4.2.1';
+            const size = document.getElementById('appSize').value.trim() || '45.2 MB';
             const cat = document.getElementById('appCategory').value;
-            const desc = document.getElementById('appDesc').value || 'Versão modificada com recursos premium desbloqueados.';
+            const desc = document.getElementById('appDesc').value;
+            const customIcon = document.getElementById('appIcon').value.trim();
 
-            document.getElementById('previewTitle').textContent = name + ' ' + ver;
+            document.getElementById('previewTitle').textContent = name;
+            document.getElementById('previewVer').textContent = ver + (size ? ' • ' + size : '');
             document.getElementById('previewCat').textContent = cat;
-            document.getElementById('previewSize').textContent = size;
-            document.getElementById('previewDesc').textContent = desc;
+            document.getElementById('previewIcon').textContent = customIcon || detectIcon(name);
+            document.getElementById('descCounter').textContent = `${desc.length}/300 caracteres`;
         }
 
+        // ============ GENERATE ============
         function gerarLink() {
             const name = document.getElementById('appName').value.trim();
             const ver = document.getElementById('appVersion').value.trim();
@@ -286,44 +544,60 @@
             const cat = document.getElementById('appCategory').value;
             const desc = document.getElementById('appDesc').value.trim();
             const url = document.getElementById('destUrl').value.trim();
+            const icon = document.getElementById('appIcon').value.trim();
 
-            if(!name) { alert('❌ Digite o nome do app!'); return; }
-            if(!url) { alert('❌ Cole o link do destino!'); return; }
-            if(!url.startsWith('http')) { alert('❌ Link deve começar com http://'); return; }
+            if (!name) { showToast('Digite o nome do app!', 'error'); return; }
+            if (!url) { showToast('Cole o link de destino!', 'error'); return; }
+            if (!validateUrl()) { showToast('URL de destino inválida!', 'error'); return; }
 
-            // Cria objeto com todos os dados
-            const data = {
-                n: name,
-                v: ver || 'v1.0',
-                s: size || 'N/A',
-                c: cat,
-                d: desc || 'Download disponível.',
-                u: url
-            };
+            const btn = document.getElementById('btnGenerate');
+            const spinner = document.getElementById('btnSpinner');
+            const btnText = document.getElementById('btnText');
+            btn.disabled = true;
+            spinner.style.display = 'block';
+            btnText.textContent = 'Codificando dados...';
 
-            // Codifica tudo em Base64
-            const jsonStr = JSON.stringify(data);
-            const encoded = btoa(jsonStr);
+            setTimeout(() => {
+                const data = {
+                    n: name, v: ver || 'v1.0', s: size || 'N/A', c: cat,
+                    d: desc || 'Download disponível.', u: url, i: icon || detectIcon(name),
+                    t: Date.now()
+                };
 
-            const baseUrl = window.location.origin + '/index.html';
-            const finalLink = `${baseUrl}?d=${encoded}`;
+                // FIX CRÍTICO: encodeURIComponent para suportar UTF-8/acentos/emojis
+                const jsonStr = JSON.stringify(data);
+                const encoded = btoa(encodeURIComponent(jsonStr));
 
-            // Salva no storage
-            const landings = getLandings();
-            landings.unshift({
-                id: Date.now(),
-                title: name + ' ' + (ver || ''),
-                finalLink: finalLink,
-                created: new Date().toLocaleString('pt-BR'),
-                clicks: 0
-            });
-            saveLandings(landings);
+                const finalLink = `${getBaseUrl()}?d=${encoded}`;
 
-            // Mostra resultado
-            document.getElementById('resultBox').classList.add('show');
-            document.getElementById('outputLink').value = finalLink;
+                const landings = getLandings();
+                landings.unshift({
+                    id: Date.now(), title: name + ' ' + (ver || ''),
+                    finalLink: finalLink, destUrl: url, category: cat,
+                    created: new Date().toLocaleString('pt-BR'), clicks: 0,
+                    icon: data.i, size: size
+                });
+                saveLandings(landings);
 
-            setTimeout(() => copiarLink(), 500);
+                btnText.textContent = 'Pronto!';
+                setTimeout(() => {
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                    btnText.textContent = '🔐 GERAR LANDING PAGE PRO';
+                }, 600);
+
+                document.getElementById('resultBox').classList.add('show');
+                document.getElementById('outputLink').value = finalLink;
+                generateQR(finalLink);
+                updateStatsBar();
+                setTimeout(() => copiarLink(), 400);
+            }, 800);
+        }
+
+        function generateQR(url) {
+            const qrBox = document.getElementById('qrBox');
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=10&data=${encodeURIComponent(url)}`;
+            qrBox.innerHTML = `<img src="${qrUrl}" alt="QR Code" onload="this.style.opacity=1" style="opacity:0;transition:opacity 0.5s">`;
         }
 
         function copiarLink() {
@@ -331,50 +605,192 @@
             el.select();
             navigator.clipboard.writeText(el.value).then(() => {
                 const btn = document.getElementById('btnCopy');
-                btn.textContent = '✅ COPIADO!';
+                btn.textContent = '✅ Copiado!';
                 btn.classList.add('copied');
-                setTimeout(() => { btn.textContent = '📋 COPIAR'; btn.classList.remove('copied'); }, 2000);
+                showToast('Link copiado para a área de transferência!');
+                setTimeout(() => { btn.textContent = '📋 Copiar'; btn.classList.remove('copied'); }, 2000);
             });
         }
 
         function abrirLink() {
             const url = document.getElementById('outputLink').value;
-            if(url) window.open(url, '_blank');
+            if (url) window.open(url, '_blank');
+        }
+
+        function compartilharLink() {
+            const url = document.getElementById('outputLink').value;
+            if (!url) return;
+            if (navigator.share) {
+                navigator.share({ title: 'TechZone Landing', text: 'Confira este download!', url: url });
+            } else {
+                showToast('Compartilhamento não suportado neste navegador', 'warning');
+            }
         }
 
         function encurtarLink() {
             const url = document.getElementById('outputLink').value;
-            if(!url) return;
+            if (!url) return;
             window.open(`https://tinyurl.com/create.php?url=${encodeURIComponent(url)}`, '_blank');
         }
 
+        // ============ MANAGE LINKS ============
         function renderLinks() {
             const links = getLandings();
             const container = document.getElementById('linksList');
 
-            if(links.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div style="font-size:2rem;">📭</div><div>Nenhum link ainda.</div></div>';
+            if (links.length === 0) {
+                container.innerHTML = `<div class="empty-state"><div class="icon">📭</div><div style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;">Nenhum link ainda</div><div>Crie sua primeira landing page na aba "Criar Landing"</div></div>`;
                 return;
             }
 
-            let html = '<table class="links-table"><thead><tr><th>App</th><th>Criado</th><th>Cliques</th><th>Ações</th></tr></thead><tbody>';
-            links.forEach(link => {
-                html += `<tr>
-                    <td><strong>${link.title}</strong><br><small style="color:var(--text-muted)">${link.finalLink.substring(0,40)}...</small></td>
-                    <td>${link.created}</td>
-                    <td>${link.clicks || 0}</td>
-                    <td>
-                        <button class="btn-small" onclick="navigator.clipboard.writeText('${link.finalLink}');alert('Copiado!')">📋</button>
-                        <button class="btn-small" onclick="window.open('${link.finalLink}','_blank')">🔗</button>
-                    </td>
-                </tr>`;
+            let html = '<div class="links-dashboard">';
+            links.forEach((link, idx) => {
+                html += `
+                <div class="link-card">
+                    <div class="link-card-header">
+                        <div style="display:flex;align-items:center;gap:0.6rem;">
+                            <span style="font-size:1.5rem">${link.icon || '📦'}</span>
+                            <div>
+                                <div class="link-card-title">${escapeHtml(link.title)}</div>
+                                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem">${escapeHtml(link.category || '')}</div>
+                            </div>
+                        </div>
+                        <span class="link-card-cat">${escapeHtml(link.category || 'Link')}</span>
+                    </div>
+                    <div class="link-card-url">${escapeHtml(link.finalLink)}</div>
+                    <div class="link-card-stats">
+                        <span>📅 ${link.created}</span>
+                        <span>👁️ ${link.clicks || 0} cliques</span>
+                        <span>💾 ${link.size || 'N/A'}</span>
+                    </div>
+                    <div class="link-card-actions">
+                        <button onclick="copyFromList('${link.finalLink.replace(/'/g, "\'")}')">📋</button>
+                        <button onclick="window.open('${link.finalLink.replace(/'/g, "\'")}','_blank')">🔗</button>
+                        <button onclick="window.open('https://tinyurl.com/create.php?url=${encodeURIComponent(link.finalLink)}','_blank')">✂️</button>
+                        <button class="btn-delete" onclick="deleteLink(${link.id})">🗑️</button>
+                    </div>
+                </div>`;
             });
-            html += '</tbody></table>';
+            html += '</div>';
             container.innerHTML = html;
         }
 
-        // Init
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function copyFromList(url) {
+            navigator.clipboard.writeText(url).then(() => showToast('Link copiado!'));
+        }
+
+        function deleteLink(id) {
+            if (!confirm('Tem certeza que deseja excluir este link?')) return;
+            let links = getLandings();
+            links = links.filter(l => l.id !== id);
+            saveLandings(links);
+            renderLinks();
+            updateStatsBar();
+            showToast('Link removido com sucesso');
+        }
+
+        function clearAllLinks() {
+            if (!confirm('⚠️ ATENÇÃO: Isso apagará TODOS os links salvos permanentemente. Continuar?')) return;
+            localStorage.removeItem(STORAGE_KEY);
+            renderLinks();
+            updateStatsBar();
+            showToast('Todos os links foram removidos', 'warning');
+        }
+
+        function exportLinks(format) {
+            const links = getLandings();
+            if (links.length === 0) { showToast('Nenhum link para exportar', 'warning'); return; }
+
+            let content, mime, ext;
+            if (format === 'json') {
+                content = JSON.stringify(links, null, 2);
+                mime = 'application/json'; ext = 'json';
+            } else {
+                const headers = 'ID,Título,Categoria,Link,Destino,Criado,Cliques\n';
+                const rows = links.map(l => `${l.id},"${l.title}","${l.category}","${l.finalLink}","${l.destUrl}","${l.created}",${l.clicks || 0}`).join('\n');
+                content = headers + rows; mime = 'text/csv'; ext = 'csv';
+            }
+
+            const blob = new Blob([content], { type: mime });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `techzone_links_${new Date().toISOString().slice(0,10)}.${ext}`;
+            a.click();
+            showToast(`Exportado como ${ext.toUpperCase()}!`);
+        }
+
+        // ============ ANALYTICS ============
+        function renderAnalytics() {
+            const links = getLandings();
+            const container = document.getElementById('analyticsContent');
+
+            if (links.length === 0) {
+                container.innerHTML = `<div class="empty-state"><div class="icon">📊</div><div>Gere links para ver estatísticas detalhadas</div></div>`;
+                return;
+            }
+
+            const totalClicks = links.reduce((a, b) => a + (b.clicks || 0), 0);
+            const topLink = links.reduce((a, b) => ((b.clicks || 0) > (a.clicks || 0) ? b : a), links[0]);
+
+            container.innerHTML = `
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                    <div class="stat-pill"><div class="num">${links.length}</div><div class="lbl">Total de Links</div></div>
+                    <div class="stat-pill"><div class="num">${totalClicks}</div><div class="lbl">Cliques Totais</div></div>
+                    <div class="stat-pill"><div class="num">${topLink ? escapeHtml(topLink.title.substring(0,15)) + '...' : '-'}</div><div class="lbl">Mais Cliques</div></div>
+                </div>
+                <div style="background:var(--dark); border-radius:12px; padding:1.5rem; border:1px solid var(--border);">
+                    <h4 style="margin-bottom:1rem; color:var(--primary);">📈 Distribuição por Categoria</h4>
+                    <div id="catChart"></div>
+                </div>
+            `;
+
+            // Simple bar chart by category
+            const cats = {};
+            links.forEach(l => { cats[l.category || 'Outro'] = (cats[l.category || 'Outro'] || 0) + 1; });
+            let chartHtml = '';
+            const max = Math.max(...Object.values(cats));
+            for (const [cat, count] of Object.entries(cats)) {
+                const pct = (count / links.length * 100).toFixed(0);
+                const barWidth = max ? (count / max * 100) : 0;
+                chartHtml += `
+                    <div style="margin-bottom:0.8rem;">
+                        <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.3rem;">
+                            <span>${escapeHtml(cat)}</span><span>${count} (${pct}%)</span>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.3); border-radius:6px; height:8px; overflow:hidden;">
+                            <div style="background:linear-gradient(90deg,var(--primary),var(--secondary)); height:100%; width:${barWidth}%; border-radius:6px; transition:width 1s ease;"></div>
+                        </div>
+                    </div>`;
+            }
+            document.getElementById('catChart').innerHTML = chartHtml || '<div style="color:var(--text-muted)">Sem dados suficientes</div>';
+        }
+
+        function updateStatsBar() {
+            const links = getLandings();
+            const total = links.length;
+            const clicks = links.reduce((a, b) => a + (b.clicks || 0), 0);
+            const today = links.filter(l => {
+                const d = new Date(l.created);
+                const now = new Date();
+                return d.toDateString() === now.toDateString();
+            }).length;
+            const conversion = total > 0 ? Math.min(100, Math.round((clicks / (total * 10)) * 100)) : 0;
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statClicks').textContent = clicks;
+            document.getElementById('statToday').textContent = today;
+            document.getElementById('statConversion').textContent = conversion + '%';
+        }
+
+        // ============ INIT ============
         updatePreview();
+        updateStatsBar();
     </script>
 </body>
 </html>
