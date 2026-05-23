@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechZone — Portal de Downloads Premium</title>
-    <meta name="description" content="TechZone é a ponte segura e verificada para os melhores conteúdos. Acesse através do nosso portal.">
+    <title>TechZone — Portal Premium</title>
+    <meta name="description" content="Portal seguro e verificado. Acesse conteúdo premium através da nossa ponte.">
 
     <!-- Open Graph dinâmico -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="TechZone">
-    <meta id="ogTitle" property="og:title" content="TechZone — Portal de Downloads Premium">
-    <meta id="ogDesc" property="og:description" content="Ponte segura e verificada para conteúdo premium. Acesse agora.">
+    <meta id="ogTitle" property="og:title" content="TechZone — Portal Premium">
+    <meta id="ogDesc" property="og:description" content="Ponte segura e verificada para conteúdo premium.">
     <meta id="ogImage" property="og:image" content="https://cdn-icons-png.flaticon.com/512/2965/2965306.png">
     <meta name="twitter:card" content="summary_large_image">
 
@@ -18,7 +18,7 @@
     <script type="application/ld+json" id="schemaJson">{
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "TechZone Portal",
+        "name": "TechZone Download",
         "applicationCategory": "UtilitiesApplication",
         "operatingSystem": "Android, iOS, Windows, macOS",
         "offers": {"@type": "Offer", "price": "0", "priceCurrency": "BRL"},
@@ -303,7 +303,6 @@
             position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98);
             backdrop-filter: blur(8px); z-index: 9999; display: none;
             align-items: center; justify-content: center; padding: 1rem;
-            will-change: opacity;
         }
         .layer-overlay.active { display: flex; }
         .layer-box {
@@ -470,7 +469,7 @@
                 <div class="breadcrumb">
                     <a href="./">Início</a> / <span id="breadcrumbCat">📱 Apps</span> / <span id="breadcrumbApp">Portal TechZone</span>
                 </div>
-                <h1 class="article-title" id="pageTitle">Acesse Conteúdo Premium via TechZone — Portal Verificado</h1>
+                <h1 class="article-title" id="pageTitle">Notion Mod Pro v4.2.1: Desbloqueie Todos os Recursos Premium Gratuitamente</h1>
                 <div class="article-meta">
                     <div class="meta-item"><div class="author-avatar">TZ</div></div>
                     <div class="meta-item"><span class="verified-badge">✓ Verificado</span></div>
@@ -521,7 +520,7 @@
 
             <div class="article-content" id="articleContent">
                 <p id="descMain">
-                    O <strong>TechZone</strong> é a ponte segura entre você e o melhor conteúdo digital. Não hospedamos arquivos diretamente — conectamos você aos recursos verificados e atualizados pela comunidade. Acesse agora através do nosso portal monetizado.
+                    O <strong>TechZone</strong> é a ponte segura entre você e o melhor conteúdo digital. Não hospedamos arquivos diretamente — conectamos você aos recursos verificados e atualizados pela comunidade. Acesse agora através do nosso portal.
                 </p>
                 <p>
                     Navegue com segurança através da nossa ponte verificada. Todo conteúdo passa por checagem antes de ser disponibilizado. Clique abaixo para acessar o destino final.
@@ -618,7 +617,7 @@
 
                 <button class="btn-download" id="btnDownload" onclick="startDownload()">
                     <span class="icon">🔐</span>
-                    <span id="btnText">ACESSAR PONTE AGORA</span>
+                    <span id="btnText">LIBERAR DOWNLOAD AGORA</span>
                 </button>
 
                 <div class="live-counter">
@@ -977,15 +976,8 @@
             if (!destUrl) { showToast('❌ Erro no link de destino', 'error'); return; }
             sessionStorage.removeItem('tz_download_started');
             document.getElementById('layer2').classList.remove('active');
-            // Abre direto sem passar pelo layer3
-            try {
-                const landings = JSON.parse(localStorage.getItem('techzone_landings_pro_v1') || '[]');
-                const currentUrl = window.location.href;
-                const found = landings.find(l => currentUrl.includes(l.finalLink) || l.finalLink === currentUrl.split('?')[0] + '?d=' + new URLSearchParams(window.location.search).get('d'));
-                if (found) { found.clicks = (found.clicks || 0) + 1; localStorage.setItem('techzone_landings_pro_v1', JSON.stringify(landings)); }
-            } catch(e) {}
             window.open(destUrl, '_blank');
-            showToast('🚀 Redirecionando para o download...');
+            showToast('🚀 Redirecionando...');
         }
 
         // ========== VIDEO ==========
@@ -998,24 +990,15 @@
         }
 
 
-        // ========== NOTÍCIAS REAIS (Multi-API Fallback) ==========
-        const API_KEYS = {
-            currents: 'kkch9OPMPZ29sAQxprM7zusPGsNa-OQo57eeU0Xqll3ieDbj',
-            gnews: 'a2645ca2d41f79592f1bc044036f69bd',
-            newsapi: '60501d56903d4c0fb1eb6e1f5b9d0acc'
-        };
-
+        // ========== NOTÍCIAS REAIS (Currents API - CORS habilitado) ==========
         async function loadNews() {
             const container = document.getElementById('newsContainer');
             const status = document.getElementById('newsStatus');
 
-            // Tentar Currents API primeiro (ilimitada, sem CORS issues)
             try {
-                status.textContent = '• via Currents';
-                const res = await fetch(`https://api.currentsapi.services/v1/latest-news?apiKey=${API_KEYS.currents}&language=pt&page_size=5`, {
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' }
-                });
+                status.textContent = '• carregando...';
+                // Currents API tem CORS habilitado para browser
+                const res = await fetch('https://api.currentsapi.services/v1/latest-news?apiKey=kkch9OPMPZ29sAQxprM7zusPGsNa-OQo57eeU0Xqll3ieDbj&language=pt&page_size=5');
                 const data = await res.json();
                 if (data.status === 'ok' && data.news && data.news.length > 0) {
                     renderNews(data.news.slice(0, 5).map(n => ({
@@ -1025,46 +1008,14 @@
                         url: n.url,
                         icon: getNewsIcon(n.title)
                     })));
+                    status.textContent = '';
                     return;
                 }
-            } catch(e) { console.log('Currents falhou:', e); }
+            } catch(e) { 
+                console.log('Currents falhou:', e); 
+            }
 
-            // Fallback GNews (CORS pode bloquear, tentar com proxy se necessário)
-            try {
-                status.textContent = '• via GNews';
-                const res = await fetch(`https://gnews.io/api/v4/top-headlines?category=technology&lang=pt&country=br&apikey=${API_KEYS.gnews}&max=5`);
-                const data = await res.json();
-                if (data.articles && data.articles.length > 0) {
-                    renderNews(data.articles.slice(0, 5).map(n => ({
-                        title: n.title,
-                        source: n.source?.name || 'TechZone',
-                        time: formatTime(n.publishedAt),
-                        url: n.url,
-                        icon: getNewsIcon(n.title)
-                    })));
-                    return;
-                }
-            } catch(e) { console.log('GNews falhou:', e); }
-
-            // Fallback NewsAPI (100 req/dia, CORS restrito em free tier)
-            try {
-                status.textContent = '• via NewsAPI';
-                // NewsAPI free tier bloqueia CORS em produção, usar proxy ou everything endpoint
-                const res = await fetch(`https://newsapi.org/v2/everything?q=technology+OR+tech+OR+smartphone+OR+app&language=pt&sortBy=publishedAt&pageSize=5&apiKey=${API_KEYS.newsapi}`);
-                const data = await res.json();
-                if (data.status === 'ok' && data.articles && data.articles.length > 0) {
-                    renderNews(data.articles.slice(0, 5).map(n => ({
-                        title: n.title,
-                        source: n.source?.name || 'TechZone',
-                        time: formatTime(n.publishedAt),
-                        url: n.url,
-                        icon: getNewsIcon(n.title)
-                    })));
-                    return;
-                }
-            } catch(e) { console.log('NewsAPI falhou:', e); }
-
-            // Fallback simulado se todas falharem
+            // Fallback simulado
             status.textContent = '';
             renderNews([
                 {title: 'iOS 19 traz IA nativa em todos os apps', source: 'Apple Insider', time: '2h atrás', url: '#', icon: '🍎'},
@@ -1077,15 +1028,7 @@
 
         function renderNews(articles) {
             const container = document.getElementById('newsContainer');
-            container.innerHTML = articles.map(a => `
-                <a href="${a.url}" target="_blank" class="news-api-item" style="text-decoration:none;color:inherit;">
-                    <div class="news-api-thumb">${a.icon}</div>
-                    <div class="news-api-content">
-                        <h4>${escapeHtml(a.title)}</h4>
-                        <small>${escapeHtml(a.source)} • ${a.time}</small>
-                    </div>
-                </a>
-            `).join('');
+            container.innerHTML = articles.map(a => '<a href="' + a.url + '" target="_blank" class="news-api-item" style="text-decoration:none;color:inherit;"><div class="news-api-thumb">' + a.icon + '</div><div class="news-api-content"><h4>' + escapeHtml(a.title) + '</h4><small>' + escapeHtml(a.source) + ' • ' + a.time + '</small></div></a>').join('');
         }
 
         function getNewsIcon(title) {
@@ -1124,7 +1067,6 @@
             return div.innerHTML;
         }
 
-        // Carregar notícias ao iniciar
         loadNews();
 
         // ========== UTILITIES ==========
