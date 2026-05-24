@@ -3,299 +3,743 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Landing</title>
+<title id="pageTitle">Download</title>
+
+<!-- Monetag Mult -->
+<script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
 
 <style>
+* { margin:0; padding:0; box-sizing:border-box }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #0f172a;
+  color: #fff;
+  min-height: 100vh;
 }
 
-body{
-font-family:Arial,sans-serif;
-background:#0f172a;
-color:#fff
+/* Header */
+.header {
+  background: #1e293b;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #06b6d4;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.container{
-max-width:800px;
-margin:auto;
-padding:20px
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  color: #06b6d4;
+  letter-spacing: 2px;
 }
 
-.card{
-background:#1e293b;
-border-radius:20px;
-padding:20px
+.logo span { color: #fff }
+
+.header-icons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
-img{
-width:100%;
-border-radius:16px;
-margin-bottom:20px
+.header-icons button {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-h1{
-margin-bottom:10px
+.header-icons button:hover { color: #06b6d4 }
+
+/* Search bar */
+.search-bar {
+  padding: 15px 20px;
+  background: #1e293b;
 }
 
-.desc{
-color:#94a3b8;
-margin-bottom:20px
+.search-bar input {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 30px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
 }
 
-.tags{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-margin-bottom:20px
+.search-bar input::placeholder { color: #64748b }
+
+/* Breadcrumb */
+.breadcrumb {
+  padding: 10px 20px;
+  color: #64748b;
+  font-size: 13px;
 }
 
-.tag{
-background:#06b6d4;
-padding:6px 12px;
-border-radius:30px
+.breadcrumb a { color: #06b6d4; text-decoration: none }
+
+/* Main Container */
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 0 20px 40px;
 }
 
-.info{
-margin-top:20px
+/* App Card */
+.app-card {
+  background: #1e293b;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 20px;
 }
 
-.row{
-display:flex;
-justify-content:space-between;
-padding:12px 0;
-border-bottom:1px solid #334155
+.app-title {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  line-height: 1.3;
 }
 
-.timer{
-margin-top:30px;
-text-align:center
+.app-version {
+  color: #94a3b8;
+  font-size: 18px;
+  margin-bottom: 15px;
 }
 
-.num{
-font-size:70px;
-font-weight:bold;
-margin:20px 0
+/* Tags */
+.tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
 }
 
-.progress{
-height:12px;
-background:#111827;
-border-radius:30px;
-overflow:hidden;
-margin-top:20px
+.tag {
+  background: #06b6d4;
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.fill{
-height:100%;
-width:0%;
-background:#6366f1
+.tag.tools { background: #6366f1 }
+
+/* Content Grid */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-bottom: 25px;
 }
 
-.btn{
-display:none;
-width:100%;
-padding:18px;
-border:none;
-border-radius:14px;
-background:#10b981;
-color:#fff;
-font-size:18px;
-font-weight:bold;
-margin-top:25px;
-cursor:pointer
+@media (max-width: 600px) {
+  .content-grid { grid-template-columns: 1fr }
 }
 
+/* Left: Image + Buttons */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.app-img {
+  width: 100%;
+  border-radius: 20px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: #0f172a;
+}
+
+.btn-download {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: #06b6d4;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.btn-download:hover {
+  background: #0891b2;
+  transform: translateY(-2px);
+}
+
+.btn-telegram {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: #229ed9;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.btn-telegram:hover {
+  background: #1a8bc2;
+  transform: translateY(-2px);
+}
+
+.report-btn {
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.report-btn:hover { color: #ef4444 }
+
+/* Right: Info */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #334155;
+}
+
+.info-row:last-child { border-bottom: none }
+
+.info-label {
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.info-value {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.info-value a {
+  color: #06b6d4;
+  text-decoration: none;
+}
+
+.info-value a:hover { text-decoration: underline }
+
+/* Google Play */
+.gplay {
+  margin-top: 15px;
+  padding: 15px;
+  background: #0f172a;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gplay-text {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.gplay-text strong {
+  color: #fff;
+  font-size: 16px;
+  display: block;
+}
+
+/* Social Share */
+.social-share {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.social-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #334155;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.social-btn:hover {
+  background: #06b6d4;
+  transform: scale(1.1);
+}
+
+/* Description Section */
+.desc-section {
+  background: #1e293b;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.desc-section h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #06b6d4;
+}
+
+.desc-text {
+  color: #94a3b8;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+/* Ad Banner */
+.ad-banner {
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: center;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1e293b;
+  border-top: 2px solid #06b6d4;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  z-index: 100;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #64748b;
+  font-size: 11px;
+  text-decoration: none;
+  padding: 5px 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-item.active,
+.nav-item:hover {
+  color: #06b6d4;
+}
+
+.nav-item svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #64748b;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #334155;
+  border-top-color: #06b6d4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin { to { transform: rotate(360deg) } }
+
+/* Error */
+.error-page {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.error-page h1 {
+  font-size: 80px;
+  color: #06b6d4;
+  margin-bottom: 20px;
+}
+
+.error-page p {
+  color: #94a3b8;
+  font-size: 18px;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #111827;
+  padding: 14px 24px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  z-index: 9999;
+  opacity: 0;
+  transition: 0.4s;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Padding bottom for fixed nav */
+body { padding-bottom: 70px }
+
+/* Adblock detect */
+.adblock-msg {
+  display: none;
+  background: #ef4444;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+  font-size: 14px;
+}
 </style>
 </head>
 
 <body>
 
+<!-- Adblock detect -->
+<div class="adblock-msg" id="adblockMsg">
+  ⚠️ Desative o AdBlock para continuar usando o site
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo">NIGAN<span>PRO</span></div>
+  <div class="header-icons">
+    <button onclick="toggleTheme()">🌙</button>
+    <button onclick="openMenu()">☰</button>
+  </div>
+</div>
+
+<!-- Search -->
+<div class="search-bar">
+  <input type="text" placeholder="App search" id="searchInput">
+</div>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb" id="breadcrumb">
+  <a href="#">Home</a> / <span id="catName">Apps</span>
+</div>
+
+<!-- Main Content -->
+<div class="container" id="mainContent">
+  <div class="loading" id="loading">
+    <div class="loading-spinner"></div>
+    <p>Carregando...</p>
+  </div>
+</div>
+
+<!-- Ad Banner Terra -->
 <div class="container">
-
-<div class="card">
-
-<img id="img">
-
-<h1 id="titulo"></h1>
-
-<div class="desc" id="descricao"></div>
-
-<div class="tags" id="tags"></div>
-
-<div class="info">
-
-<div class="row">
-<span>Versão</span>
-<span id="versao"></span>
+  <div class="ad-banner" id="adBanner1">
+    <script>
+      atOptions = {
+        'key': 'e9b65e3582d7f776c07b55b97a846b19',
+        'format': 'iframe',
+        'height': 50,
+        'width': 320,
+        'params': {}
+      };
+    </script>
+    <script src="https://encouragingjawsordinarily.com/e9b65e3582d7f776c07b55b97a846b19/invoke.js"></script>
+  </div>
 </div>
 
-<div class="row">
-<span>Tamanho</span>
-<span id="tamanho"></span>
-</div>
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
-<div class="row">
-<span>Requirements</span>
-<span id="requirements"></span>
-</div>
-
-<div class="row">
-<span>Downloads</span>
-<span id="downloads"></span>
-</div>
-
-<div class="row">
-<span>Developer</span>
-<span id="developer"></span>
-</div>
-
-</div>
-
-<div class="timer">
-
-<div>Aguarde</div>
-
-<div class="num" id="num">
-15
-</div>
-
-<div class="progress">
-<div class="fill" id="fill"></div>
-</div>
-
-<button class="btn" id="btnDownload">
-⬇ DOWNLOAD
-</button>
-
-</div>
-
-</div>
-
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+  <a class="nav-item active" href="#">
+    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    Home
+  </a>
+  <a class="nav-item" href="#">
+    <svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>
+    Hot MODs
+  </a>
+  <a class="nav-item" href="#">
+    <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 13H3V5h18v11z"/></svg>
+    IPTV Apps
+  </a>
+  <a class="nav-item" href="#" id="telegramNav">
+    <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+    Telegram
+  </a>
 </div>
 
 <script>
-
-var params =
-new URLSearchParams(location.search);
-
-var id =
-params.get('id');
-
-if(!id){
-
-document.body.innerHTML =
-'<h1 style="padding:40px;text-align:center;color:white">Link inválido</h1>';
-
-throw new Error();
-
-}
-
-var dados =
-localStorage.getItem('app_' + id);
-
-if(!dados){
-
-document.body.innerHTML =
-'<h1 style="padding:40px;text-align:center;color:white">Conteúdo expirado</h1>';
-
-throw new Error();
-
-}
-
-dados =
-JSON.parse(dados);
-
-document.getElementById('img').src =
-dados.i;
-
-document.getElementById('titulo').innerText =
-dados.t;
-
-document.getElementById('descricao').innerText =
-dados.d;
-
-document.getElementById('versao').innerText =
-dados.v || '-';
-
-document.getElementById('tamanho').innerText =
-dados.s || '-';
-
-document.getElementById('requirements').innerText =
-dados.r || '-';
-
-document.getElementById('downloads').innerText =
-dados.dl || '-';
-
-document.getElementById('developer').innerText =
-dados.dev || '-';
-
-var tags = '';
-
-if(dados.tg1){
-
-tags += '<div class="tag">' +
-dados.tg1 +
-'</div>';
-
-}
-
-if(dados.tg2){
-
-tags += '<div class="tag">' +
-dados.tg2 +
-'</div>';
-
-}
-
-document.getElementById('tags')
-.innerHTML = tags;
-
-var tempo = 15;
-
-var num =
-document.getElementById('num');
-
-var fill =
-document.getElementById('fill');
-
-var btn =
-document.getElementById('btnDownload');
-
-var int =
-setInterval(function(){
-
-tempo--;
-
-num.innerText = tempo;
-
-fill.style.width =
-((15 - tempo) / 15 * 100) + '%';
-
-if(tempo <= 0){
-
-clearInterval(int);
-
-num.style.display = 'none';
-
-btn.style.display = 'block';
-
-}
-
-},1000);
-
-btn.onclick = function(){
-
-window.open(
-dados.u,
-'_blank'
-);
-
+// ===================== CONFIGURAÇÃO ADS =====================
+const ADS_CONFIG = {
+  directLink1: 'https://omg10.com/4/11044679',
+  directLink2: 'https://omg10.com/4/11047687',
+  directLink3: 'https://omg10.com/4/11047689',
+  monetagZone: '242136'
 };
 
+// ===================== UTILITÁRIOS =====================
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function getParam(name) {
+  return new URLSearchParams(location.search).get(name);
+}
+
+// ===================== CARREGAR DADOS =====================
+const id = getParam('id');
+
+if (!id) {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="error-page">
+      <h1>404</h1>
+      <p>Link inválido ou expirado</p>
+    </div>
+  `;
+} else {
+  const dados = localStorage.getItem('app_' + id);
+
+  if (!dados) {
+    document.getElementById('mainContent').innerHTML = `
+      <div class="error-page">
+        <h1>⏰</h1>
+        <p>Conteúdo expirado. Gere um novo link no painel.</p>
+      </div>
+    `;
+  } else {
+    const app = JSON.parse(dados);
+    renderApp(app);
+  }
+}
+
+function renderApp(app) {
+  document.title = app.t || 'Download';
+  document.getElementById('pageTitle').innerText = app.t || 'Download';
+
+  // Categorias
+  const cat1 = app.tg1 || 'Apps';
+  const cat2 = app.tg2 || '';
+  document.getElementById('catName').innerText = cat1;
+
+  // Tags HTML
+  let tagsHTML = '';
+  if (app.tg1) tagsHTML += `<div class="tag">${escapeHtml(app.tg1)}</div>`;
+  if (app.tg2) tagsHTML += `<div class="tag tools">${escapeHtml(app.tg2)}</div>`;
+
+  // Info rows
+  const infoRows = [
+    { label: 'Developer', value: app.dev ? `<a href="#">${escapeHtml(app.dev)}</a>` : '-' },
+    { label: 'Size', value: app.s || '-' },
+    { label: 'Version', value: app.v || '-' },
+    { label: 'Requirements', value: app.r || '-' },
+    { label: 'Downloads', value: app.dl || '-' },
+  ];
+
+  let infoHTML = '';
+  infoRows.forEach(row => {
+    infoHTML += `
+      <div class="info-row">
+        <span class="info-label">${row.label}</span>
+        <span class="info-value">${row.value}</span>
+      </div>
+    `;
+  });
+
+  // Social share
+  const shareURL = encodeURIComponent(window.location.href);
+  const shareText = encodeURIComponent(app.t || 'Check this app!');
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="app-card">
+      <h1 class="app-title">${escapeHtml(app.t)}</h1>
+      <div class="app-version">${escapeHtml(app.v || '')}</div>
+
+      <div class="tags">${tagsHTML}</div>
+
+      <div class="content-grid">
+        <div class="left-col">
+          <img class="app-img" src="${app.i || ''}" alt="${escapeHtml(app.t)}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><rect fill=%22%23334155%22 width=%22100%22 height=%22100%22/><text fill=%22%2394a3b8%22 x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2214%22>No Image</text></svg>'">
+
+          <a class="btn-download" href="download.html?id=${id}" id="btnDownload">
+            <span>⬇</span> DOWNLOAD APK
+          </a>
+
+          ${app.tel ? `<a class="btn-telegram" href="${escapeHtml(app.tel)}" target="_blank" id="btnTelegram">
+            <span>✈</span> TELEGRAM
+          </a>` : ''}
+
+          <div class="report-btn" onclick="reportApp()">⚠ Report</div>
+
+          <div class="social-share">
+            <button class="social-btn" onclick="shareFacebook()">f</button>
+            <button class="social-btn" onclick="shareTwitter()">X</button>
+            <button class="social-btn" onclick="sharePinterest()">P</button>
+            <button class="social-btn" onclick="shareTelegram()">✈</button>
+            <button class="social-btn" onclick="shareWhatsApp()">W</button>
+          </div>
+        </div>
+
+        <div class="right-col">
+          ${infoHTML}
+
+          <div class="gplay">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="#fff">
+              <path d="M3 20.5V3.5C3 2.91 3.34 2.39 3.84 2.15L13.69 12L3.84 21.85C3.34 21.6 3 21.09 3 20.5ZM16.81 15.12L6.05 21.34L14.54 12.85L16.81 15.12ZM20.16 10.81C20.5 11.08 20.75 11.5 20.75 12C20.75 12.5 20.53 12.9 20.18 13.18L17.89 14.5L15.39 12L17.89 9.5L20.16 10.81ZM6.05 2.66L16.81 8.88L14.54 11.15L6.05 2.66Z"/>
+            </svg>
+            <div class="gplay-text">
+              Get it on<br>
+              <strong>Google Play</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="desc-section">
+      <h2>📋 Descrição</h2>
+      <div class="desc-text">${escapeHtml(app.d || 'Sem descrição disponível.')}</div>
+    </div>
+  `;
+
+  // Configurar Telegram nav
+  if (app.tel) {
+    document.getElementById('telegramNav').href = app.tel;
+    document.getElementById('telegramNav').target = '_blank';
+  }
+
+  // Iniciar ads
+  initAds();
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.innerText = text;
+  return div.innerHTML;
+}
+
+// ===================== ADS =====================
+function initAds() {
+  // Popunder no primeiro click
+  let clicked = false;
+  document.addEventListener('click', function(e) {
+    if (!clicked && e.target.closest('.btn-download, .btn-telegram, .nav-item')) {
+      clicked = true;
+      // Abre direct link em background
+      setTimeout(() => {
+        window.open(ADS_CONFIG.directLink1, '_blank');
+      }, 100);
+    }
+  });
+
+  // Auto popunder a cada 30s
+  setInterval(() => {
+    const links = [ADS_CONFIG.directLink1, ADS_CONFIG.directLink2, ADS_CONFIG.directLink3];
+    const randomLink = links[Math.floor(Math.random() * links.length)];
+    window.open(randomLink, '_blank');
+  }, 30000);
+}
+
+// ===================== SHARE =====================
+function shareFacebook() {
+  window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '_blank');
+}
+
+function shareTwitter() {
+  window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(location.href), '_blank');
+}
+
+function sharePinterest() {
+  window.open('https://pinterest.com/pin/create/button/?url=' + encodeURIComponent(location.href), '_blank');
+}
+
+function shareTelegram() {
+  window.open('https://t.me/share/url?url=' + encodeURIComponent(location.href), '_blank');
+}
+
+function shareWhatsApp() {
+  window.open('https://wa.me/?text=' + encodeURIComponent(location.href), '_blank');
+}
+
+function reportApp() {
+  toast('Report enviado! Obrigado.');
+}
+
+function toggleTheme() {
+  toast('Tema alternado!');
+}
+
+function openMenu() {
+  toast('Menu em breve!');
+}
+
+// ===================== ADBLOCK DETECT =====================
+(function() {
+  const test = document.createElement('div');
+  test.innerHTML = '&nbsp;';
+  test.className = 'adsbox';
+  document.body.appendChild(test);
+  setTimeout(() => {
+    if (test.offsetHeight === 0) {
+      document.getElementById('adblockMsg').style.display = 'block';
+    }
+    test.remove();
+  }, 100);
+})();
 </script>
 
 </body>
