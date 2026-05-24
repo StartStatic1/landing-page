@@ -1,105 +1,468 @@
-<!-- ENCURTADOR.HTML COMPLETO CORRIGIDO -->
-<!-- AGORA SEM URI_TOO_LONG -->
-<!-- SEM BASE64 NA URL -->
-<!-- FUNCIONANDO NA VERCEL -->
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Encurtador Pro</title>
+<title>⚡ Encurtador Pro - Painel Admin</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box
+* { margin:0; padding:0; box-sizing:border-box }
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #0f172a;
+  color: #fff;
+  min-height: 100vh;
+  padding: 20px;
 }
 
-body{
-font-family:Arial,sans-serif;
-background:#0f172a;
-color:#fff;
-padding:20px
+.container {
+  max-width: 800px;
+  margin: auto;
 }
 
-.container{
-max-width:650px;
-margin:auto
+/* Header */
+.header {
+  text-align: center;
+  padding: 30px 0;
 }
 
-.card{
-background:#1e293b;
-padding:20px;
-border-radius:20px
+.header h1 {
+  font-size: 32px;
+  font-weight: 900;
+  background: linear-gradient(90deg, #06b6d4, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
 }
 
-h1{
-text-align:center;
-margin-bottom:25px
+.header p {
+  color: #64748b;
+  font-size: 15px;
 }
 
-input,
-textarea{
-width:100%;
-padding:14px;
-margin-top:8px;
-margin-bottom:16px;
-background:#0f172a;
-border:1px solid #334155;
-border-radius:12px;
-color:#fff
+/* Stats Bar */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
 }
 
-button{
-width:100%;
-padding:16px;
-border:none;
-border-radius:14px;
-background:#6366f1;
-color:#fff;
-font-weight:bold;
-cursor:pointer;
-font-size:16px
+.stat-card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
 }
 
-button:disabled{
-opacity:.6
+.stat-num {
+  font-size: 28px;
+  font-weight: 900;
+  color: #06b6d4;
 }
 
-.result{
-display:none;
-margin-top:20px
+.stat-label {
+  color: #64748b;
+  font-size: 12px;
+  margin-top: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.result textarea{
-height:90px
+/* Card */
+.card {
+  background: #1e293b;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 20px;
 }
 
-.preview{
-margin-top:20px;
-display:none
+.card-title {
+  font-size: 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.preview img{
-width:100%;
-border-radius:16px
+.card-title span {
+  font-size: 22px;
 }
 
-.toast{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#111827;
-padding:14px 18px;
-border-radius:12px;
-display:none;
-z-index:9999
+/* Form */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
 }
 
-.toast.show{
-display:block
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr }
+  .stats-bar { grid-template-columns: 1fr }
+}
+
+.input-group {
+  margin-bottom: 5px;
+}
+
+.input-group.full {
+  grid-column: 1 / -1;
+}
+
+.input-group label {
+  display: block;
+  color: #94a3b8;
+  font-size: 12px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.input-group input,
+.input-group textarea,
+.input-group select {
+  width: 100%;
+  padding: 14px 16px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 3px rgba(6,182,212,0.1);
+}
+
+.input-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+  color: #475569;
+}
+
+/* Required indicator */
+.required label::after {
+  content: ' *';
+  color: #ef4444;
+}
+
+/* Image Upload */
+.upload-area {
+  border: 2px dashed #334155;
+  border-radius: 16px;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-area:hover {
+  border-color: #06b6d4;
+  background: rgba(6,182,212,0.05);
+}
+
+.upload-area.has-image {
+  padding: 0;
+  border-style: solid;
+  border-color: #06b6d4;
+}
+
+.upload-area img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.upload-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.upload-text {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.upload-text small {
+  display: block;
+  margin-top: 5px;
+  color: #475569;
+}
+
+#fileInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: 0.3s;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #06b6d4, #6366f1);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(6,182,212,0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-success {
+  background: #10b981;
+  color: #fff;
+}
+
+.btn-success:hover {
+  background: #059669;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid #334155;
+  color: #94a3b8;
+}
+
+.btn-outline:hover {
+  border-color: #06b6d4;
+  color: #06b6d4;
+}
+
+/* Result */
+.result-box {
+  display: none;
+  margin-top: 20px;
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 16px;
+  border: 1px solid #334155;
+}
+
+.result-box.show { display: block }
+
+.result-label {
+  color: #64748b;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.link-display {
+  background: #1e293b;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #06b6d4;
+  word-break: break-all;
+  margin-bottom: 15px;
+  font-family: monospace;
+  border: 1px solid #334155;
+}
+
+.result-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* History */
+.history-section {
+  margin-top: 20px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #0f172a;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #334155;
+}
+
+.history-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.history-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-title {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-date {
+  color: #64748b;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.history-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.history-actions button {
+  background: #334155;
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: 0.3s;
+}
+
+.history-actions button:hover {
+  background: #06b6d4;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #111827;
+  padding: 16px 24px;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 14px;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 0.4s;
+  border-left: 4px solid #06b6d4;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.error {
+  border-left-color: #ef4444;
+}
+
+.toast.success {
+  border-left-color: #10b981;
+}
+
+/* Preview */
+.preview-section {
+  display: none;
+  margin-top: 20px;
+}
+
+.preview-section.show { display: block }
+
+.preview-frame {
+  width: 100%;
+  height: 400px;
+  border: none;
+  border-radius: 16px;
+  background: #0f172a;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 20px;
+  background: #0f172a;
+  padding: 5px;
+  border-radius: 14px;
+}
+
+.tab {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.tab.active {
+  background: #1e293b;
+  color: #06b6d4;
+}
+
+/* Clear button */
+.clear-btn {
+  background: none;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
+}
+
+.clear-btn:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #64748b;
+}
+
+.empty-state svg {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+  opacity: 0.3;
 }
 </style>
 </head>
@@ -108,257 +471,484 @@ display:block
 
 <div class="container">
 
-<div class="card">
+  <!-- Header -->
+  <div class="header">
+    <h1>⚡ Encurtador Pro</h1>
+    <p>Gerencie seus links de download com estilo</p>
+  </div>
 
-<h1>⚡ Encurtador Pro</h1>
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-num" id="statTotal">0</div>
+      <div class="stat-label">Links Criados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statToday">0</div>
+      <div class="stat-label">Hoje</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statStorage">0</div>
+      <div class="stat-label">MB Usados</div>
+    </div>
+  </div>
 
-<input type="text" id="titulo" placeholder="Título">
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('create')">✏️ Criar Link</button>
+    <button class="tab" onclick="switchTab('history')">📋 Histórico</button>
+    <button class="tab" onclick="switchTab('preview')">👁️ Preview</button>
+  </div>
 
-<textarea id="descricao" placeholder="Descrição"></textarea>
+  <!-- Create Tab -->
+  <div id="tabCreate">
+    <div class="card">
+      <div class="card-title"><span>📱</span> Informações do App</div>
 
-<input type="text" id="tag1" placeholder="Tag 1">
+      <div class="form-grid">
+        <div class="input-group full required">
+          <label>Título do App</label>
+          <input type="text" id="titulo" placeholder="Ex: Proton VPN MOD">
+        </div>
 
-<input type="text" id="tag2" placeholder="Tag 2">
+        <div class="input-group full required">
+          <label>Descrição</label>
+          <textarea id="descricao" placeholder="Descrição completa do app..."></textarea>
+        </div>
 
-<input type="text" id="linkDestino" placeholder="Link download">
+        <div class="input-group full required">
+          <label>Link de Download</label>
+          <input type="url" id="linkDestino" placeholder="https://...">
+        </div>
 
-<input type="text" id="versao" placeholder="Versão">
+        <div class="input-group">
+          <label>Tag 1</label>
+          <input type="text" id="tag1" placeholder="Ex: VPN Proxy">
+        </div>
 
-<input type="text" id="tamanho" placeholder="Tamanho">
+        <div class="input-group">
+          <label>Tag 2</label>
+          <input type="text" id="tag2" placeholder="Ex: Tools">
+        </div>
 
-<input type="text" id="requirements" placeholder="Requirements">
+        <div class="input-group">
+          <label>Versão</label>
+          <input type="text" id="versao" placeholder="5.18.46.0">
+        </div>
 
-<input type="text" id="downloads" placeholder="Downloads">
+        <div class="input-group">
+          <label>Tamanho</label>
+          <input type="text" id="tamanho" placeholder="53 MB">
+        </div>
 
-<input type="text" id="developer" placeholder="Developer">
+        <div class="input-group">
+          <label>Requirements</label>
+          <input type="text" id="requirements" placeholder="4.0+">
+        </div>
 
-<input type="text" id="linkTelegram" placeholder="Telegram">
+        <div class="input-group">
+          <label>Downloads</label>
+          <input type="text" id="downloads" placeholder="5,000,000+">
+        </div>
 
-<input type="file" id="imagem" accept="image/*">
+        <div class="input-group">
+          <label>Developer</label>
+          <input type="text" id="developer" placeholder="Proton AG">
+        </div>
 
-<button onclick="gerarLink()" id="btnGerar">
-GERAR LINK
-</button>
+        <div class="input-group full">
+          <label>Link Telegram</label>
+          <input type="url" id="linkTelegram" placeholder="https://t.me/...">
+        </div>
 
-<div class="preview" id="preview">
-<img id="previewImg">
+        <div class="input-group full">
+          <label>Imagem do App</label>
+          <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+            <input type="file" id="fileInput" accept="image/*" onchange="handleImage(event)">
+            <div id="uploadContent">
+              <div class="upload-icon">📷</div>
+              <div class="upload-text">
+                Clique para selecionar imagem
+                <small>Max 2MB • JPG, PNG, WEBP</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="gerarLink()" id="btnGerar" style="margin-top:20px;">
+        ⚡ GERAR LINK
+      </button>
+
+      <!-- Result -->
+      <div class="result-box" id="resultBox">
+        <div class="result-label">✅ Link Gerado com Sucesso</div>
+        <div class="link-display" id="linkDisplay"></div>
+        <div class="result-actions">
+          <button class="btn btn-success" onclick="copiarLink()">📋 COPIAR</button>
+          <button class="btn btn-outline" onclick="abrirLink()">🔗 ABRIR</button>
+        </div>
+        <button class="btn btn-outline" onclick="novoLink()" style="margin-top:10px;">
+          ➕ CRIAR NOVO LINK
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- History Tab -->
+  <div id="tabHistory" style="display:none;">
+    <div class="card">
+      <div class="card-title" style="justify-content:space-between;">
+        <span><span>📋</span> Histórico de Links</span>
+        <button class="clear-btn" onclick="limparHistorico()">🗑️ Limpar Tudo</button>
+      </div>
+      <div id="historyList">
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          <p>Nenhum link criado ainda</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview Tab -->
+  <div id="tabPreview" style="display:none;">
+    <div class="card">
+      <div class="card-title"><span>👁️</span> Preview da Landing Page</div>
+      <div id="previewContainer">
+        <div class="empty-state">
+          <p>Gere um link primeiro para ver o preview</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<div class="result" id="resultBox">
-
-<textarea readonly id="linkGerado"></textarea>
-
-<div style="display:flex;gap:10px;margin-top:10px">
-
-<button onclick="copiarLink()">
-COPIAR
-</button>
-
-<button onclick="abrirLink()">
-ABRIR
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
+// ===================== ESTADO =====================
+let imagemBase64 = '';
+let ultimoLink = '';
+let ultimoId = '';
 
-var imagemURL = '';
-
-function toast(msg){
-
-var t = document.getElementById('toast');
-
-t.innerText = msg;
-
-t.classList.add('show');
-
-setTimeout(function(){
-
-t.classList.remove('show');
-
-},2500);
-
+// ===================== UTILITÁRIOS =====================
+function toast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.className = 'toast ' + type;
+  setTimeout(() => t.classList.add('show'), 10);
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-document.getElementById('imagem')
-.addEventListener('change',function(e){
-
-var file = e.target.files[0];
-
-if(!file) return;
-
-if(file.size > 2 * 1024 * 1024){
-
-toast('Imagem muito grande');
-
-return;
-
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.innerText = text;
+  return div.innerHTML;
 }
 
-var reader = new FileReader();
+// ===================== TABS =====================
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
 
-reader.onload = function(evt){
+  document.getElementById('tabCreate').style.display = tab === 'create' ? 'block' : 'none';
+  document.getElementById('tabHistory').style.display = tab === 'history' ? 'block' : 'none';
+  document.getElementById('tabPreview').style.display = tab === 'preview' ? 'block' : 'none';
 
-imagemURL = evt.target.result;
+  if (tab === 'history') carregarHistorico();
+  if (tab === 'preview' && ultimoId) mostrarPreview();
+}
 
-document.getElementById('preview')
-.style.display = 'block';
+// ===================== IMAGEM =====================
+function handleImage(e) {
+  const file = e.target.files[0];
+  if (!file) return;
 
-document.getElementById('previewImg')
-.src = imagemURL;
+  // Validação
+  if (file.size > 2 * 1024 * 1024) {
+    toast('❌ Imagem muito grande! Máximo 2MB', 'error');
+    return;
+  }
 
-};
+  if (!file.type.startsWith('image/')) {
+    toast('❌ Selecione apenas imagens', 'error');
+    return;
+  }
 
-reader.readAsDataURL(file);
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    imagemBase64 = evt.target.result;
 
+    // Preview na área de upload
+    const area = document.getElementById('uploadArea');
+    area.classList.add('has-image');
+    area.innerHTML = `<img src="${imagemBase64}" alt="Preview">`;
+
+    toast('✅ Imagem carregada!');
+  };
+  reader.onerror = function() {
+    toast('❌ Erro ao ler imagem', 'error');
+  };
+  reader.readAsDataURL(file);
+}
+
+// ===================== GERAR LINK =====================
+function gerarLink() {
+  // Validação
+  const titulo = document.getElementById('titulo').value.trim();
+  const descricao = document.getElementById('descricao').value.trim();
+  const linkDestino = document.getElementById('linkDestino').value.trim();
+
+  if (!titulo) { toast('❌ Digite o título', 'error'); return; }
+  if (!descricao) { toast('❌ Digite a descrição', 'error'); return; }
+  if (!linkDestino) { toast('❌ Digite o link de download', 'error'); return; }
+  if (!imagemBase64) { toast('❌ Selecione uma imagem', 'error'); return; }
+
+  // Valida URL
+  try {
+    new URL(linkDestino);
+  } catch {
+    toast('❌ Link de download inválido', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btnGerar');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ GERANDO...';
+
+  try {
+    // Gera ID único
+    const id = 'APP_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+
+    // Monta objeto de dados (compacto)
+    const dados = {
+      t: titulo,
+      d: descricao,
+      u: linkDestino,
+      i: imagemBase64,
+      tg1: document.getElementById('tag1').value.trim(),
+      tg2: document.getElementById('tag2').value.trim(),
+      v: document.getElementById('versao').value.trim(),
+      s: document.getElementById('tamanho').value.trim(),
+      r: document.getElementById('requirements').value.trim(),
+      dl: document.getElementById('downloads').value.trim(),
+      dev: document.getElementById('developer').value.trim(),
+      tel: document.getElementById('linkTelegram').value.trim(),
+      created: Date.now()
+    };
+
+    // Salva no localStorage
+    localStorage.setItem('app_' + id, JSON.stringify(dados));
+
+    // Salva no histórico
+    salvarNoHistorico(id, dados);
+
+    // Gera link
+    const base = window.location.origin;
+    const path = window.location.pathname.replace('encurtador.html', '').replace(/\/$/, '');
+    const link = base + path + '/index.html?id=' + id;
+
+    ultimoLink = link;
+    ultimoId = id;
+
+    // Mostra resultado
+    document.getElementById('linkDisplay').innerText = link;
+    document.getElementById('resultBox').classList.add('show');
+
+    toast('✅ Link gerado com sucesso!', 'success');
+
+    // Atualiza stats
+    atualizarStats();
+
+  } catch (e) {
+    console.error(e);
+    toast('❌ Erro ao gerar link: ' + e.message, 'error');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '⚡ GERAR LINK';
+}
+
+// ===================== HISTÓRICO =====================
+function salvarNoHistorico(id, dados) {
+  let historico = JSON.parse(localStorage.getItem('encurtador_historico') || '[]');
+
+  historico.unshift({
+    id: id,
+    titulo: dados.t,
+    imagem: dados.i,
+    data: Date.now(),
+    link: window.location.origin + window.location.pathname.replace('encurtador.html', '') + '/index.html?id=' + id
+  });
+
+  // Limita a 50 itens
+  if (historico.length > 50) historico = historico.slice(0, 50);
+
+  localStorage.setItem('encurtador_historico', JSON.stringify(historico));
+}
+
+function carregarHistorico() {
+  const historico = JSON.parse(localStorage.getItem('encurtador_historico') || '[]');
+  const container = document.getElementById('historyList');
+
+  if (historico.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        <p>Nenhum link criado ainda</p>
+      </div>
+    `;
+    return;
+  }
+
+  let html = '';
+  historico.forEach(item => {
+    const data = new Date(item.data).toLocaleDateString('pt-BR');
+    html += `
+      <div class="history-item">
+        <img src="${item.imagem}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22><rect fill=%22%23334155%22 width=%2250%22 height=%2250%22/></svg>'">
+        <div class="history-info">
+          <div class="history-title">${escapeHtml(item.titulo)}</div>
+          <div class="history-date">${data}</div>
+        </div>
+        <div class="history-actions">
+          <button onclick="copiarHistorico('${item.link}')">📋</button>
+          <button onclick="abrirHistorico('${item.link}')">🔗</button>
+          <button onclick="deletarHistorico('${item.id}')">🗑️</button>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+function copiarHistorico(link) {
+  navigator.clipboard.writeText(link).then(() => toast('✅ Copiado!'));
+}
+
+function abrirHistorico(link) {
+  window.open(link, '_blank');
+}
+
+function deletarHistorico(id) {
+  let historico = JSON.parse(localStorage.getItem('encurtador_historico') || '[]');
+  historico = historico.filter(item => item.id !== id);
+  localStorage.setItem('encurtador_historico', JSON.stringify(historico));
+  localStorage.removeItem('app_' + id);
+  carregarHistorico();
+  atualizarStats();
+  toast('🗑️ Removido');
+}
+
+function limparHistorico() {
+  if (!confirm('Tem certeza que deseja limpar TODO o histórico?')) return;
+
+  const historico = JSON.parse(localStorage.getItem('encurtador_historico') || '[]');
+  historico.forEach(item => localStorage.removeItem('app_' + item.id));
+  localStorage.removeItem('encurtador_historico');
+
+  carregarHistorico();
+  atualizarStats();
+  toast('🗑️ Histórico limpo');
+}
+
+// ===================== AÇÕES =====================
+function copiarLink() {
+  if (!ultimoLink) return;
+
+  navigator.clipboard.writeText(ultimoLink)
+    .then(() => toast('✅ Link copiado!'))
+    .catch(() => {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = ultimoLink;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      toast('✅ Link copiado!');
+    });
+}
+
+function abrirLink() {
+  if (ultimoLink) window.open(ultimoLink, '_blank');
+}
+
+function novoLink() {
+  // Limpa formulário
+  document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+  imagemBase64 = '';
+
+  // Reseta upload
+  const area = document.getElementById('uploadArea');
+  area.classList.remove('has-image');
+  area.innerHTML = `
+    <input type="file" id="fileInput" accept="image/*" onchange="handleImage(event)">
+    <div id="uploadContent">
+      <div class="upload-icon">📷</div>
+      <div class="upload-text">
+        Clique para selecionar imagem
+        <small>Max 2MB • JPG, PNG, WEBP</small>
+      </div>
+    </div>
+  `;
+
+  // Esconde resultado
+  document.getElementById('resultBox').classList.remove('show');
+
+  toast('📝 Formulário limpo');
+}
+
+// ===================== PREVIEW =====================
+function mostrarPreview() {
+  if (!ultimoId) return;
+
+  const link = window.location.origin + window.location.pathname.replace('encurtador.html', '') + '/index.html?id=' + ultimoId;
+  document.getElementById('previewContainer').innerHTML = `
+    <iframe class="preview-frame" src="${link}"></iframe>
+  `;
+}
+
+// ===================== STATS =====================
+function atualizarStats() {
+  // Total links
+  let count = 0;
+  for (let i = 0; i < localStorage.length; i++) {
+    if (localStorage.key(i).startsWith('app_')) count++;
+  }
+  document.getElementById('statTotal').innerText = count;
+
+  // Hoje
+  const historico = JSON.parse(localStorage.getItem('encurtador_historico') || '[]');
+  const hoje = new Date().setHours(0,0,0,0);
+  const hojeCount = historico.filter(item => new Date(item.data).setHours(0,0,0,0) === hoje).length;
+  document.getElementById('statToday').innerText = hojeCount;
+
+  // Storage usado
+  let totalBytes = 0;
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    const value = localStorage.getItem(key);
+    totalBytes += (key.length + value.length) * 2; // UTF-16
+  }
+  const mb = (totalBytes / 1024 / 1024).toFixed(1);
+  document.getElementById('statStorage').innerText = mb;
+}
+
+// ===================== INIT =====================
+atualizarStats();
+
+// Atalho Ctrl+Enter para gerar
+document.addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.key === 'Enter') {
+    gerarLink();
+  }
 });
-
-function gerarLink(){
-
-var titulo =
-document.getElementById('titulo').value.trim();
-
-var descricao =
-document.getElementById('descricao').value.trim();
-
-var linkDestino =
-document.getElementById('linkDestino').value.trim();
-
-if(!titulo){
-toast('Digite o título');
-return;
-}
-
-if(!descricao){
-toast('Digite a descrição');
-return;
-}
-
-if(!linkDestino){
-toast('Digite o link');
-return;
-}
-
-if(!imagemURL){
-toast('Selecione imagem');
-return;
-}
-
-var btn =
-document.getElementById('btnGerar');
-
-btn.disabled = true;
-
-btn.innerText = 'GERANDO...';
-
-try{
-
-var id =
-'APP_' + Date.now();
-
-var dados = {
-
-t: titulo,
-d: descricao,
-u: linkDestino,
-i: imagemURL,
-tg1: document.getElementById('tag1').value,
-tg2: document.getElementById('tag2').value,
-v: document.getElementById('versao').value,
-s: document.getElementById('tamanho').value,
-r: document.getElementById('requirements').value,
-dl: document.getElementById('downloads').value,
-dev: document.getElementById('developer').value,
-tel: document.getElementById('linkTelegram').value
-
-};
-
-localStorage.setItem(
-'app_' + id,
-JSON.stringify(dados)
-);
-
-var base =
-window.location.origin;
-
-var path =
-window.location.pathname
-.replace('encurtador.html','');
-
-var link =
-base + path + 'index.html?id=' + id;
-
-document.getElementById('linkGerado')
-.value = link;
-
-document.getElementById('resultBox')
-.style.display = 'block';
-
-toast('Link gerado');
-
-}catch(e){
-
-console.error(e);
-
-toast('Erro');
-
-}
-
-btn.disabled = false;
-
-btn.innerText = 'GERAR LINK';
-
-}
-
-function copiarLink(){
-
-var txt =
-document.getElementById('linkGerado').value;
-
-navigator.clipboard.writeText(txt)
-.then(function(){
-
-toast('Copiado');
-
-})
-.catch(function(){
-
-var ta =
-document.createElement('textarea');
-
-ta.value = txt;
-
-document.body.appendChild(ta);
-
-ta.select();
-
-document.execCommand('copy');
-
-document.body.removeChild(ta);
-
-toast('Copiado');
-
-});
-
-}
-
-function abrirLink(){
-
-window.open(
-document.getElementById('linkGerado').value,
-'_blank'
-);
-
-}
-
 </script>
 
 </body>

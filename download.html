@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preparando Download...</title>
+
+<!-- Monetag Mult -->
+<script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box }
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #0f172a;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  background: #1e293b;
+  padding: 15px 20px;
+  text-align: center;
+  border-bottom: 2px solid #06b6d4;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  color: #06b6d4;
+  letter-spacing: 2px;
+}
+
+/* Container */
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 30px 20px;
+  width: 100%;
+}
+
+/* Card */
+.card {
+  background: #1e293b;
+  border-radius: 24px;
+  padding: 35px;
+  text-align: center;
+}
+
+.app-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.app-info img {
+  width: 70px;
+  height: 70px;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.app-info-text h2 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.app-info-text p {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Timer */
+.timer-label {
+  color: #94a3b8;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.timer-num {
+  font-size: 80px;
+  font-weight: 900;
+  color: #06b6d4;
+  line-height: 1;
+  margin: 20px 0;
+  text-shadow: 0 0 30px rgba(6,182,212,0.3);
+}
+
+/* Progress */
+.progress-wrap {
+  background: #0f172a;
+  height: 14px;
+  border-radius: 30px;
+  overflow: hidden;
+  margin: 25px 0;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #06b6d4, #6366f1);
+  border-radius: 30px;
+  transition: width 1s linear;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 0 30px 30px 0;
+}
+
+/* Ad Banner */
+.ad-section {
+  margin: 25px 0;
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 16px;
+  border: 1px dashed #334155;
+}
+
+.ad-label {
+  color: #64748b;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+}
+
+/* Buttons */
+.btn {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 16px;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: 0.3s;
+  text-decoration: none;
+  margin-top: 15px;
+}
+
+.btn-primary {
+  background: #10b981;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+.btn-ads {
+  background: #f59e0b;
+  color: #fff;
+}
+
+.btn-ads:hover {
+  background: #d97706;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Steps */
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.3;
+  transition: 0.5s;
+}
+
+.step.active { opacity: 1 }
+
+.step-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  transition: 0.5s;
+}
+
+.step.active .step-dot {
+  background: #06b6d4;
+  box-shadow: 0 0 20px rgba(6,182,212,0.4);
+}
+
+.step-label {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* Captcha fake */
+.captcha-box {
+  display: none;
+  margin: 20px 0;
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 16px;
+  border: 2px solid #f59e0b;
+}
+
+.captcha-box.show { display: block }
+
+.captcha-title {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #f59e0b;
+}
+
+.captcha-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.captcha-item {
+  aspect-ratio: 1;
+  background: #1e293b;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+  border: 2px solid transparent;
+}
+
+.captcha-item:hover {
+  border-color: #06b6d4;
+  transform: scale(1.05);
+}
+
+.captcha-item.selected {
+  border-color: #10b981;
+  background: rgba(16,185,129,0.2);
+}
+
+/* Success animation */
+.success-check {
+  display: none;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #10b981;
+  margin: 0 auto 20px;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  animation: scaleIn 0.5s ease;
+}
+
+.success-check.show {
+  display: flex;
+}
+
+@keyframes scaleIn {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Back button */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #06b6d4;
+  text-decoration: none;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Footer ads */
+.footer-ads {
+  margin-top: 20px;
+  padding: 15px;
+  background: #1e293b;
+  border-radius: 16px;
+  text-align: center;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #111827;
+  padding: 14px 24px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  z-index: 9999;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="logo">⚡ DOWNLOAD PRO</div>
+</div>
+
+<div class="container">
+  <a class="back-btn" href="javascript:history.back()">← Voltar</a>
+
+  <div class="card">
+    <div class="app-info" id="appInfo">
+      <img id="appImg" src="" alt="App">
+      <div class="app-info-text">
+        <h2 id="appTitle">Carregando...</h2>
+        <p id="appSize">Preparando seu download</p>
+      </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps">
+      <div class="step active" id="step1">
+        <div class="step-dot">1</div>
+        <span class="step-label">Verificar</span>
+      </div>
+      <div class="step" id="step2">
+        <div class="step-dot">2</div>
+        <span class="step-label">Anúncio</span>
+      </div>
+      <div class="step" id="step3">
+        <div class="step-dot">3</div>
+        <span class="step-label">Download</span>
+      </div>
+    </div>
+
+    <!-- Timer Section -->
+    <div id="timerSection">
+      <div class="timer-label">Aguarde enquanto preparamos seu download...</div>
+      <div class="timer-num" id="timerNum">5</div>
+      <div class="progress-wrap">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- Success -->
+    <div class="success-check" id="successCheck">✓</div>
+
+    <!-- Ad Banner Terra -->
+    <div class="ad-section">
+      <div class="ad-label">Publicidade</div>
+      <div id="adContainer">
+        <script>
+          atOptions = {
+            'key': 'e9b65e3582d7f776c07b55b97a846b19',
+            'format': 'iframe',
+            'height': 50,
+            'width': 320,
+            'params': {}
+          };
+        </script>
+        <script src="https://encouragingjawsordinarily.com/e9b65e3582d7f776c07b55b97a846b19/invoke.js"></script>
+      </div>
+    </div>
+
+    <!-- Captcha Fake (engaja o usuário) -->
+    <div class="captcha-box" id="captchaBox">
+      <div class="captcha-title">🛡️ Verificação de segurança</div>
+      <p style="color:#94a3b8; font-size:13px; margin-bottom:15px;">Clique no ícone correto para continuar</p>
+      <div class="captcha-grid" id="captchaGrid">
+        <div class="captcha-item" onclick="selectCaptcha(this, false)">🎮</div>
+        <div class="captcha-item" onclick="selectCaptcha(this, true)">📱</div>
+        <div class="captcha-item" onclick="selectCaptcha(this, false)">💻</div>
+        <div class="captcha-item" onclick="selectCaptcha(this, false)">🎵</div>
+        <div class="captcha-item" onclick="selectCaptcha(this, false)">📷</div>
+        <div class="captcha-item" onclick="selectCaptcha(this, false)">🎨</div>
+      </div>
+    </div>
+
+    <!-- Download Button -->
+    <button class="btn btn-primary" id="btnDownload" disabled style="display:none;">
+      <span>⬇</span> BAIXAR AGORA
+    </button>
+
+    <!-- Watch Ad Button -->
+    <button class="btn btn-ads" id="btnWatchAd" style="display:none;" onclick="watchAd()">
+      <span>▶</span> ASSISTIR ANÚNCIO PARA LIBERAR
+    </button>
+  </div>
+
+  <!-- Footer Ad -->
+  <div class="footer-ads">
+    <div class="ad-label">Mais conteúdo</div>
+    <p style="color:#64748b; font-size:13px;">Apoie-nos assistindo aos anúncios acima ❤️</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================== CONFIGURAÇÃO =====================
+const ADS_CONFIG = {
+  directLinks: [
+    'https://omg10.com/4/11044679',
+    'https://omg10.com/4/11047687',
+    'https://omg10.com/4/11047689'
+  ],
+  countdown: 5
+};
+
+// ===================== UTILITÁRIOS =====================
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function getParam(name) {
+  return new URLSearchParams(location.search).get(name);
+}
+
+// ===================== CARREGAR DADOS =====================
+const id = getParam('id');
+let downloadURL = '';
+
+if (!id) {
+  document.querySelector('.card').innerHTML = '<h2 style="color:#ef4444">❌ Link inválido</h2>';
+} else {
+  const dados = localStorage.getItem('app_' + id);
+
+  if (!dados) {
+    document.querySelector('.card').innerHTML = '<h2 style="color:#ef4444">⏰ Link expirado. Gere um novo.</h2>';
+  } else {
+    const app = JSON.parse(dados);
+    downloadURL = app.u;
+
+    document.getElementById('appTitle').innerText = app.t || 'App';
+    document.getElementById('appSize').innerText = (app.s || 'Unknown size') + ' • ' + (app.v || '');
+    document.getElementById('appImg').src = app.i || '';
+    document.title = 'Download: ' + (app.t || 'App');
+
+    startCountdown();
+  }
+}
+
+// ===================== COUNTDOWN =====================
+function startCountdown() {
+  let tempo = ADS_CONFIG.countdown;
+  const num = document.getElementById('timerNum');
+  const fill = document.getElementById('progressFill');
+
+  // Abre popunder no início
+  setTimeout(() => {
+    window.open(ADS_CONFIG.directLinks[0], '_blank');
+  }, 500);
+
+  const interval = setInterval(() => {
+    tempo--;
+    num.innerText = tempo;
+    fill.style.width = ((ADS_CONFIG.countdown - tempo) / ADS_CONFIG.countdown * 100) + '%';
+
+    if (tempo <= 0) {
+      clearInterval(interval);
+      onCountdownComplete();
+    }
+  }, 1000);
+}
+
+function onCountdownComplete() {
+  // Esconde timer
+  document.getElementById('timerSection').style.display = 'none';
+
+  // Mostra success
+  document.getElementById('successCheck').classList.add('show');
+
+  // Atualiza steps
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+
+  // Mostra captcha (engaja usuário = mais tempo na página = mais ads)
+  setTimeout(() => {
+    document.getElementById('captchaBox').classList.add('show');
+
+    // Popunder aleatório
+    const randomLink = ADS_CONFIG.directLinks[Math.floor(Math.random() * ADS_CONFIG.directLinks.length)];
+    window.open(randomLink, '_blank');
+  }, 800);
+}
+
+// ===================== CAPTCHA =====================
+function selectCaptcha(el, correct) {
+  // Remove seleção anterior
+  document.querySelectorAll('.captcha-item').forEach(item => item.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Sempre "acerta" - é só para engajar
+  setTimeout(() => {
+    document.getElementById('captchaBox').style.display = 'none';
+    document.getElementById('successCheck').style.display = 'none';
+
+    // Atualiza steps
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step3').classList.add('active');
+
+    // Mostra botão de download
+    const btn = document.getElementById('btnDownload');
+    btn.style.display = 'flex';
+    btn.disabled = false;
+    btn.onclick = startDownload;
+
+    // Também mostra botão de assistir anúncio (opcional extra)
+    document.getElementById('btnWatchAd').style.display = 'flex';
+
+    toast('✓ Verificação completa!');
+
+    // Auto click em ad após 2s
+    setTimeout(() => {
+      const link = ADS_CONFIG.directLinks[Math.floor(Math.random() * ADS_CONFIG.directLinks.length)];
+      window.open(link, '_blank');
+    }, 2000);
+
+  }, 600);
+}
+
+// ===================== DOWNLOAD =====================
+function startDownload() {
+  if (!downloadURL) {
+    toast('❌ Erro: URL não encontrada');
+    return;
+  }
+
+  // Abre mais um ad antes do download
+  window.open(ADS_CONFIG.directLinks[2], '_blank');
+
+  // Delay para não bloquear popup
+  setTimeout(() => {
+    window.open(downloadURL, '_blank');
+    toast('✓ Download iniciado!');
+
+    // Analytics simples
+    console.log('Download iniciado:', downloadURL);
+  }, 500);
+}
+
+function watchAd() {
+  // Abre ad em nova aba
+  window.open(ADS_CONFIG.directLinks[1], '_blank');
+  toast('Obrigado por apoiar! ❤️');
+
+  // Depois de 5s libera download
+  setTimeout(() => {
+    document.getElementById('btnWatchAd').style.display = 'none';
+    document.getElementById('btnDownload').style.background = '#10b981';
+  }, 5000);
+}
+
+// ===================== ADS AUTO =====================
+// Popunder a cada interação
+let lastClick = 0;
+document.addEventListener('click', function() {
+  const now = Date.now();
+  if (now - lastClick > 10000) { // Mínimo 10s entre pops
+    lastClick = now;
+    const link = ADS_CONFIG.directLinks[Math.floor(Math.random() * ADS_CONFIG.directLinks.length)];
+    window.open(link, '_blank');
+  }
+});
+
+// Auto refresh ads a cada 30s
+setInterval(() => {
+  const adContainer = document.getElementById('adContainer');
+  if (adContainer) {
+    adContainer.innerHTML = adContainer.innerHTML;
+  }
+}, 30000);
+</script>
+
+</body>
+</html>
