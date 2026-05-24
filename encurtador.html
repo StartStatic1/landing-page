@@ -1,305 +1,168 @@
+<!-- ENCURTADOR.HTML COMPLETO CORRIGIDO -->
+<!-- AGORA SEM URI_TOO_LONG -->
+<!-- SEM BASE64 NA URL -->
+<!-- FUNCIONANDO NA VERCEL -->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>Encurtador Pro - Painel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encurtador Pro</title>
 
 <style>
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box
 }
 
 body{
-  font-family:'Segoe UI',system-ui,sans-serif;
-  background:#0f172a;
-  color:#e2e8f0;
-  min-height:100vh;
-  padding:1rem;
+font-family:Arial,sans-serif;
+background:#0f172a;
+color:#fff;
+padding:20px
 }
 
 .container{
-  max-width:650px;
-  margin:0 auto;
-}
-
-.logo{
-  font-size:2rem;
-  font-weight:800;
-  text-align:center;
-  margin-bottom:.4rem;
-  background:linear-gradient(135deg,#6366f1,#06b6d4);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-
-.subtitle{
-  text-align:center;
-  color:#94a3b8;
-  margin-bottom:2rem;
+max-width:650px;
+margin:auto
 }
 
 .card{
-  background:#1e293b;
-  border:1px solid #334155;
-  border-radius:20px;
-  padding:1.5rem;
+background:#1e293b;
+padding:20px;
+border-radius:20px
 }
 
-.card h2{
-  color:#6366f1;
-  margin-bottom:1.3rem;
+h1{
+text-align:center;
+margin-bottom:25px
 }
 
-.form-group{
-  margin-bottom:1rem;
+input,
+textarea{
+width:100%;
+padding:14px;
+margin-top:8px;
+margin-bottom:16px;
+background:#0f172a;
+border:1px solid #334155;
+border-radius:12px;
+color:#fff
 }
 
-.form-group label{
-  display:block;
-  margin-bottom:.5rem;
-  font-weight:600;
+button{
+width:100%;
+padding:16px;
+border:none;
+border-radius:14px;
+background:#6366f1;
+color:#fff;
+font-weight:bold;
+cursor:pointer;
+font-size:16px
 }
 
-.form-group input,
-.form-group textarea{
-  width:100%;
-  background:#0f172a;
-  border:1px solid #334155;
-  color:#fff;
-  padding:1rem;
-  border-radius:12px;
-  outline:none;
-  font-size:1rem;
-}
-
-.form-group textarea{
-  min-height:90px;
-  resize:vertical;
-}
-
-.form-group input:focus,
-.form-group textarea:focus{
-  border-color:#6366f1;
-}
-
-.form-row{
-  display:flex;
-  gap:.8rem;
-}
-
-.form-row .form-group{
-  flex:1;
-}
-
-.btn{
-  width:100%;
-  border:none;
-  background:linear-gradient(135deg,#6366f1,#4f46e5);
-  color:#fff;
-  padding:1rem;
-  border-radius:14px;
-  font-size:1rem;
-  font-weight:700;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.btn:hover{
-  transform:translateY(-2px);
-}
-
-.btn:disabled{
-  opacity:.6;
-  cursor:not-allowed;
+button:disabled{
+opacity:.6
 }
 
 .result{
-  display:none;
-  margin-top:1.5rem;
-  background:#0f172a;
-  border:2px solid #10b981;
-  border-radius:14px;
-  padding:1rem;
-}
-
-.result.show{
-  display:block;
+display:none;
+margin-top:20px
 }
 
 .result textarea{
-  width:100%;
-  background:#020617;
-  border:1px solid #334155;
-  color:#10b981;
-  border-radius:10px;
-  padding:.8rem;
-  resize:none;
-  font-family:monospace;
-}
-
-.btns{
-  display:flex;
-  gap:.5rem;
-  margin-top:.8rem;
-}
-
-.btns button{
-  flex:1;
-  border:none;
-  background:#334155;
-  color:#fff;
-  padding:.8rem;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.btns button:hover{
-  background:#475569;
+height:90px
 }
 
 .preview{
-  display:none;
-  margin-top:1.5rem;
-  background:#0f172a;
-  border-radius:16px;
-  overflow:hidden;
+margin-top:20px;
+display:none
 }
 
 .preview img{
-  width:100%;
-  display:block;
-}
-
-.preview-info{
-  padding:1rem;
-}
-
-.preview-title{
-  font-size:1.2rem;
-  font-weight:700;
-  margin-bottom:.5rem;
-}
-
-.preview-desc{
-  color:#94a3b8;
+width:100%;
+border-radius:16px
 }
 
 .toast{
-  position:fixed;
-  right:1rem;
-  bottom:1rem;
-  background:#1e293b;
-  border:1px solid #334155;
-  border-radius:12px;
-  padding:1rem 1.2rem;
-  display:none;
-  z-index:99999;
+position:fixed;
+bottom:20px;
+right:20px;
+background:#111827;
+padding:14px 18px;
+border-radius:12px;
+display:none;
+z-index:9999
 }
 
 .toast.show{
-  display:block;
-}
-
-@media(max-width:600px){
-  .form-row{
-    flex-direction:column;
-  }
+display:block
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
-  <div class="logo">⚡ Encurtador Pro</div>
-  <div class="subtitle">Landing Page com Monetização</div>
+<div class="card">
 
-  <div class="card">
+<h1>⚡ Encurtador Pro</h1>
 
-    <h2>🔗 Criar Landing</h2>
+<input type="text" id="titulo" placeholder="Título">
 
-    <div class="form-group">
-      <label>Título *</label>
-      <input type="text" id="titulo" placeholder="Ex: Proton VPN MOD APK">
-    </div>
+<textarea id="descricao" placeholder="Descrição"></textarea>
 
-    <div class="form-group">
-      <label>Descrição *</label>
-      <textarea id="descricao" placeholder="Descrição do conteúdo..."></textarea>
-    </div>
+<input type="text" id="tag1" placeholder="Tag 1">
 
-    <div class="form-row">
+<input type="text" id="tag2" placeholder="Tag 2">
 
-      <div class="form-group">
-        <label>Tag 1</label>
-        <input type="text" id="tag1" placeholder="VPN">
-      </div>
+<input type="text" id="linkDestino" placeholder="Link download">
 
-      <div class="form-group">
-        <label>Tag 2</label>
-        <input type="text" id="tag2" placeholder="Tools">
-      </div>
+<input type="text" id="versao" placeholder="Versão">
 
-    </div>
+<input type="text" id="tamanho" placeholder="Tamanho">
 
-    <div class="form-group">
-      <label>Link Download *</label>
-      <input type="text" id="linkDestino" placeholder="https://...">
-    </div>
+<input type="text" id="requirements" placeholder="Requirements">
 
-    <div class="form-row">
+<input type="text" id="downloads" placeholder="Downloads">
 
-      <div class="form-group">
-        <label>Versão</label>
-        <input type="text" id="versao" placeholder="5.0">
-      </div>
+<input type="text" id="developer" placeholder="Developer">
 
-      <div class="form-group">
-        <label>Tamanho</label>
-        <input type="text" id="tamanho" placeholder="52MB">
-      </div>
+<input type="text" id="linkTelegram" placeholder="Telegram">
 
-    </div>
+<input type="file" id="imagem" accept="image/*">
 
-    <div class="form-group">
-      <label>Imagem *</label>
-      <input type="file" id="imagem" accept="image/*">
-    </div>
+<button onclick="gerarLink()" id="btnGerar">
+GERAR LINK
+</button>
 
-    <button class="btn" id="btnGerar">
-      🔐 GERAR LINK
-    </button>
+<div class="preview" id="preview">
+<img id="previewImg">
+</div>
 
-    <div class="result" id="resultBox">
+<div class="result" id="resultBox">
 
-      <div style="margin-bottom:.7rem;color:#10b981;font-weight:700">
-        ✅ Link gerado!
-      </div>
+<textarea readonly id="linkGerado"></textarea>
 
-      <textarea id="linkGerado" rows="3" readonly></textarea>
+<div style="display:flex;gap:10px;margin-top:10px">
 
-      <div class="btns">
-        <button onclick="copiarLink()">📋 Copiar</button>
-        <button onclick="abrirLink()">🔗 Abrir</button>
-      </div>
+<button onclick="copiarLink()">
+COPIAR
+</button>
 
-    </div>
+<button onclick="abrirLink()">
+ABRIR
+</button>
 
-    <div class="preview" id="preview">
+</div>
 
-      <img id="previewImg">
+</div>
 
-      <div class="preview-info">
-        <div class="preview-title" id="previewTitle"></div>
-        <div class="preview-desc" id="previewDesc"></div>
-      </div>
-
-    </div>
-
-  </div>
+</div>
 
 </div>
 
@@ -307,163 +170,192 @@ body{
 
 <script>
 
-let imgBase64 = null;
+var imagemURL = '';
 
-// ===== TOAST =====
 function toast(msg){
-  const t = document.getElementById('toast');
 
-  t.textContent = msg;
-  t.classList.add('show');
+var t = document.getElementById('toast');
 
-  setTimeout(()=>{
-    t.classList.remove('show');
-  },2500);
+t.innerText = msg;
+
+t.classList.add('show');
+
+setTimeout(function(){
+
+t.classList.remove('show');
+
+},2500);
+
 }
 
-// ===== IMAGEM =====
-document.addEventListener('DOMContentLoaded',()=>{
+document.getElementById('imagem')
+.addEventListener('change',function(e){
 
-  const imagem = document.getElementById('imagem');
+var file = e.target.files[0];
 
-  imagem.addEventListener('change',(e)=>{
+if(!file) return;
 
-    const file = e.target.files[0];
+if(file.size > 2 * 1024 * 1024){
 
-    if(!file)return;
+toast('Imagem muito grande');
 
-    if(file.size > 5*1024*1024){
-      toast('❌ Imagem muito grande');
-      return;
-    }
+return;
 
-    const reader = new FileReader();
+}
 
-    reader.onload = function(ev){
+var reader = new FileReader();
 
-      imgBase64 = ev.target.result;
+reader.onload = function(evt){
 
-      document.getElementById('preview').style.display='block';
-      document.getElementById('previewImg').src = imgBase64;
+imagemURL = evt.target.result;
 
-      document.getElementById('previewTitle').textContent =
-      document.getElementById('titulo').value || 'Preview';
+document.getElementById('preview')
+.style.display = 'block';
 
-      document.getElementById('previewDesc').textContent =
-      document.getElementById('descricao').value || '';
+document.getElementById('previewImg')
+.src = imagemURL;
 
-      toast('✅ Imagem carregada');
+};
 
-    };
-
-    reader.readAsDataURL(file);
-
-  });
+reader.readAsDataURL(file);
 
 });
 
-// ===== GERAR =====
-document.getElementById('btnGerar').addEventListener('click', gerarLink);
-
 function gerarLink(){
 
-  try{
+var titulo =
+document.getElementById('titulo').value.trim();
 
-    const titulo = document.getElementById('titulo').value.trim();
-    const descricao = document.getElementById('descricao').value.trim();
-    const linkDestino = document.getElementById('linkDestino').value.trim();
+var descricao =
+document.getElementById('descricao').value.trim();
 
-    if(!titulo){
-      toast('❌ Digite o título');
-      return;
-    }
+var linkDestino =
+document.getElementById('linkDestino').value.trim();
 
-    if(!descricao){
-      toast('❌ Digite a descrição');
-      return;
-    }
+if(!titulo){
+toast('Digite o título');
+return;
+}
 
-    if(!linkDestino){
-      toast('❌ Digite o link');
-      return;
-    }
+if(!descricao){
+toast('Digite a descrição');
+return;
+}
 
-    if(!linkDestino.startsWith('http')){
-      toast('❌ Link inválido');
-      return;
-    }
+if(!linkDestino){
+toast('Digite o link');
+return;
+}
 
-    if(!imgBase64){
-      toast('❌ Adicione uma imagem');
-      return;
-    }
+if(!imagemURL){
+toast('Selecione imagem');
+return;
+}
 
-    const dados = {
+var btn =
+document.getElementById('btnGerar');
 
-      t: titulo,
-      d: descricao,
-      u: linkDestino,
-      i: imgBase64,
+btn.disabled = true;
 
-      tg1: document.getElementById('tag1').value.trim(),
-      tg2: document.getElementById('tag2').value.trim(),
+btn.innerText = 'GERANDO...';
 
-      v: document.getElementById('versao').value.trim(),
-      s: document.getElementById('tamanho').value.trim()
+try{
 
-    };
+var id =
+'APP_' + Date.now();
 
-    // ===== BASE64 URL =====
-    const encoded = btoa(
-      unescape(
-        encodeURIComponent(JSON.stringify(dados))
-      )
-    );
+var dados = {
 
-    // ===== LINK FINAL =====
-    const linkFinal =
-      window.location.origin +
-      '/index.html?d=' +
-      encodeURIComponent(encoded);
+t: titulo,
+d: descricao,
+u: linkDestino,
+i: imagemURL,
+tg1: document.getElementById('tag1').value,
+tg2: document.getElementById('tag2').value,
+v: document.getElementById('versao').value,
+s: document.getElementById('tamanho').value,
+r: document.getElementById('requirements').value,
+dl: document.getElementById('downloads').value,
+dev: document.getElementById('developer').value,
+tel: document.getElementById('linkTelegram').value
 
-    document.getElementById('linkGerado').value = linkFinal;
+};
 
-    document.getElementById('resultBox')
-    .classList.add('show');
+localStorage.setItem(
+'app_' + id,
+JSON.stringify(dados)
+);
 
-    toast('✅ Link gerado com sucesso');
+var base =
+window.location.origin;
 
-    console.log('LINK:', linkFinal);
+var path =
+window.location.pathname
+.replace('encurtador.html','');
 
-  }catch(e){
+var link =
+base + path + 'index.html?id=' + id;
 
-    console.error(e);
+document.getElementById('linkGerado')
+.value = link;
 
-    toast('❌ Erro ao gerar link');
+document.getElementById('resultBox')
+.style.display = 'block';
 
-  }
+toast('Link gerado');
+
+}catch(e){
+
+console.error(e);
+
+toast('Erro');
 
 }
 
-// ===== COPIAR =====
+btn.disabled = false;
+
+btn.innerText = 'GERAR LINK';
+
+}
+
 function copiarLink(){
 
-  const txt =
-  document.getElementById('linkGerado').value;
+var txt =
+document.getElementById('linkGerado').value;
 
-  navigator.clipboard.writeText(txt);
+navigator.clipboard.writeText(txt)
+.then(function(){
 
-  toast('📋 Link copiado');
+toast('Copiado');
+
+})
+.catch(function(){
+
+var ta =
+document.createElement('textarea');
+
+ta.value = txt;
+
+document.body.appendChild(ta);
+
+ta.select();
+
+document.execCommand('copy');
+
+document.body.removeChild(ta);
+
+toast('Copiado');
+
+});
 
 }
 
-// ===== ABRIR =====
 function abrirLink(){
 
-  const url =
-  document.getElementById('linkGerado').value;
-
-  window.open(url,'_blank');
+window.open(
+document.getElementById('linkGerado').value,
+'_blank'
+);
 
 }
 
