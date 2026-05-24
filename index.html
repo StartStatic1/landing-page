@@ -3,320 +3,298 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Encurtador Pro</title>
+<title>Landing</title>
 
 <style>
+
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box
 }
 
 body{
-  background:#0f172a;
-  color:#fff;
-  font-family:'Segoe UI',sans-serif;
-  min-height:100vh;
+font-family:Arial,sans-serif;
+background:#0f172a;
+color:#fff
 }
 
 .container{
-  max-width:850px;
-  margin:0 auto;
-  padding:1rem;
+max-width:800px;
+margin:auto;
+padding:20px
 }
 
 .card{
-  background:#1e293b;
-  border-radius:20px;
-  overflow:hidden;
+background:#1e293b;
+border-radius:20px;
+padding:20px
 }
 
-.card img{
-  width:100%;
-  display:block;
+img{
+width:100%;
+border-radius:16px;
+margin-bottom:20px
 }
 
-.content{
-  padding:1.5rem;
-}
-
-.title{
-  font-size:2rem;
-  font-weight:800;
-  margin-bottom:.8rem;
+h1{
+margin-bottom:10px
 }
 
 .desc{
-  color:#94a3b8;
-  line-height:1.7;
-  margin-bottom:1rem;
+color:#94a3b8;
+margin-bottom:20px
 }
 
 .tags{
-  display:flex;
-  gap:.5rem;
-  flex-wrap:wrap;
-  margin-bottom:1rem;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:20px
 }
 
 .tag{
-  background:#06b6d4;
-  padding:.4rem .9rem;
-  border-radius:30px;
-  font-size:.8rem;
+background:#06b6d4;
+padding:6px 12px;
+border-radius:30px
 }
 
 .info{
-  display:flex;
-  gap:1rem;
-  flex-wrap:wrap;
-  margin-bottom:2rem;
+margin-top:20px
 }
 
-.info div{
-  background:#0f172a;
-  padding:.7rem 1rem;
-  border-radius:12px;
-}
-
-.timer-box{
-  margin-top:2rem;
-  background:#1e293b;
-  border-radius:20px;
-  padding:2rem;
-  text-align:center;
+.row{
+display:flex;
+justify-content:space-between;
+padding:12px 0;
+border-bottom:1px solid #334155
 }
 
 .timer{
-  font-size:5rem;
-  font-weight:800;
-  color:#f59e0b;
+margin-top:30px;
+text-align:center
+}
+
+.num{
+font-size:70px;
+font-weight:bold;
+margin:20px 0
 }
 
 .progress{
-  height:12px;
-  background:#0f172a;
-  border-radius:30px;
-  overflow:hidden;
-  margin:1.5rem 0;
+height:12px;
+background:#111827;
+border-radius:30px;
+overflow:hidden;
+margin-top:20px
 }
 
-.progress-fill{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#6366f1,#06b6d4);
+.fill{
+height:100%;
+width:0%;
+background:#6366f1
 }
 
 .btn{
-  border:none;
-  background:linear-gradient(135deg,#06b6d4,#0891b2);
-  color:#fff;
-  padding:1rem 2rem;
-  border-radius:14px;
-  font-size:1rem;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.final{
-  display:none;
-}
-
-.no-data{
-  text-align:center;
-  padding:4rem 1rem;
+display:none;
+width:100%;
+padding:18px;
+border:none;
+border-radius:14px;
+background:#10b981;
+color:#fff;
+font-size:18px;
+font-weight:bold;
+margin-top:25px;
+cursor:pointer
 }
 
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
-  <div id="app"></div>
+<div class="card">
+
+<img id="img">
+
+<h1 id="titulo"></h1>
+
+<div class="desc" id="descricao"></div>
+
+<div class="tags" id="tags"></div>
+
+<div class="info">
+
+<div class="row">
+<span>Versão</span>
+<span id="versao"></span>
+</div>
+
+<div class="row">
+<span>Tamanho</span>
+<span id="tamanho"></span>
+</div>
+
+<div class="row">
+<span>Requirements</span>
+<span id="requirements"></span>
+</div>
+
+<div class="row">
+<span>Downloads</span>
+<span id="downloads"></span>
+</div>
+
+<div class="row">
+<span>Developer</span>
+<span id="developer"></span>
+</div>
+
+</div>
+
+<div class="timer">
+
+<div>Aguarde</div>
+
+<div class="num" id="num">
+15
+</div>
+
+<div class="progress">
+<div class="fill" id="fill"></div>
+</div>
+
+<button class="btn" id="btnDownload">
+⬇ DOWNLOAD
+</button>
+
+</div>
+
+</div>
 
 </div>
 
 <script>
 
-function escapeHtml(text){
+var params =
+new URLSearchParams(location.search);
 
-  const div = document.createElement('div');
-  div.textContent = text;
+var id =
+params.get('id');
 
-  return div.innerHTML;
+if(!id){
 
-}
+document.body.innerHTML =
+'<h1 style="padding:40px;text-align:center;color:white">Link inválido</h1>';
 
-function carregar(){
-
-  try{
-
-    const params = new URLSearchParams(location.search);
-
-    const b64 = params.get('d');
-
-    if(!b64){
-
-      document.getElementById('app').innerHTML = `
-        <div class="no-data">
-          <h1>Sem dados</h1>
-        </div>
-      `;
-
-      return;
-
-    }
-
-    const json =
-      decodeURIComponent(
-        escape(
-          atob(b64)
-        )
-      );
-
-    const data = JSON.parse(json);
-
-    render(data);
-
-  }catch(e){
-
-    console.error(e);
-
-    document.getElementById('app').innerHTML = `
-      <div class="no-data">
-        <h1>Erro ao carregar</h1>
-      </div>
-    `;
-
-  }
+throw new Error();
 
 }
 
-function render(data){
+var dados =
+localStorage.getItem('app_' + id);
 
-  document.getElementById('app').innerHTML = `
+if(!dados){
 
-  <div class="card">
+document.body.innerHTML =
+'<h1 style="padding:40px;text-align:center;color:white">Conteúdo expirado</h1>';
 
-    <img src="${data.i}">
-
-    <div class="content">
-
-      <div class="title">
-        ${escapeHtml(data.t)}
-      </div>
-
-      <div class="desc">
-        ${escapeHtml(data.d)}
-      </div>
-
-      <div class="tags">
-
-        ${
-          data.tg1
-          ? `<div class="tag">${escapeHtml(data.tg1)}</div>`
-          : ''
-        }
-
-        ${
-          data.tg2
-          ? `<div class="tag">${escapeHtml(data.tg2)}</div>`
-          : ''
-        }
-
-      </div>
-
-      <div class="info">
-
-        ${
-          data.v
-          ? `<div>📦 ${escapeHtml(data.v)}</div>`
-          : ''
-        }
-
-        ${
-          data.s
-          ? `<div>💾 ${escapeHtml(data.s)}</div>`
-          : ''
-        }
-
-      </div>
-
-      <div class="timer-box" id="timerBox">
-
-        <div style="margin-bottom:1rem;color:#94a3b8">
-          ⏱️ Aguarde a verificação
-        </div>
-
-        <div class="timer" id="timer">
-          15
-        </div>
-
-        <div class="progress">
-          <div class="progress-fill" id="fill"></div>
-        </div>
-
-        <button class="btn final" id="btnFinal">
-          ⬇️ DOWNLOAD
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  `;
-
-  iniciarTimer(data.u);
+throw new Error();
 
 }
 
-function iniciarTimer(url){
+dados =
+JSON.parse(dados);
 
-  let tempo = 15;
+document.getElementById('img').src =
+dados.i;
 
-  const timer =
-  document.getElementById('timer');
+document.getElementById('titulo').innerText =
+dados.t;
 
-  const fill =
-  document.getElementById('fill');
+document.getElementById('descricao').innerText =
+dados.d;
 
-  const btn =
-  document.getElementById('btnFinal');
+document.getElementById('versao').innerText =
+dados.v || '-';
 
-  const interval = setInterval(()=>{
+document.getElementById('tamanho').innerText =
+dados.s || '-';
 
-    tempo--;
+document.getElementById('requirements').innerText =
+dados.r || '-';
 
-    timer.textContent = tempo;
+document.getElementById('downloads').innerText =
+dados.dl || '-';
 
-    fill.style.width =
-    ((15-tempo)/15)*100 + '%';
+document.getElementById('developer').innerText =
+dados.dev || '-';
 
-    if(tempo <= 0){
+var tags = '';
 
-      clearInterval(interval);
+if(dados.tg1){
 
-      timer.style.display='none';
-
-      btn.style.display='inline-block';
-
-      btn.onclick = ()=>{
-
-        window.open(url,'_blank');
-
-      };
-
-    }
-
-  },1000);
+tags += '<div class="tag">' +
+dados.tg1 +
+'</div>';
 
 }
 
-carregar();
+if(dados.tg2){
+
+tags += '<div class="tag">' +
+dados.tg2 +
+'</div>';
+
+}
+
+document.getElementById('tags')
+.innerHTML = tags;
+
+var tempo = 15;
+
+var num =
+document.getElementById('num');
+
+var fill =
+document.getElementById('fill');
+
+var btn =
+document.getElementById('btnDownload');
+
+var int =
+setInterval(function(){
+
+tempo--;
+
+num.innerText = tempo;
+
+fill.style.width =
+((15 - tempo) / 15 * 100) + '%';
+
+if(tempo <= 0){
+
+clearInterval(int);
+
+num.style.display = 'none';
+
+btn.style.display = 'block';
+
+}
+
+},1000);
+
+btn.onclick = function(){
+
+window.open(
+dados.u,
+'_blank'
+);
+
+};
 
 </script>
 
