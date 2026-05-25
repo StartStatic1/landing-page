@@ -36,12 +36,14 @@ body {
   font-size: 13px;
 }
 .cloud-status.ok { color: #10b981; }
+.cloud-status.warn { color: #f59e0b; }
 .cloud-status.err { color: #ef4444; }
 .cloud-dot {
   width: 8px; height: 8px; border-radius: 50%;
   background: #10b981;
   animation: pulse 2s infinite;
 }
+.cloud-status.warn .cloud-dot { background: #f59e0b; }
 .cloud-status.err .cloud-dot { background: #ef4444; animation: none; }
 @keyframes pulse {
   0%, 100% { opacity: 1; }
@@ -249,7 +251,6 @@ body {
 .empty-state { text-align: center; padding: 40px; color: #64748b; }
 .empty-state svg { width: 60px; height: 60px; margin-bottom: 15px; opacity: 0.3; }
 
-/* Info box sobre nuvem */
 .info-cloud {
   background: rgba(6,182,212,0.1);
   border: 1px solid rgba(6,182,212,0.3);
@@ -275,13 +276,13 @@ body {
   <!-- Status da Nuvem -->
   <div class="cloud-status ok" id="cloudStatus">
     <div class="cloud-dot"></div>
-    <span>☁️ Salvando na nuvem (npoint.io) — funciona em qualquer celular</span>
+    <span id="cloudStatusText">☁️ Verificando conexão com nuvem...</span>
   </div>
 
   <div class="info-cloud">
-    <strong>💡 Como funciona:</strong> Seus dados são salvos em um servidor na nuvem (npoint.io). 
+    <strong>💡 Como funciona:</strong> Seus dados são salvos em um servidor na nuvem (jsonstorage.net). 
     Quando alguém clica no link, os dados são carregados de lá — funciona em qualquer navegador, 
-    celular ou computador. Não depende mais do localStorage do seu navegador!
+    celular ou computador. Se a nuvem falhar, salva no localStorage como backup.
   </div>
 
   <!-- Stats -->
@@ -296,7 +297,7 @@ body {
     </div>
     <div class="stat-card">
       <div class="stat-num" id="statCloud">☁️</div>
-      <div class="stat-label">Nuvem Ativa</div>
+      <div class="stat-label">Nuvem</div>
     </div>
   </div>
 
@@ -384,12 +385,12 @@ body {
       </div>
 
       <button class="btn btn-primary" onclick="gerarLink()" id="btnGerar" style="margin-top:20px;">
-        ⚡ GERAR LINK NA NUVEM
+        ⚡ GERAR LINK
       </button>
 
       <!-- Result -->
       <div class="result-box" id="resultBox">
-        <div class="result-label">✅ Link Gerado e Salvo na Nuvem</div>
+        <div class="result-label" id="resultLabel">✅ Link Gerado</div>
         <div class="link-display" id="linkDisplay"></div>
         <div class="result-actions">
           <button class="btn btn-success" onclick="copiarLink()">📋 COPIAR</button>
@@ -430,8 +431,8 @@ const CONFIG = {
   imgQuality: 0.8,
   imgMaxFileSize: 5 * 1024 * 1024,
   imgMaxBase64: 1.5 * 1024 * 1024,
-  // npoint.io - serviço gratuito de JSON na nuvem
-  cloudBase: 'https://api.npoint.io',
+  // jsonstorage.net - gratuito, sem auth, CORS habilitado
+  cloudBase: 'https://api.jsonstorage.net/v1/json',
 };
 
 // ===================== ESTADO =====================
@@ -439,6 +440,7 @@ let imagemBase64 = '';
 let ultimoLink = '';
 let ultimoId = '';
 let ultimoCloudId = '';
+let cloudAvailable = false;
 
 // ===================== UTILITÁRIOS =====================
 function toast(msg, type = 'info') {
@@ -454,6 +456,13 @@ function escapeHtml(text) {
   const div = document.createElement('div');
   div.innerText = text;
   return div.innerHTML;
+}
+
+function updateCloudStatus(status, text) {
+  const el = document.getElementById('cloudStatus');
+  const txt = document.getElementById('cloudStatusText');
+  el.className = 'cloud-status ' + status;
+  txt.innerText = text;
 }
 
 // ===================== COMPRESSÃO DE IMAGEM =====================
@@ -555,7 +564,35 @@ function handleImage(e) {
   });
 }
 
-// ===================== GERAR LINK NA NUVEM =====================
+// ===================== SALVAR NA NUVEM =====================
+async function saveToCloud(dados) {
+  try {
+    const response = await fetch(CONFIG.cloudBase, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dados)
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error('HTTP ' + response.status + ': ' + errText);
+    }
+
+    const result = await response.json();
+    // jsonstorage retorna: { uri: "https://api.jsonstorage.net/v1/json/USER_ID/ITEM_ID" }
+    if (result.uri) {
+      const parts = result.uri.split('/');
+      const itemId = parts[parts.length - 1];
+      const userId = parts[parts.length - 2];
+      return { userId, itemId, fullUri: result.uri };
+    }
+    throw new Error('Resposta sem URI');
+  } catch (e) {
+    throw e;
+  }
+}
+
+// ===================== GERAR LINK =====================
 async function gerarLink() {
   const titulo = document.getElementById('titulo').value.trim();
   const descricao = document.getElementById('descricao').value.trim();
@@ -571,90 +608,99 @@ async function gerarLink() {
 
   const btn = document.getElementById('btnGerar');
   btn.disabled = true;
-  btn.innerHTML = '⏳ ENVIANDO PARA NUVEM...';
+  btn.innerHTML = '⏳ GERANDO...';
 
-  try {
-    // Gera ID único
-    const id = 'APP_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+  // Gera ID único
+  const id = 'APP_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
 
-    // Monta objeto de dados
-    const dados = {
-      t: titulo,
-      d: descricao,
-      u: linkDestino,
-      i: imagemBase64,
-      tg1: document.getElementById('tag1').value.trim(),
-      tg2: document.getElementById('tag2').value.trim(),
-      v: document.getElementById('versao').value.trim(),
-      s: document.getElementById('tamanho').value.trim(),
-      r: document.getElementById('requirements').value.trim(),
-      dl: document.getElementById('downloads').value.trim(),
-      dev: document.getElementById('developer').value.trim(),
-      tel: document.getElementById('linkTelegram').value.trim(),
-      created: Date.now()
-    };
+  const dados = {
+    t: titulo,
+    d: descricao,
+    u: linkDestino,
+    i: imagemBase64,
+    tg1: document.getElementById('tag1').value.trim(),
+    tg2: document.getElementById('tag2').value.trim(),
+    v: document.getElementById('versao').value.trim(),
+    s: document.getElementById('tamanho').value.trim(),
+    r: document.getElementById('requirements').value.trim(),
+    dl: document.getElementById('downloads').value.trim(),
+    dev: document.getElementById('developer').value.trim(),
+    tel: document.getElementById('linkTelegram').value.trim(),
+    created: Date.now()
+  };
 
-    // Envia para npoint.io (nuvem gratuita)
-    toast('☁️ Enviando dados para nuvem...', 'info');
+  let cloudId = null;
+  let cloudUserId = null;
+  let savedInCloud = false;
 
-    const response = await fetch(CONFIG.cloudBase, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dados)
-    });
-
-    if (!response.ok) {
-      throw new Error('Erro ao salvar na nuvem: ' + response.status);
+  // Tenta salvar na nuvem primeiro
+  if (cloudAvailable) {
+    try {
+      toast('☁️ Enviando para nuvem...', 'info');
+      const cloudResult = await saveToCloud(dados);
+      cloudId = cloudResult.itemId;
+      cloudUserId = cloudResult.userId;
+      savedInCloud = true;
+      toast('✅ Salvo na nuvem!', 'success');
+    } catch (cloudErr) {
+      console.error('Erro nuvem:', cloudErr);
+      toast('⚠️ Nuvem indisponível, salvando localmente...', 'warn');
     }
-
-    const cloudData = await response.json();
-    const cloudId = cloudData.id || cloudData._id || cloudData.binId;
-
-    if (!cloudId) {
-      throw new Error('Resposta da nuvem não contém ID');
-    }
-
-    ultimoCloudId = cloudId;
-
-    // Gera link com o ID da nuvem
-    const base = window.location.origin;
-    const path = window.location.pathname;
-    let folder = '/';
-    if (path.includes('/')) {
-      const parts = path.split('/');
-      parts.pop();
-      folder = parts.join('/') || '/';
-      if (!folder.endsWith('/')) folder += '/';
-    }
-    const link = base + folder + 'index.html?cloud=' + cloudId;
-
-    ultimoLink = link;
-    ultimoId = id;
-
-    // Salva no histórico local (só pra referência)
-    salvarNoHistorico(id, dados, cloudId, link);
-
-    // Mostra resultado
-    document.getElementById('linkDisplay').innerText = link;
-    document.getElementById('resultBox').classList.add('show');
-
-    toast('✅ Link salvo na nuvem! Funciona em qualquer dispositivo.', 'success');
-
-    atualizarStats();
-
-  } catch (e) {
-    console.error(e);
-    toast('❌ ' + (e.message || 'Erro ao enviar para nuvem'), 'error');
   }
 
+  // Fallback: salva no localStorage (sempre salva como backup)
+  try {
+    localStorage.setItem('app_' + id, JSON.stringify(dados));
+  } catch (e) {
+    toast('⚠️ Aviso: Não foi possível salvar backup local', 'warn');
+  }
+
+  // Gera link
+  const base = window.location.origin;
+  const path = window.location.pathname;
+  let folder = '/';
+  if (path.includes('/')) {
+    const parts = path.split('/');
+    parts.pop();
+    folder = parts.join('/') || '/';
+    if (!folder.endsWith('/')) folder += '/';
+  }
+
+  let link;
+  if (savedInCloud && cloudId) {
+    link = base + folder + 'index.html?cloud=' + cloudId;
+  } else {
+    link = base + folder + 'index.html?id=' + id;
+  }
+
+  ultimoLink = link;
+  ultimoId = id;
+  ultimoCloudId = cloudId;
+
+  // Salva no histórico
+  salvarNoHistorico(id, dados, cloudId, link, savedInCloud);
+
+  // Mostra resultado
+  const resultLabel = document.getElementById('resultLabel');
+  if (savedInCloud) {
+    resultLabel.innerText = '✅ Link Gerado e Salvo na Nuvem (funciona em qualquer dispositivo)';
+  } else {
+    resultLabel.innerText = '⚠️ Link Gerado (salvo apenas neste navegador)';
+  }
+
+  document.getElementById('linkDisplay').innerText = link;
+  document.getElementById('resultBox').classList.add('show');
+
+  toast(savedInCloud ? '✅ Link pronto! Compartilhe à vontade.' : '⚠️ Link pronto! Funciona apenas neste navegador.', savedInCloud ? 'success' : 'warn');
+
+  atualizarStats();
+
   btn.disabled = false;
-  btn.innerHTML = '⚡ GERAR LINK NA NUVEM';
+  btn.innerHTML = '⚡ GERAR LINK';
 }
 
 // ===================== HISTÓRICO =====================
-function salvarNoHistorico(id, dados, cloudId, link) {
+function salvarNoHistorico(id, dados, cloudId, link, isCloud) {
   let historico = JSON.parse(localStorage.getItem('minilink_historico') || '[]');
 
   historico.unshift({
@@ -663,7 +709,8 @@ function salvarNoHistorico(id, dados, cloudId, link) {
     titulo: dados.t,
     imagem: dados.i,
     data: Date.now(),
-    link: link
+    link: link,
+    isCloud: isCloud
   });
 
   if (historico.length > 30) historico = historico.slice(0, 30);
@@ -688,12 +735,13 @@ function carregarHistorico() {
   historico.forEach(item => {
     const data = new Date(item.data).toLocaleDateString('pt-BR');
     const imgSrc = item.imagem || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23334155%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E';
+    const cloudBadge = item.isCloud ? '☁️ Nuvem' : '📱 Local';
     html += `
       <div class="history-item">
         <img src="${imgSrc}" alt="" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23334155%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E'">
         <div class="history-info">
           <div class="history-title">${escapeHtml(item.titulo)}</div>
-          <div class="history-date">${data} • ☁️ ${item.cloudId ? 'Nuvem' : 'Local'}</div>
+          <div class="history-date">${data} • ${cloudBadge}</div>
         </div>
         <div class="history-actions">
           <button onclick="copiarHistorico('${item.link}')">📋</button>
@@ -786,25 +834,39 @@ function atualizarStats() {
   document.getElementById('statToday').innerText = hojeCount;
 }
 
+// ===================== VERIFICAR NUVEM =====================
+async function checkCloud() {
+  try {
+    // Testa com um payload mínimo
+    const testResponse = await fetch(CONFIG.cloudBase, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ test: true })
+    });
+
+    if (testResponse.ok) {
+      cloudAvailable = true;
+      updateCloudStatus('ok', '☁️ Nuvem online (jsonstorage.net) — links funcionam em qualquer dispositivo');
+      // Limpa o teste
+      const testResult = await testResponse.json();
+      if (testResult.uri) {
+        const parts = testResult.uri.split('/');
+        const testId = parts[parts.length - 1];
+        const testUser = parts[parts.length - 2];
+        fetch(CONFIG.cloudBase + '/' + testUser + '/' + testId, { method: 'DELETE' }).catch(()=>{});
+      }
+    } else {
+      throw new Error('HTTP ' + testResponse.status);
+    }
+  } catch (e) {
+    cloudAvailable = false;
+    updateCloudStatus('warn', '⚠️ Nuvem temporariamente indisponível — links funcionarão apenas neste navegador');
+  }
+}
+
 // ===================== INIT =====================
 atualizarStats();
-
-// Verifica conectividade com npoint.io
-fetch(CONFIG.cloudBase, { method: 'HEAD' })
-  .then(() => {
-    document.getElementById('cloudStatus').className = 'cloud-status ok';
-    document.getElementById('cloudStatus').innerHTML = `
-      <div class="cloud-dot"></div>
-      <span>☁️ Nuvem online (npoint.io) — links funcionam em qualquer dispositivo</span>
-    `;
-  })
-  .catch(() => {
-    document.getElementById('cloudStatus').className = 'cloud-status err';
-    document.getElementById('cloudStatus').innerHTML = `
-      <div class="cloud-dot"></div>
-      <span>⚠️ Verificando conexão com nuvem...</span>
-    `;
-  });
+checkCloud();
 
 document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'Enter') {
