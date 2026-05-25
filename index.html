@@ -567,9 +567,9 @@ body {
 </div>
 
 <script>
-// ===================== CONFIGURAÇÃO =====================
+// ===================== CONFIGURAÇÃO JSONBIN.IO =====================
 const CONFIG = {
-  cloudBase: 'https://api.jsonstorage.net/v1/json',
+  baseUrl: 'https://api.jsonbin.io/v3',
   ads: {
     directLink1: 'https://omg10.com/4/11044679',
     directLink2: 'https://omg10.com/4/11047687',
@@ -601,16 +601,14 @@ const cloudId = getParam('cloud');
 const localId = getParam('id');
 
 async function loadData() {
-  // Tenta nuvem primeiro
+  // Tenta JSONBin.io primeiro (nuvem)
   if (cloudId) {
     try {
       document.getElementById('loading').querySelector('p').innerText = 'Carregando da nuvem...';
-      // jsonstorage usa formato: /v1/json/USER_ID/ITEM_ID
-      // Mas como não sabemos o userId, tentamos buscar diretamente
-      // A API permite GET no endpoint completo que foi retornado no POST
-      const response = await fetch(CONFIG.cloudBase + '/' + cloudId);
-      if (!response.ok) throw new Error('Cloud ID não encontrado');
-      const app = await response.json();
+      const response = await fetch(CONFIG.baseUrl + '/b/' + cloudId + '/latest');
+      if (!response.ok) throw new Error('Bin ID não encontrado');
+      const result = await response.json();
+      const app = result.record;
       if (!app.t || !app.u) throw new Error('Dados incompletos na nuvem');
       renderApp(app, cloudId);
       return;
