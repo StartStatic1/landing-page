@@ -527,7 +527,7 @@ body {
 <script>
 // ===================== CONFIGURAÇÃO =====================
 const CONFIG = {
-  cloudBase: 'https://api.npoint.io',
+  cloudBase: 'https://api.jsonstorage.net/v1/json',
   countdown: 5,
   directLinks: [
     'https://omg10.com/4/11044679',
@@ -655,7 +655,7 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// ===================== CARREGAR DADOS DA NUVEM =====================
+// ===================== CARREGAR DADOS =====================
 const cloudId = getParam('cloud');
 const localId = getParam('id');
 let downloadURL = '';
