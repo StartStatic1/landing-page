@@ -23,7 +23,6 @@ body {
 }
 .header p { color: #64748b; font-size: 15px; }
 
-/* Cloud status */
 .cloud-status {
   display: flex;
   align-items: center;
@@ -273,19 +272,17 @@ body {
     <p>Links que funcionam em QUALQUER dispositivo</p>
   </div>
 
-  <!-- Status da Nuvem -->
   <div class="cloud-status ok" id="cloudStatus">
     <div class="cloud-dot"></div>
     <span id="cloudStatusText">☁️ Verificando conexão com nuvem...</span>
   </div>
 
   <div class="info-cloud">
-    <strong>💡 Como funciona:</strong> Seus dados são salvos no JSONBin.io (nuvem grátis). 
+    <strong>💡 Como funciona:</strong> Seus dados são salvos no GitHub Gist (nuvem grátis e confiável). 
     Quando alguém clica no link, os dados são carregados de lá — funciona em qualquer navegador, 
     celular ou computador. Se a nuvem falhar, salva no localStorage como backup.
   </div>
 
-  <!-- Stats -->
   <div class="stats-bar">
     <div class="stat-card">
       <div class="stat-num" id="statTotal">0</div>
@@ -301,13 +298,11 @@ body {
     </div>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs">
     <button class="tab active" onclick="switchTab('create')">✏️ Criar Link</button>
     <button class="tab" onclick="switchTab('history')">📋 Histórico</button>
   </div>
 
-  <!-- Create Tab -->
   <div id="tabCreate">
     <div class="card">
       <div class="card-title"><span>📱</span> Informações do App</div>
@@ -388,7 +383,6 @@ body {
         ⚡ GERAR LINK
       </button>
 
-      <!-- Result -->
       <div class="result-box" id="resultBox">
         <div class="result-label" id="resultLabel">✅ Link Gerado</div>
         <div class="link-display" id="linkDisplay"></div>
@@ -403,7 +397,6 @@ body {
     </div>
   </div>
 
-  <!-- History Tab -->
   <div id="tabHistory" style="display:none;">
     <div class="card">
       <div class="card-title" style="justify-content:space-between;">
@@ -421,29 +414,20 @@ body {
 
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ===================== CONFIGURAÇÃO JSONBIN.IO =====================
-const CONFIG = {
-  // SUA CHAVE API DO JSONBIN.IO
-  apiKey: '$2a$10$bV2Bp4mH/ssYt0M3u4VPVuB2D/tq6v3LSaAedRvL6p4/DGUnjDTLu',
-  baseUrl: 'https://api.jsonbin.io/v3',
-  imgMaxWidth: 800,
-  imgQuality: 0.8,
-  imgMaxFileSize: 5 * 1024 * 1024,
-  imgMaxBase64: 1.5 * 1024 * 1024,
-};
+// ===================== CONFIGURAÇÃO GITHUB GIST =====================
+const GITHUB_TOKEN = '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';
+const GITHUB_API = 'https://api.github.com/gists';
+const GITHUB_RAW = 'https://gist.githubusercontent.com';
 
-// ===================== ESTADO =====================
 let imagemBase64 = '';
 let ultimoLink = '';
 let ultimoId = '';
-let ultimoBinId = '';
+let ultimoGistId = '';
 let cloudAvailable = false;
 
-// ===================== UTILITÁRIOS =====================
 function toast(msg, type = 'info') {
   const t = document.getElementById('toast');
   t.innerText = msg;
@@ -466,7 +450,6 @@ function updateCloudStatus(status, text) {
   txt.innerText = text;
 }
 
-// ===================== COMPRESSÃO DE IMAGEM =====================
 function compressImage(file, callback, errorCallback) {
   const reader = new FileReader();
   reader.onload = function(e) {
@@ -474,12 +457,10 @@ function compressImage(file, callback, errorCallback) {
     img.onload = function() {
       let width = img.width;
       let height = img.height;
-
-      if (width > CONFIG.imgMaxWidth) {
-        height = Math.round(height * (CONFIG.imgMaxWidth / width));
-        width = CONFIG.imgMaxWidth;
+      if (width > 800) {
+        height = Math.round(height * (800 / width));
+        width = 800;
       }
-
       const canvas = document.createElement('canvas');
       canvas.width = width;
       canvas.height = height;
@@ -487,17 +468,14 @@ function compressImage(file, callback, errorCallback) {
       ctx.fillStyle = '#1e293b';
       ctx.fillRect(0, 0, width, height);
       ctx.drawImage(img, 0, 0, width, height);
-
-      let result = canvas.toDataURL('image/jpeg', CONFIG.imgQuality);
-
+      let result = canvas.toDataURL('image/jpeg', 0.8);
       let attempts = 0;
-      while (result.length > CONFIG.imgMaxBase64 && attempts < 3) {
-        const q = CONFIG.imgQuality - (0.2 * (attempts + 1));
+      while (result.length > 1.5 * 1024 * 1024 && attempts < 3) {
+        const q = 0.8 - (0.2 * (attempts + 1));
         result = canvas.toDataURL('image/jpeg', Math.max(0.3, q));
         attempts++;
       }
-
-      if (result.length > CONFIG.imgMaxBase64) {
+      if (result.length > 1.5 * 1024 * 1024) {
         width = Math.round(width * 0.6);
         height = Math.round(height * 0.6);
         canvas.width = width;
@@ -507,7 +485,6 @@ function compressImage(file, callback, errorCallback) {
         ctx.drawImage(img, 0, 0, width, height);
         result = canvas.toDataURL('image/jpeg', 0.6);
       }
-
       callback(result, { width, height, size: result.length });
     };
     img.onerror = function() { errorCallback('Erro ao carregar imagem'); };
@@ -517,46 +494,36 @@ function compressImage(file, callback, errorCallback) {
   reader.readAsDataURL(file);
 }
 
-// ===================== TABS =====================
 function switchTab(tab) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
-
   document.getElementById('tabCreate').style.display = tab === 'create' ? 'block' : 'none';
   document.getElementById('tabHistory').style.display = tab === 'history' ? 'block' : 'none';
-
   if (tab === 'history') carregarHistorico();
 }
 
-// ===================== IMAGEM =====================
 function handleImage(e) {
   const file = e.target.files[0];
   if (!file) return;
-
-  if (file.size > CONFIG.imgMaxFileSize) {
+  if (file.size > 5 * 1024 * 1024) {
     toast('❌ Imagem muito grande! Máximo 5MB', 'error');
     return;
   }
-
   if (!file.type.startsWith('image/')) {
     toast('❌ Selecione apenas imagens', 'error');
     return;
   }
-
   const info = document.getElementById('imgInfo');
   info.innerText = '⏳ Comprimindo imagem...';
   info.className = 'img-info';
-
   compressImage(file, function(base64, meta) {
     imagemBase64 = base64;
     const mb = (base64.length / 1024 / 1024).toFixed(2);
     info.innerText = `✅ ${meta.width}x${meta.height} • ${mb}MB (comprimido)`;
     info.className = 'img-info ok';
-
     const area = document.getElementById('uploadArea');
     area.classList.add('has-image');
     area.innerHTML = `<img src="${base64}" alt="Preview">`;
-
     toast('✅ Imagem comprimida e pronta!');
   }, function(err) {
     info.innerText = '❌ ' + err;
@@ -565,36 +532,40 @@ function handleImage(e) {
   });
 }
 
-// ===================== SALVAR NO JSONBIN.IO =====================
-async function saveToJsonBin(dados) {
+// ===================== SALVAR NO GITHUB GIST =====================
+async function saveToGist(dados) {
   try {
-    const response = await fetch(CONFIG.baseUrl + '/b', {
+    const response = await fetch(GITHUB_API, {
       method: 'POST',
       headers: {
+        'Authorization': 'token ' + GITHUB_TOKEN,
         'Content-Type': 'application/json',
-        'X-Master-Key': CONFIG.apiKey,
-        'X-Bin-Private': 'false' // Bin público para leitura sem auth
+        'Accept': 'application/vnd.github.v3+json'
       },
-      body: JSON.stringify(dados)
+      body: JSON.stringify({
+        description: 'Minilink Pro: ' + dados.t,
+        public: true,
+        files: {
+          'data.json': {
+            content: JSON.stringify(dados)
+          }
+        }
+      })
     });
-
     if (!response.ok) {
       const errText = await response.text();
       throw new Error('HTTP ' + response.status + ': ' + errText);
     }
-
     const result = await response.json();
-    // JSONBin retorna: { metadata: { id: "BIN_ID", ... }, record: {...} }
-    if (result.metadata && result.metadata.id) {
-      return { binId: result.metadata.id };
+    if (result.id) {
+      return { gistId: result.id, rawUrl: result.files['data.json'].raw_url };
     }
-    throw new Error('Resposta sem ID do bin');
+    throw new Error('Resposta sem ID do Gist');
   } catch (e) {
     throw e;
   }
 }
 
-// ===================== GERAR LINK =====================
 async function gerarLink() {
   const titulo = document.getElementById('titulo').value.trim();
   const descricao = document.getElementById('descricao').value.trim();
@@ -612,7 +583,6 @@ async function gerarLink() {
   btn.disabled = true;
   btn.innerHTML = '⏳ GERANDO...';
 
-  // Gera ID único local
   const id = 'APP_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
 
   const dados = {
@@ -631,15 +601,14 @@ async function gerarLink() {
     created: Date.now()
   };
 
-  let binId = null;
+  let gistId = null;
   let savedInCloud = false;
 
-  // Tenta salvar no JSONBin.io primeiro
   if (cloudAvailable) {
     try {
       toast('☁️ Enviando para nuvem...', 'info');
-      const binResult = await saveToJsonBin(dados);
-      binId = binResult.binId;
+      const gistResult = await saveToGist(dados);
+      gistId = gistResult.gistId;
       savedInCloud = true;
       toast('✅ Salvo na nuvem!', 'success');
     } catch (cloudErr) {
@@ -648,14 +617,12 @@ async function gerarLink() {
     }
   }
 
-  // Fallback: salva no localStorage (sempre salva como backup)
   try {
     localStorage.setItem('app_' + id, JSON.stringify(dados));
   } catch (e) {
     toast('⚠️ Aviso: Não foi possível salvar backup local', 'warn');
   }
 
-  // Gera link
   const base = window.location.origin;
   const path = window.location.pathname;
   let folder = '/';
@@ -667,20 +634,18 @@ async function gerarLink() {
   }
 
   let link;
-  if (savedInCloud && binId) {
-    link = base + folder + 'index.html?cloud=' + binId;
+  if (savedInCloud && gistId) {
+    link = base + folder + 'index.html?cloud=' + gistId;
   } else {
     link = base + folder + 'index.html?id=' + id;
   }
 
   ultimoLink = link;
   ultimoId = id;
-  ultimoBinId = binId;
+  ultimoGistId = gistId;
 
-  // Salva no histórico
-  salvarNoHistorico(id, dados, binId, link, savedInCloud);
+  salvarNoHistorico(id, dados, gistId, link, savedInCloud);
 
-  // Mostra resultado
   const resultLabel = document.getElementById('resultLabel');
   if (savedInCloud) {
     resultLabel.innerText = '✅ Link Gerado e Salvo na Nuvem (funciona em qualquer dispositivo)';
@@ -699,20 +664,17 @@ async function gerarLink() {
   btn.innerHTML = '⚡ GERAR LINK';
 }
 
-// ===================== HISTÓRICO =====================
-function salvarNoHistorico(id, dados, binId, link, isCloud) {
+function salvarNoHistorico(id, dados, gistId, link, isCloud) {
   let historico = JSON.parse(localStorage.getItem('minilink_historico') || '[]');
-
   historico.unshift({
     id: id,
-    binId: binId,
+    gistId: gistId,
     titulo: dados.t,
     imagem: dados.i,
     data: Date.now(),
     link: link,
     isCloud: isCloud
   });
-
   if (historico.length > 30) historico = historico.slice(0, 30);
   localStorage.setItem('minilink_historico', JSON.stringify(historico));
 }
@@ -720,7 +682,6 @@ function salvarNoHistorico(id, dados, binId, link, isCloud) {
 function carregarHistorico() {
   const historico = JSON.parse(localStorage.getItem('minilink_historico') || '[]');
   const container = document.getElementById('historyList');
-
   if (historico.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
@@ -730,7 +691,6 @@ function carregarHistorico() {
     `;
     return;
   }
-
   let html = '';
   historico.forEach(item => {
     const data = new Date(item.data).toLocaleDateString('pt-BR');
@@ -751,7 +711,6 @@ function carregarHistorico() {
       </div>
     `;
   });
-
   container.innerHTML = html;
 }
 
@@ -780,7 +739,6 @@ function limparHistorico() {
   toast('🗑️ Histórico limpo');
 }
 
-// ===================== AÇÕES =====================
 function copiarLink() {
   if (!ultimoLink) return;
   navigator.clipboard.writeText(ultimoLink)
@@ -803,7 +761,6 @@ function abrirLink() {
 function novoLink() {
   document.querySelectorAll('input, textarea').forEach(el => el.value = '');
   imagemBase64 = '';
-
   const area = document.getElementById('uploadArea');
   area.classList.remove('has-image');
   area.innerHTML = `
@@ -816,19 +773,15 @@ function novoLink() {
       </div>
     </div>
   `;
-
   document.getElementById('imgInfo').innerText = '';
   document.getElementById('imgInfo').className = 'img-info';
   document.getElementById('resultBox').classList.remove('show');
-
   toast('📝 Formulário limpo');
 }
 
-// ===================== STATS =====================
 function atualizarStats() {
   const historico = JSON.parse(localStorage.getItem('minilink_historico') || '[]');
   document.getElementById('statTotal').innerText = historico.length;
-
   const hoje = new Date().setHours(0,0,0,0);
   const hojeCount = historico.filter(item => new Date(item.data).setHours(0,0,0,0) === hoje).length;
   document.getElementById('statToday').innerText = hojeCount;
@@ -837,27 +790,27 @@ function atualizarStats() {
 // ===================== VERIFICAR NUVEM =====================
 async function checkCloud() {
   try {
-    // Testa criando um bin de teste
-    const testResponse = await fetch(CONFIG.baseUrl + '/b', {
+    const testResponse = await fetch(GITHUB_API, {
       method: 'POST',
       headers: {
+        'Authorization': 'token ' + GITHUB_TOKEN,
         'Content-Type': 'application/json',
-        'X-Master-Key': CONFIG.apiKey,
-        'X-Bin-Private': 'false'
+        'Accept': 'application/vnd.github.v3+json'
       },
-      body: JSON.stringify({ test: true, timestamp: Date.now() })
+      body: JSON.stringify({
+        description: 'Minilink Pro test',
+        public: true,
+        files: { 'test.txt': { content: 'test' } }
+      })
     });
-
     if (testResponse.ok) {
       cloudAvailable = true;
-      updateCloudStatus('ok', '☁️ JSONBin.io online — links funcionam em qualquer dispositivo');
-      
-      // Limpa o bin de teste
+      updateCloudStatus('ok', '☁️ GitHub Gist online — links funcionam em qualquer dispositivo');
       const testResult = await testResponse.json();
-      if (testResult.metadata && testResult.metadata.id) {
-        fetch(CONFIG.baseUrl + '/b/' + testResult.metadata.id, {
+      if (testResult.id) {
+        fetch(GITHUB_API + '/' + testResult.id, {
           method: 'DELETE',
-          headers: { 'X-Master-Key': CONFIG.apiKey }
+          headers: { 'Authorization': 'token ' + GITHUB_TOKEN }
         }).catch(()=>{});
       }
     } else {
@@ -869,7 +822,6 @@ async function checkCloud() {
   }
 }
 
-// ===================== INIT =====================
 atualizarStats();
 checkCloud();
 
