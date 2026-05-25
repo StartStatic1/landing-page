@@ -569,7 +569,7 @@ body {
 <script>
 // ===================== CONFIGURAÇÃO =====================
 const CONFIG = {
-  cloudBase: 'https://api.npoint.io',
+  cloudBase: 'https://api.jsonstorage.net/v1/json',
   ads: {
     directLink1: 'https://omg10.com/4/11044679',
     directLink2: 'https://omg10.com/4/11047687',
@@ -596,15 +596,18 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// ===================== CARREGAR DADOS DA NUVEM =====================
+// ===================== CARREGAR DADOS =====================
 const cloudId = getParam('cloud');
 const localId = getParam('id');
 
 async function loadData() {
-  // Tenta nuvem primeiro (novo sistema)
+  // Tenta nuvem primeiro
   if (cloudId) {
     try {
       document.getElementById('loading').querySelector('p').innerText = 'Carregando da nuvem...';
+      // jsonstorage usa formato: /v1/json/USER_ID/ITEM_ID
+      // Mas como não sabemos o userId, tentamos buscar diretamente
+      // A API permite GET no endpoint completo que foi retornado no POST
       const response = await fetch(CONFIG.cloudBase + '/' + cloudId);
       if (!response.ok) throw new Error('Cloud ID não encontrado');
       const app = await response.json();
@@ -613,11 +616,10 @@ async function loadData() {
       return;
     } catch(e) {
       console.error('Erro nuvem:', e);
-      // Fallback para localStorage (sistema antigo)
     }
   }
 
-  // Fallback: sistema antigo (localStorage)
+  // Fallback: localStorage
   if (localId) {
     try {
       const dados = localStorage.getItem('app_' + localId);
@@ -631,13 +633,12 @@ async function loadData() {
     }
   }
 
-  // Nenhum ID
   document.getElementById('mainContent').innerHTML = `
     <div class="error-page">
       <h1>404</h1>
       <p>Link inválido ou expirado</p>
       <p style="margin-top:15px; font-size:14px; color:#64748b;">
-        Este link pode ter sido criado com uma versão antiga do sistema.<br>
+        Este link pode ter expirado ou os dados foram removidos.<br>
         Gere um novo link no painel Minilink Pro.
       </p>
     </div>
