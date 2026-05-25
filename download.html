@@ -441,7 +441,7 @@ body {
         <svg class="app-img-fallback" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
       </div>
       <div class="app-info-text">
-        <h2 id="appTitle">Carregando...</h2>
+        <h2 id="appTitle">Carregando da nuvem...</h2>
         <p id="appSize">Preparando seu download</p>
       </div>
     </div>
@@ -526,13 +526,14 @@ body {
 
 <script>
 // ===================== CONFIGURAÇÃO =====================
-const ADS_CONFIG = {
+const CONFIG = {
+  cloudBase: 'https://api.npoint.io',
+  countdown: 5,
   directLinks: [
     'https://omg10.com/4/11044679',
     'https://omg10.com/4/11047687',
     'https://omg10.com/4/11047689'
-  ],
-  countdown: 5
+  ]
 };
 
 // ===================== CAPTCHA MATEMÁTICO =====================
@@ -541,21 +542,20 @@ let captchaAttempts = 0;
 const MAX_ATTEMPTS = 3;
 
 function generateCaptcha() {
-  // Gera operação aleatória: soma, subtração ou multiplicação simples
   const ops = ['+', '-', '*'];
   const op = ops[Math.floor(Math.random() * ops.length)];
   let n1, n2;
 
   if (op === '*') {
-    n1 = Math.floor(Math.random() * 9) + 2;  // 2-10
-    n2 = Math.floor(Math.random() * 9) + 2;  // 2-10
+    n1 = Math.floor(Math.random() * 9) + 2;
+    n2 = Math.floor(Math.random() * 9) + 2;
   } else {
-    n1 = Math.floor(Math.random() * 50) + 10;  // 10-59
-    n2 = Math.floor(Math.random() * 50) + 10;  // 10-59
+    n1 = Math.floor(Math.random() * 50) + 10;
+    n2 = Math.floor(Math.random() * 50) + 10;
   }
 
   if (op === '-' && n1 < n2) {
-    [n1, n2] = [n2, n1]; // Garante resultado positivo
+    [n1, n2] = [n2, n1];
   }
 
   switch(op) {
@@ -602,7 +602,6 @@ function verifyCaptcha() {
     return;
   }
 
-  // Resposta correta!
   captchaAttempts = 0;
   hint.innerText = '✓ Verificação completa!';
   hint.style.color = '#10b981';
@@ -624,14 +623,13 @@ function verifyCaptcha() {
     toast('✓ Verificação completa!');
 
     setTimeout(() => {
-      const link = ADS_CONFIG.directLinks[Math.floor(Math.random() * ADS_CONFIG.directLinks.length)];
+      const link = CONFIG.directLinks[Math.floor(Math.random() * CONFIG.directLinks.length)];
       window.open(link, '_blank');
     }, 2000);
 
   }, 600);
 }
 
-// Enter no input do captcha
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && document.getElementById('captchaBox').style.display !== 'none') {
     verifyCaptcha();
@@ -657,44 +655,56 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// ===================== CARREGAR DADOS =====================
-const id = getParam('id');
+// ===================== CARREGAR DADOS DA NUVEM =====================
+const cloudId = getParam('cloud');
+const localId = getParam('id');
 let downloadURL = '';
 
-if (!id) {
-  showError('❌ Link inválido', 'O ID do app não foi fornecido na URL.');
-} else {
-  try {
-    const dados = localStorage.getItem('app_' + id);
-
-    if (!dados) {
-      showError('⏰ Link expirado', 'Gere um novo link no painel admin. Os dados são salvos apenas neste navegador.');
-    } else {
-      const app = JSON.parse(dados);
-
-      if (!app.u) {
-        throw new Error('Link de download não encontrado nos dados');
-      }
-
-      downloadURL = app.u;
-
-      document.getElementById('appTitle').innerText = app.t || 'App';
-      document.getElementById('appSize').innerText = (app.s || 'Unknown size') + ' • ' + (app.v || '');
-      document.title = 'Download: ' + (app.t || 'App');
-
-      const hasImage = app.i && app.i.length > 100 && app.i.startsWith('data:image');
-      const imgWrap = document.getElementById('appImgWrap');
-      if (hasImage) {
-        imgWrap.innerHTML = `<img src="${app.i}" alt="${escapeHtml(app.t || 'App')}" onerror="this.style.display='none'; this.parentElement.querySelector('.app-img-fallback').style.display='block';">` +
-          `<svg class="app-img-fallback" style="display:none" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>`;
-      }
-
-      startCountdown();
+async function loadData() {
+  if (cloudId) {
+    try {
+      const response = await fetch(CONFIG.cloudBase + '/' + cloudId);
+      if (!response.ok) throw new Error('Cloud ID não encontrado');
+      const app = await response.json();
+      if (!app.u) throw new Error('Dados incompletos na nuvem');
+      setupPage(app);
+      return;
+    } catch(e) {
+      console.error('Erro nuvem:', e);
     }
-  } catch(e) {
-    console.error(e);
-    showError('❌ Erro ao carregar', escapeHtml(e.message));
   }
+
+  if (localId) {
+    try {
+      const dados = localStorage.getItem('app_' + localId);
+      if (!dados) throw new Error('Dados locais não encontrados');
+      const app = JSON.parse(dados);
+      if (!app.u) throw new Error('Dados locais incompletos');
+      setupPage(app, true);
+      return;
+    } catch(e) {
+      console.error('Erro local:', e);
+    }
+  }
+
+  showError('❌ Link inválido', 'O ID do app não foi fornecido ou expirou.');
+}
+
+function setupPage(app, isLocal = false) {
+  downloadURL = app.u;
+
+  document.getElementById('appTitle').innerText = app.t || 'App';
+  document.getElementById('appSize').innerText = (app.s || 'Unknown size') + ' • ' + (app.v || '');
+  document.title = 'Download: ' + (app.t || 'App');
+
+  const hasImage = app.i && app.i.length > 100 && app.i.startsWith('data:image');
+  const imgWrap = document.getElementById('appImgWrap');
+  if (hasImage) {
+    imgWrap.innerHTML = `<img src="${app.i}" alt="${escapeHtml(app.t || 'App')}" onerror="this.style.display='none'; this.parentElement.querySelector('.app-img-fallback').style.display='block';">` +
+      `<svg class="app-img-fallback" style="display:none" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>`;
+  }
+
+  startCountdown();
 }
 
 function showError(title, desc) {
@@ -708,18 +718,18 @@ function showError(title, desc) {
 
 // ===================== COUNTDOWN =====================
 function startCountdown() {
-  let tempo = ADS_CONFIG.countdown;
+  let tempo = CONFIG.countdown;
   const num = document.getElementById('timerNum');
   const fill = document.getElementById('progressFill');
 
   setTimeout(() => {
-    window.open(ADS_CONFIG.directLinks[0], '_blank');
+    window.open(CONFIG.directLinks[0], '_blank');
   }, 500);
 
   const interval = setInterval(() => {
     tempo--;
     num.innerText = tempo;
-    fill.style.width = ((ADS_CONFIG.countdown - tempo) / ADS_CONFIG.countdown * 100) + '%';
+    fill.style.width = ((CONFIG.countdown - tempo) / CONFIG.countdown * 100) + '%';
 
     if (tempo <= 0) {
       clearInterval(interval);
@@ -739,7 +749,7 @@ function onCountdownComplete() {
     generateCaptcha();
     document.getElementById('captchaBox').classList.add('show');
 
-    const randomLink = ADS_CONFIG.directLinks[Math.floor(Math.random() * ADS_CONFIG.directLinks.length)];
+    const randomLink = CONFIG.directLinks[Math.floor(Math.random() * CONFIG.directLinks.length)];
     window.open(randomLink, '_blank');
   }, 800);
 }
@@ -751,7 +761,7 @@ function startDownload() {
     return;
   }
 
-  window.open(ADS_CONFIG.directLinks[2], '_blank');
+  window.open(CONFIG.directLinks[2], '_blank');
 
   setTimeout(() => {
     window.open(downloadURL, '_blank');
@@ -761,7 +771,7 @@ function startDownload() {
 }
 
 function watchAd() {
-  window.open(ADS_CONFIG.directLinks[1], '_blank');
+  window.open(CONFIG.directLinks[1], '_blank');
   toast('Obrigado por apoiar! ❤️');
 
   setTimeout(() => {
@@ -776,7 +786,7 @@ document.addEventListener('click', function() {
   const now = Date.now();
   if (now - lastClick > 10000) {
     lastClick = now;
-    const link = ADS_CONFIG.directLinks[Math.floor(Math.random() * ADS_CONFIG.directLinks.length)];
+    const link = CONFIG.directLinks[Math.floor(Math.random() * CONFIG.directLinks.length)];
     window.open(link, '_blank');
   }
 });
@@ -787,6 +797,9 @@ setInterval(() => {
     adContainer.innerHTML = adContainer.innerHTML;
   }
 }, 30000);
+
+// Inicia carregamento
+loadData();
 </script>
 
 </body>
