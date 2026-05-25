@@ -151,12 +151,27 @@ body {
   gap: 15px;
 }
 
+.app-img-wrap {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .app-img {
   width: 100%;
-  border-radius: 20px;
-  aspect-ratio: 1;
+  height: 100%;
   object-fit: cover;
-  background: #0f172a;
+}
+
+.app-img-fallback {
+  width: 80px;
+  height: 80px;
+  opacity: 0.3;
 }
 
 .btn-download {
@@ -540,6 +555,13 @@ function getParam(name) {
   return new URLSearchParams(location.search).get(name);
 }
 
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.innerText = text;
+  return div.innerHTML;
+}
+
 // ===================== CARREGAR DADOS =====================
 const id = getParam('id');
 
@@ -551,18 +573,37 @@ if (!id) {
     </div>
   `;
 } else {
-  const dados = localStorage.getItem('app_' + id);
+  try {
+    const dados = localStorage.getItem('app_' + id);
 
-  if (!dados) {
+    if (!dados) {
+      document.getElementById('mainContent').innerHTML = `
+        <div class="error-page">
+          <h1>⏰</h1>
+          <p>Conteúdo expirado. Gere um novo link no painel.</p>
+          <p style="margin-top:15px; font-size:14px; color:#64748b;">
+            Dica: Os dados são salvos apenas no navegador onde foram criados.
+          </p>
+        </div>
+      `;
+    } else {
+      const app = JSON.parse(dados);
+      // Verifica se dados estão completos
+      if (!app.t || !app.u) {
+        throw new Error('Dados incompletos');
+      }
+      renderApp(app);
+    }
+  } catch(e) {
     document.getElementById('mainContent').innerHTML = `
       <div class="error-page">
-        <h1>⏰</h1>
-        <p>Conteúdo expirado. Gere um novo link no painel.</p>
+        <h1>❌</h1>
+        <p>Erro ao carregar dados: ${escapeHtml(e.message)}</p>
+        <p style="margin-top:15px; font-size:14px; color:#64748b;">
+          O link pode estar corrompido ou o storage foi limpo.
+        </p>
       </div>
     `;
-  } else {
-    const app = JSON.parse(dados);
-    renderApp(app);
   }
 }
 
@@ -570,17 +611,13 @@ function renderApp(app) {
   document.title = app.t || 'Download';
   document.getElementById('pageTitle').innerText = app.t || 'Download';
 
-  // Categorias
   const cat1 = app.tg1 || 'Apps';
-  const cat2 = app.tg2 || '';
   document.getElementById('catName').innerText = cat1;
 
-  // Tags HTML
   let tagsHTML = '';
   if (app.tg1) tagsHTML += `<div class="tag">${escapeHtml(app.tg1)}</div>`;
   if (app.tg2) tagsHTML += `<div class="tag tools">${escapeHtml(app.tg2)}</div>`;
 
-  // Info rows
   const infoRows = [
     { label: 'Developer', value: app.dev ? `<a href="#">${escapeHtml(app.dev)}</a>` : '-' },
     { label: 'Size', value: app.s || '-' },
@@ -599,9 +636,12 @@ function renderApp(app) {
     `;
   });
 
-  // Social share
-  const shareURL = encodeURIComponent(window.location.href);
-  const shareText = encodeURIComponent(app.t || 'Check this app!');
+  // Imagem com fallback robusto
+  const hasImage = app.i && app.i.length > 100 && app.i.startsWith('data:image');
+  const imgHTML = hasImage
+    ? `<img class="app-img" src="${app.i}" alt="${escapeHtml(app.t)}" onerror="this.style.display='none'; this.parentElement.querySelector('.app-img-fallback').style.display='block';">`
+    : '';
+  const fallbackHTML = `<svg class="app-img-fallback" style="display:${hasImage?'none':'block'}" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>`;
 
   document.getElementById('mainContent').innerHTML = `
     <div class="app-card">
@@ -612,7 +652,10 @@ function renderApp(app) {
 
       <div class="content-grid">
         <div class="left-col">
-          <img class="app-img" src="${app.i || ''}" alt="${escapeHtml(app.t)}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><rect fill=%22%23334155%22 width=%22100%22 height=%22100%22/><text fill=%22%2394a3b8%22 x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2214%22>No Image</text></svg>'">
+          <div class="app-img-wrap">
+            ${imgHTML}
+            ${fallbackHTML}
+          </div>
 
           <a class="btn-download" href="download.html?id=${id}" id="btnDownload">
             <span>⬇</span> DOWNLOAD APK
@@ -655,43 +698,25 @@ function renderApp(app) {
     </div>
   `;
 
-  // Configurar Telegram nav
   if (app.tel) {
     document.getElementById('telegramNav').href = app.tel;
     document.getElementById('telegramNav').target = '_blank';
   }
 
-  // Iniciar ads
   initAds();
-}
-
-function escapeHtml(text) {
-  if (!text) return '';
-  const div = document.createElement('div');
-  div.innerText = text;
-  return div.innerHTML;
 }
 
 // ===================== ADS =====================
 function initAds() {
-  // Popunder no primeiro click
   let clicked = false;
   document.addEventListener('click', function(e) {
     if (!clicked && e.target.closest('.btn-download, .btn-telegram, .nav-item')) {
       clicked = true;
-      // Abre direct link em background
       setTimeout(() => {
         window.open(ADS_CONFIG.directLink1, '_blank');
       }, 100);
     }
   });
-
-  // Auto popunder a cada 30s
-  setInterval(() => {
-    const links = [ADS_CONFIG.directLink1, ADS_CONFIG.directLink2, ADS_CONFIG.directLink3];
-    const randomLink = links[Math.floor(Math.random() * links.length)];
-    window.open(randomLink, '_blank');
-  }, 30000);
 }
 
 // ===================== SHARE =====================
