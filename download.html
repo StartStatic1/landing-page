@@ -525,9 +525,9 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
-// ===================== CONFIGURAÇÃO =====================
+// ===================== CONFIGURAÇÃO JSONBIN.IO =====================
 const CONFIG = {
-  cloudBase: 'https://api.jsonstorage.net/v1/json',
+  baseUrl: 'https://api.jsonbin.io/v3',
   countdown: 5,
   directLinks: [
     'https://omg10.com/4/11044679',
@@ -661,11 +661,13 @@ const localId = getParam('id');
 let downloadURL = '';
 
 async function loadData() {
+  // Tenta JSONBin.io primeiro
   if (cloudId) {
     try {
-      const response = await fetch(CONFIG.cloudBase + '/' + cloudId);
-      if (!response.ok) throw new Error('Cloud ID não encontrado');
-      const app = await response.json();
+      const response = await fetch(CONFIG.baseUrl + '/b/' + cloudId + '/latest');
+      if (!response.ok) throw new Error('Bin ID não encontrado');
+      const result = await response.json();
+      const app = result.record;
       if (!app.u) throw new Error('Dados incompletos na nuvem');
       setupPage(app);
       return;
@@ -674,6 +676,7 @@ async function loadData() {
     }
   }
 
+  // Fallback: localStorage
   if (localId) {
     try {
       const dados = localStorage.getItem('app_' + localId);
