@@ -4,13 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Preparando Download...</title>
-
-<!-- Monetag Mult -->
 <script src="https://quge5.com/88/tag.min.js" data-zone="242136" async data-cfasync="false"></script>
-
 <style>
 * { margin:0; padding:0; box-sizing:border-box }
-
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: #0f172a;
@@ -19,38 +15,30 @@ body {
   display: flex;
   flex-direction: column;
 }
-
-/* Header */
 .header {
   background: #1e293b;
   padding: 15px 20px;
   text-align: center;
   border-bottom: 2px solid #06b6d4;
 }
-
 .logo {
   font-size: 22px;
   font-weight: 900;
   color: #06b6d4;
   letter-spacing: 2px;
 }
-
-/* Container */
 .container {
   max-width: 600px;
   margin: auto;
   padding: 30px 20px;
   width: 100%;
 }
-
-/* Card */
 .card {
   background: #1e293b;
   border-radius: 24px;
   padding: 35px;
   text-align: center;
 }
-
 .app-info {
   display: flex;
   align-items: center;
@@ -58,7 +46,6 @@ body {
   margin-bottom: 30px;
   text-align: left;
 }
-
 .app-img-wrap {
   width: 70px;
   height: 70px;
@@ -70,36 +57,29 @@ body {
   align-items: center;
   justify-content: center;
 }
-
 .app-img-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
 .app-img-fallback {
   width: 40px;
   height: 40px;
   opacity: 0.4;
 }
-
 .app-info-text h2 {
   font-size: 18px;
   margin-bottom: 5px;
 }
-
 .app-info-text p {
   color: #94a3b8;
   font-size: 13px;
 }
-
-/* Timer */
 .timer-label {
   color: #94a3b8;
   font-size: 16px;
   margin-bottom: 20px;
 }
-
 .timer-num {
   font-size: 80px;
   font-weight: 900;
@@ -108,8 +88,6 @@ body {
   margin: 20px 0;
   text-shadow: 0 0 30px rgba(6,182,212,0.3);
 }
-
-/* Progress */
 .progress-wrap {
   background: #0f172a;
   height: 14px;
@@ -118,7 +96,6 @@ body {
   margin: 25px 0;
   position: relative;
 }
-
 .progress-fill {
   height: 100%;
   width: 0%;
@@ -127,7 +104,6 @@ body {
   transition: width 1s linear;
   position: relative;
 }
-
 .progress-fill::after {
   content: '';
   position: absolute;
@@ -138,8 +114,6 @@ body {
   background: rgba(255,255,255,0.3);
   border-radius: 0 30px 30px 0;
 }
-
-/* Ad Banner - CONTIDO */
 .ad-section {
   margin: 25px 0;
   padding: 20px;
@@ -148,14 +122,12 @@ body {
   border: 1px dashed #334155;
   overflow: hidden;
 }
-
 .ad-section iframe,
 .ad-section div,
 .ad-section script {
   max-width: 100% !important;
   overflow: hidden !important;
 }
-
 .ad-label {
   color: #64748b;
   font-size: 11px;
@@ -163,8 +135,6 @@ body {
   letter-spacing: 2px;
   margin-bottom: 15px;
 }
-
-/* Buttons */
 .btn {
   width: 100%;
   padding: 18px;
@@ -181,40 +151,32 @@ body {
   text-decoration: none;
   margin-top: 15px;
 }
-
 .btn-primary {
   background: #10b981;
   color: #fff;
 }
-
 .btn-primary:hover {
   background: #059669;
   transform: translateY(-2px);
 }
-
 .btn-ads {
   background: #f59e0b;
   color: #fff;
 }
-
 .btn-ads:hover {
   background: #d97706;
 }
-
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none !important;
 }
-
-/* Steps */
 .steps {
   display: flex;
   justify-content: center;
   gap: 30px;
   margin: 30px 0;
 }
-
 .step {
   display: flex;
   flex-direction: column;
@@ -223,9 +185,7 @@ body {
   opacity: 0.3;
   transition: 0.5s;
 }
-
 .step.active { opacity: 1 }
-
 .step-dot {
   width: 40px;
   height: 40px;
@@ -238,18 +198,14 @@ body {
   font-weight: bold;
   transition: 0.5s;
 }
-
 .step.active .step-dot {
   background: #06b6d4;
   box-shadow: 0 0 20px rgba(6,182,212,0.4);
 }
-
 .step-label {
   font-size: 12px;
   color: #94a3b8;
 }
-
-/* CAPTCHA MATEMÁTICO REAL */
 .captcha-box {
   display: none;
   margin: 20px 0;
@@ -258,15 +214,12 @@ body {
   border-radius: 16px;
   border: 2px solid #f59e0b;
 }
-
 .captcha-box.show { display: block }
-
 .captcha-title {
   font-size: 16px;
   margin-bottom: 15px;
   color: #f59e0b;
 }
-
 .captcha-equation {
   font-size: 32px;
   font-weight: 900;
@@ -274,7 +227,6 @@ body {
   margin: 15px 0;
   letter-spacing: 4px;
 }
-
 .captcha-input-wrap {
   display: flex;
   gap: 10px;
@@ -282,7 +234,6 @@ body {
   align-items: center;
   margin: 15px 0;
 }
-
 .captcha-input {
   width: 100px;
   padding: 12px;
@@ -295,17 +246,14 @@ body {
   color: #fff;
   outline: none;
 }
-
 .captcha-input:focus {
   border-color: #06b6d4;
   box-shadow: 0 0 0 3px rgba(6,182,212,0.2);
 }
-
 .captcha-input.error {
   border-color: #ef4444;
   animation: shake 0.4s;
 }
-
 .captcha-btn {
   padding: 12px 24px;
   background: #06b6d4;
@@ -317,24 +265,19 @@ body {
   cursor: pointer;
   transition: 0.3s;
 }
-
 .captcha-btn:hover {
   background: #0891b2;
 }
-
 .captcha-hint {
   color: #64748b;
   font-size: 12px;
   margin-top: 10px;
 }
-
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-8px); }
   75% { transform: translateX(8px); }
 }
-
-/* Success animation */
 .success-check {
   display: none;
   width: 80px;
@@ -347,18 +290,14 @@ body {
   font-size: 40px;
   animation: scaleIn 0.5s ease;
 }
-
 .success-check.show {
   display: flex;
 }
-
 @keyframes scaleIn {
   0% { transform: scale(0); }
   50% { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
-
-/* Back button */
 .back-btn {
   display: inline-flex;
   align-items: center;
@@ -368,8 +307,6 @@ body {
   margin-bottom: 20px;
   font-size: 14px;
 }
-
-/* Footer */
 .footer {
   background: #1e293b;
   border-top: 1px solid #334155;
@@ -377,20 +314,16 @@ body {
   text-align: center;
   margin-top: auto;
 }
-
 .footer-brand {
   font-size: 14px;
   font-weight: 700;
   color: #06b6d4;
   margin-bottom: 4px;
 }
-
 .footer-copy {
   color: #64748b;
   font-size: 11px;
 }
-
-/* Toast */
 .toast {
   position: fixed;
   bottom: 30px;
@@ -405,13 +338,10 @@ body {
   opacity: 0;
   transition: 0.4s;
 }
-
 .toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
-
-/* Error page */
 .error-page {
   text-align: center;
   padding: 60px 20px;
@@ -446,7 +376,6 @@ body {
       </div>
     </div>
 
-    <!-- Steps -->
     <div class="steps" id="stepsArea">
       <div class="step active" id="step1">
         <div class="step-dot">1</div>
@@ -462,348 +391,5 @@ body {
       </div>
     </div>
 
-    <!-- Timer Section -->
     <div id="timerSection">
-      <div class="timer-label">Aguarde enquanto preparamos seu download...</div>
-      <div class="timer-num" id="timerNum">5</div>
-      <div class="progress-wrap">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-    </div>
-
-    <!-- Success -->
-    <div class="success-check" id="successCheck">✓</div>
-
-    <!-- Ad Banner Terra -->
-    <div class="ad-section">
-      <div class="ad-label">Publicidade</div>
-      <div id="adContainer">
-        <script>
-          atOptions = {
-            'key': 'e9b65e3582d7f776c07b55b97a846b19',
-            'format': 'iframe',
-            'height': 50,
-            'width': 320,
-            'params': {}
-          };
-        </script>
-        <script src="https://encouragingjawsordinarily.com/e9b65e3582d7f776c07b55b97a846b19/invoke.js"></script>
-      </div>
-    </div>
-
-    <!-- CAPTCHA MATEMÁTICO REAL -->
-    <div class="captcha-box" id="captchaBox">
-      <div class="captcha-title">🛡️ Verificação de segurança</div>
-      <p style="color:#94a3b8; font-size:13px; margin-bottom:10px;">Resolva a equação para continuar</p>
-      <div class="captcha-equation" id="captchaEquation">?</div>
-      <div class="captcha-input-wrap">
-        <input type="number" class="captcha-input" id="captchaAnswer" placeholder="?" autocomplete="off">
-        <button class="captcha-btn" onclick="verifyCaptcha()">Verificar</button>
-      </div>
-      <div class="captcha-hint" id="captchaHint">Digite o resultado da operação acima</div>
-    </div>
-
-    <!-- Download Button -->
-    <button class="btn btn-primary" id="btnDownload" disabled style="display:none;">
-      <span>⬇</span> BAIXAR AGORA
-    </button>
-
-    <!-- Watch Ad Button -->
-    <button class="btn btn-ads" id="btnWatchAd" style="display:none;" onclick="watchAd()">
-      <span>▶</span> ASSISTIR ANÚNCIO PARA LIBERAR
-    </button>
-  </div>
-
-</div>
-
-<!-- Footer -->
-<div class="footer">
-  <div class="footer-brand">⚡ StartStatic Ltda</div>
-  <div class="footer-copy">© 2026 Minilink Pro. Todos os direitos reservados.</div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-// ===================== CONFIGURAÇÃO JSONBIN.IO =====================
-const CONFIG = {
-  baseUrl: 'https://api.jsonbin.io/v3',
-  countdown: 5,
-  directLinks: [
-    'https://omg10.com/4/11044679',
-    'https://omg10.com/4/11047687',
-    'https://omg10.com/4/11047689'
-  ]
-};
-
-// ===================== CAPTCHA MATEMÁTICO =====================
-let captchaResult = 0;
-let captchaAttempts = 0;
-const MAX_ATTEMPTS = 3;
-
-function generateCaptcha() {
-  const ops = ['+', '-', '*'];
-  const op = ops[Math.floor(Math.random() * ops.length)];
-  let n1, n2;
-
-  if (op === '*') {
-    n1 = Math.floor(Math.random() * 9) + 2;
-    n2 = Math.floor(Math.random() * 9) + 2;
-  } else {
-    n1 = Math.floor(Math.random() * 50) + 10;
-    n2 = Math.floor(Math.random() * 50) + 10;
-  }
-
-  if (op === '-' && n1 < n2) {
-    [n1, n2] = [n2, n1];
-  }
-
-  switch(op) {
-    case '+': captchaResult = n1 + n2; break;
-    case '-': captchaResult = n1 - n2; break;
-    case '*': captchaResult = n1 * n2; break;
-  }
-
-  const opSymbol = op === '*' ? '×' : op;
-  document.getElementById('captchaEquation').innerText = `${n1} ${opSymbol} ${n2} = ?`;
-  document.getElementById('captchaAnswer').value = '';
-  document.getElementById('captchaAnswer').classList.remove('error');
-  document.getElementById('captchaHint').innerText = 'Digite o resultado da operação acima';
-  document.getElementById('captchaHint').style.color = '#64748b';
-}
-
-function verifyCaptcha() {
-  const input = document.getElementById('captchaAnswer');
-  const hint = document.getElementById('captchaHint');
-  const userAnswer = parseInt(input.value.trim());
-
-  if (isNaN(userAnswer)) {
-    input.classList.add('error');
-    hint.innerText = 'Digite um número válido';
-    hint.style.color = '#ef4444';
-    setTimeout(() => input.classList.remove('error'), 500);
-    return;
-  }
-
-  if (userAnswer !== captchaResult) {
-    captchaAttempts++;
-    input.classList.add('error');
-    hint.innerText = `Resposta incorreta! Tentativa ${captchaAttempts}/${MAX_ATTEMPTS}`;
-    hint.style.color = '#ef4444';
-    setTimeout(() => input.classList.remove('error'), 500);
-
-    if (captchaAttempts >= MAX_ATTEMPTS) {
-      hint.innerText = 'Muitas tentativas. Gerando nova equação...';
-      setTimeout(() => {
-        captchaAttempts = 0;
-        generateCaptcha();
-      }, 1500);
-    }
-    return;
-  }
-
-  captchaAttempts = 0;
-  hint.innerText = '✓ Verificação completa!';
-  hint.style.color = '#10b981';
-
-  setTimeout(() => {
-    document.getElementById('captchaBox').style.display = 'none';
-    document.getElementById('successCheck').style.display = 'none';
-
-    document.getElementById('step2').classList.remove('active');
-    document.getElementById('step3').classList.add('active');
-
-    const btn = document.getElementById('btnDownload');
-    btn.style.display = 'flex';
-    btn.disabled = false;
-    btn.onclick = startDownload;
-
-    document.getElementById('btnWatchAd').style.display = 'flex';
-
-    toast('✓ Verificação completa!');
-
-    setTimeout(() => {
-      const link = CONFIG.directLinks[Math.floor(Math.random() * CONFIG.directLinks.length)];
-      window.open(link, '_blank');
-    }, 2000);
-
-  }, 600);
-}
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && document.getElementById('captchaBox').style.display !== 'none') {
-    verifyCaptcha();
-  }
-});
-
-// ===================== UTILITÁRIOS =====================
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.innerText = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-function getParam(name) {
-  return new URLSearchParams(location.search).get(name);
-}
-
-function escapeHtml(text) {
-  if (!text) return '';
-  const div = document.createElement('div');
-  div.innerText = text;
-  return div.innerHTML;
-}
-
-// ===================== CARREGAR DADOS =====================
-const cloudId = getParam('cloud');
-const localId = getParam('id');
-let downloadURL = '';
-
-async function loadData() {
-  // Tenta JSONBin.io primeiro
-  if (cloudId) {
-    try {
-      const response = await fetch(CONFIG.baseUrl + '/b/' + cloudId + '/latest');
-      if (!response.ok) throw new Error('Bin ID não encontrado');
-      const result = await response.json();
-      const app = result.record;
-      if (!app.u) throw new Error('Dados incompletos na nuvem');
-      setupPage(app);
-      return;
-    } catch(e) {
-      console.error('Erro nuvem:', e);
-    }
-  }
-
-  // Fallback: localStorage
-  if (localId) {
-    try {
-      const dados = localStorage.getItem('app_' + localId);
-      if (!dados) throw new Error('Dados locais não encontrados');
-      const app = JSON.parse(dados);
-      if (!app.u) throw new Error('Dados locais incompletos');
-      setupPage(app, true);
-      return;
-    } catch(e) {
-      console.error('Erro local:', e);
-    }
-  }
-
-  showError('❌ Link inválido', 'O ID do app não foi fornecido ou expirou.');
-}
-
-function setupPage(app, isLocal = false) {
-  downloadURL = app.u;
-
-  document.getElementById('appTitle').innerText = app.t || 'App';
-  document.getElementById('appSize').innerText = (app.s || 'Unknown size') + ' • ' + (app.v || '');
-  document.title = 'Download: ' + (app.t || 'App');
-
-  const hasImage = app.i && app.i.length > 100 && app.i.startsWith('data:image');
-  const imgWrap = document.getElementById('appImgWrap');
-  if (hasImage) {
-    imgWrap.innerHTML = `<img src="${app.i}" alt="${escapeHtml(app.t || 'App')}" onerror="this.style.display='none'; this.parentElement.querySelector('.app-img-fallback').style.display='block';">` +
-      `<svg class="app-img-fallback" style="display:none" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>`;
-  }
-
-  startCountdown();
-}
-
-function showError(title, desc) {
-  document.getElementById('mainCard').innerHTML = `
-    <div class="error-page">
-      <h2>${title}</h2>
-      <p>${desc}</p>
-    </div>
-  `;
-}
-
-// ===================== COUNTDOWN =====================
-function startCountdown() {
-  let tempo = CONFIG.countdown;
-  const num = document.getElementById('timerNum');
-  const fill = document.getElementById('progressFill');
-
-  setTimeout(() => {
-    window.open(CONFIG.directLinks[0], '_blank');
-  }, 500);
-
-  const interval = setInterval(() => {
-    tempo--;
-    num.innerText = tempo;
-    fill.style.width = ((CONFIG.countdown - tempo) / CONFIG.countdown * 100) + '%';
-
-    if (tempo <= 0) {
-      clearInterval(interval);
-      onCountdownComplete();
-    }
-  }, 1000);
-}
-
-function onCountdownComplete() {
-  document.getElementById('timerSection').style.display = 'none';
-  document.getElementById('successCheck').classList.add('show');
-
-  document.getElementById('step1').classList.remove('active');
-  document.getElementById('step2').classList.add('active');
-
-  setTimeout(() => {
-    generateCaptcha();
-    document.getElementById('captchaBox').classList.add('show');
-
-    const randomLink = CONFIG.directLinks[Math.floor(Math.random() * CONFIG.directLinks.length)];
-    window.open(randomLink, '_blank');
-  }, 800);
-}
-
-// ===================== DOWNLOAD =====================
-function startDownload() {
-  if (!downloadURL) {
-    toast('❌ Erro: URL não encontrada');
-    return;
-  }
-
-  window.open(CONFIG.directLinks[2], '_blank');
-
-  setTimeout(() => {
-    window.open(downloadURL, '_blank');
-    toast('✓ Download iniciado!');
-    console.log('Download iniciado:', downloadURL);
-  }, 500);
-}
-
-function watchAd() {
-  window.open(CONFIG.directLinks[1], '_blank');
-  toast('Obrigado por apoiar! ❤️');
-
-  setTimeout(() => {
-    document.getElementById('btnWatchAd').style.display = 'none';
-    document.getElementById('btnDownload').style.background = '#10b981';
-  }, 5000);
-}
-
-// ===================== ADS AUTO =====================
-let lastClick = 0;
-document.addEventListener('click', function() {
-  const now = Date.now();
-  if (now - lastClick > 10000) {
-    lastClick = now;
-    const link = CONFIG.directLinks[Math.floor(Math.random() * CONFIG.directLinks.length)];
-    window.open(link, '_blank');
-  }
-});
-
-setInterval(() => {
-  const adContainer = document.getElementById('adContainer');
-  if (adContainer) {
-    adContainer.innerHTML = adContainer.innerHTML;
-  }
-}, 30000);
-
-// Inicia carregamento
-loadData();
-</script>
-
-</body>
-</html>
+      <div class="timer-label">Aguarde enquanto prePerfeito! Vou gerar os 3 arquivos completos com **GitHub Gist API**. Só lembre: **nunca compartilhe esse token publicamente** (em repo público, por exemplo). Vou salvar ele no código do painel de forma segura.
