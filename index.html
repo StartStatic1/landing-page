@@ -359,7 +359,7 @@ body {
   overflow: hidden !important;
 }
 
-/* Inline Nav (substitui bottom nav) */
+/* Inline Nav */
 .inline-nav {
   display: flex;
   gap: 15px;
@@ -521,7 +521,7 @@ body {
 <div class="container" id="mainContent">
   <div class="loading" id="loading">
     <div class="loading-spinner"></div>
-    <p>Carregando...</p>
+    <p>Carregando da nuvem...</p>
   </div>
 </div>
 
@@ -567,12 +567,14 @@ body {
 </div>
 
 <script>
-// ===================== CONFIGURAÇÃO ADS =====================
-const ADS_CONFIG = {
-  directLink1: 'https://omg10.com/4/11044679',
-  directLink2: 'https://omg10.com/4/11047687',
-  directLink3: 'https://omg10.com/4/11047689',
-  monetagZone: '242136'
+// ===================== CONFIGURAÇÃO =====================
+const CONFIG = {
+  cloudBase: 'https://api.npoint.io',
+  ads: {
+    directLink1: 'https://omg10.com/4/11044679',
+    directLink2: 'https://omg10.com/4/11047687',
+    directLink3: 'https://omg10.com/4/11047689',
+  }
 };
 
 // ===================== UTILITÁRIOS =====================
@@ -594,51 +596,55 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// ===================== CARREGAR DADOS =====================
-const id = getParam('id');
+// ===================== CARREGAR DADOS DA NUVEM =====================
+const cloudId = getParam('cloud');
+const localId = getParam('id');
 
-if (!id) {
+async function loadData() {
+  // Tenta nuvem primeiro (novo sistema)
+  if (cloudId) {
+    try {
+      document.getElementById('loading').querySelector('p').innerText = 'Carregando da nuvem...';
+      const response = await fetch(CONFIG.cloudBase + '/' + cloudId);
+      if (!response.ok) throw new Error('Cloud ID não encontrado');
+      const app = await response.json();
+      if (!app.t || !app.u) throw new Error('Dados incompletos na nuvem');
+      renderApp(app, cloudId);
+      return;
+    } catch(e) {
+      console.error('Erro nuvem:', e);
+      // Fallback para localStorage (sistema antigo)
+    }
+  }
+
+  // Fallback: sistema antigo (localStorage)
+  if (localId) {
+    try {
+      const dados = localStorage.getItem('app_' + localId);
+      if (!dados) throw new Error('Dados locais não encontrados');
+      const app = JSON.parse(dados);
+      if (!app.t || !app.u) throw new Error('Dados locais incompletos');
+      renderApp(app, null, true);
+      return;
+    } catch(e) {
+      console.error('Erro local:', e);
+    }
+  }
+
+  // Nenhum ID
   document.getElementById('mainContent').innerHTML = `
     <div class="error-page">
       <h1>404</h1>
       <p>Link inválido ou expirado</p>
+      <p style="margin-top:15px; font-size:14px; color:#64748b;">
+        Este link pode ter sido criado com uma versão antiga do sistema.<br>
+        Gere um novo link no painel Minilink Pro.
+      </p>
     </div>
   `;
-} else {
-  try {
-    const dados = localStorage.getItem('app_' + id);
-
-    if (!dados) {
-      document.getElementById('mainContent').innerHTML = `
-        <div class="error-page">
-          <h1>⏰</h1>
-          <p>Conteúdo expirado. Gere um novo link no painel.</p>
-          <p style="margin-top:15px; font-size:14px; color:#64748b;">
-            Dica: Os dados são salvos apenas no navegador onde foram criados.
-          </p>
-        </div>
-      `;
-    } else {
-      const app = JSON.parse(dados);
-      if (!app.t || !app.u) {
-        throw new Error('Dados incompletos');
-      }
-      renderApp(app);
-    }
-  } catch(e) {
-    document.getElementById('mainContent').innerHTML = `
-      <div class="error-page">
-        <h1>❌</h1>
-        <p>Erro ao carregar dados: ${escapeHtml(e.message)}</p>
-        <p style="margin-top:15px; font-size:14px; color:#64748b;">
-          O link pode estar corrompido ou o storage foi limpo.
-        </p>
-      </div>
-    `;
-  }
 }
 
-function renderApp(app) {
+function renderApp(app, cloudId, isLocal = false) {
   document.title = app.t || 'Download';
   document.getElementById('pageTitle').innerText = app.t || 'Download';
 
@@ -667,12 +673,15 @@ function renderApp(app) {
     `;
   });
 
-  // Imagem com proporção original (object-fit: contain)
   const hasImage = app.i && app.i.length > 100 && app.i.startsWith('data:image');
   const imgHTML = hasImage
     ? `<img class="app-img" src="${app.i}" alt="${escapeHtml(app.t)}" onerror="this.style.display='none'; this.parentElement.querySelector('.app-img-fallback').style.display='block';">`
     : '';
   const fallbackHTML = `<svg class="app-img-fallback" style="display:${hasImage?'none':'block'}" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>`;
+
+  const downloadHref = cloudId
+    ? 'download.html?cloud=' + cloudId
+    : 'download.html?id=' + (getParam('id') || '');
 
   document.getElementById('mainContent').innerHTML = `
     <div class="app-card">
@@ -688,7 +697,7 @@ function renderApp(app) {
             ${fallbackHTML}
           </div>
 
-          <a class="btn-download" href="download.html?id=${id}" id="btnDownload">
+          <a class="btn-download" href="${downloadHref}" id="btnDownload">
             <span>⬇</span> DOWNLOAD APK
           </a>
 
@@ -744,7 +753,7 @@ function initAds() {
     if (!clicked && e.target.closest('.btn-download, .btn-telegram, .nav-item')) {
       clicked = true;
       setTimeout(() => {
-        window.open(ADS_CONFIG.directLink1, '_blank');
+        window.open(CONFIG.ads.directLink1, '_blank');
       }, 100);
     }
   });
@@ -754,31 +763,24 @@ function initAds() {
 function shareFacebook() {
   window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '_blank');
 }
-
 function shareTwitter() {
   window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(location.href), '_blank');
 }
-
 function sharePinterest() {
   window.open('https://pinterest.com/pin/create/button/?url=' + encodeURIComponent(location.href), '_blank');
 }
-
 function shareTelegram() {
   window.open('https://t.me/share/url?url=' + encodeURIComponent(location.href), '_blank');
 }
-
 function shareWhatsApp() {
   window.open('https://wa.me/?text=' + encodeURIComponent(location.href), '_blank');
 }
-
 function reportApp() {
   toast('Report enviado! Obrigado.');
 }
-
 function toggleTheme() {
   toast('Tema alternado!');
 }
-
 function openMenu() {
   toast('Menu em breve!');
 }
@@ -796,6 +798,9 @@ function openMenu() {
     test.remove();
   }, 100);
 })();
+
+// Inicia carregamento
+loadData();
 </script>
 
 </body>
