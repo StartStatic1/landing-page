@@ -280,7 +280,7 @@ body {
   </div>
 
   <div class="info-cloud">
-    <strong>💡 Como funciona:</strong> Seus dados são salvos em um servidor na nuvem (jsonstorage.net). 
+    <strong>💡 Como funciona:</strong> Seus dados são salvos no JSONBin.io (nuvem grátis). 
     Quando alguém clica no link, os dados são carregados de lá — funciona em qualquer navegador, 
     celular ou computador. Se a nuvem falhar, salva no localStorage como backup.
   </div>
@@ -425,21 +425,22 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
-// ===================== CONFIGURAÇÃO =====================
+// ===================== CONFIGURAÇÃO JSONBIN.IO =====================
 const CONFIG = {
+  // SUA CHAVE API DO JSONBIN.IO
+  apiKey: '$2a$10$bV2Bp4mH/ssYt0M3u4VPVuB2D/tq6v3LSaAedRvL6p4/DGUnjDTLu',
+  baseUrl: 'https://api.jsonbin.io/v3',
   imgMaxWidth: 800,
   imgQuality: 0.8,
   imgMaxFileSize: 5 * 1024 * 1024,
   imgMaxBase64: 1.5 * 1024 * 1024,
-  // jsonstorage.net - gratuito, sem auth, CORS habilitado
-  cloudBase: 'https://api.jsonstorage.net/v1/json',
 };
 
 // ===================== ESTADO =====================
 let imagemBase64 = '';
 let ultimoLink = '';
 let ultimoId = '';
-let ultimoCloudId = '';
+let ultimoBinId = '';
 let cloudAvailable = false;
 
 // ===================== UTILITÁRIOS =====================
@@ -564,12 +565,16 @@ function handleImage(e) {
   });
 }
 
-// ===================== SALVAR NA NUVEM =====================
-async function saveToCloud(dados) {
+// ===================== SALVAR NO JSONBIN.IO =====================
+async function saveToJsonBin(dados) {
   try {
-    const response = await fetch(CONFIG.cloudBase, {
+    const response = await fetch(CONFIG.baseUrl + '/b', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': CONFIG.apiKey,
+        'X-Bin-Private': 'false' // Bin público para leitura sem auth
+      },
       body: JSON.stringify(dados)
     });
 
@@ -579,14 +584,11 @@ async function saveToCloud(dados) {
     }
 
     const result = await response.json();
-    // jsonstorage retorna: { uri: "https://api.jsonstorage.net/v1/json/USER_ID/ITEM_ID" }
-    if (result.uri) {
-      const parts = result.uri.split('/');
-      const itemId = parts[parts.length - 1];
-      const userId = parts[parts.length - 2];
-      return { userId, itemId, fullUri: result.uri };
+    // JSONBin retorna: { metadata: { id: "BIN_ID", ... }, record: {...} }
+    if (result.metadata && result.metadata.id) {
+      return { binId: result.metadata.id };
     }
-    throw new Error('Resposta sem URI');
+    throw new Error('Resposta sem ID do bin');
   } catch (e) {
     throw e;
   }
@@ -610,7 +612,7 @@ async function gerarLink() {
   btn.disabled = true;
   btn.innerHTML = '⏳ GERANDO...';
 
-  // Gera ID único
+  // Gera ID único local
   const id = 'APP_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
 
   const dados = {
@@ -629,17 +631,15 @@ async function gerarLink() {
     created: Date.now()
   };
 
-  let cloudId = null;
-  let cloudUserId = null;
+  let binId = null;
   let savedInCloud = false;
 
-  // Tenta salvar na nuvem primeiro
+  // Tenta salvar no JSONBin.io primeiro
   if (cloudAvailable) {
     try {
       toast('☁️ Enviando para nuvem...', 'info');
-      const cloudResult = await saveToCloud(dados);
-      cloudId = cloudResult.itemId;
-      cloudUserId = cloudResult.userId;
+      const binResult = await saveToJsonBin(dados);
+      binId = binResult.binId;
       savedInCloud = true;
       toast('✅ Salvo na nuvem!', 'success');
     } catch (cloudErr) {
@@ -667,18 +667,18 @@ async function gerarLink() {
   }
 
   let link;
-  if (savedInCloud && cloudId) {
-    link = base + folder + 'index.html?cloud=' + cloudId;
+  if (savedInCloud && binId) {
+    link = base + folder + 'index.html?cloud=' + binId;
   } else {
     link = base + folder + 'index.html?id=' + id;
   }
 
   ultimoLink = link;
   ultimoId = id;
-  ultimoCloudId = cloudId;
+  ultimoBinId = binId;
 
   // Salva no histórico
-  salvarNoHistorico(id, dados, cloudId, link, savedInCloud);
+  salvarNoHistorico(id, dados, binId, link, savedInCloud);
 
   // Mostra resultado
   const resultLabel = document.getElementById('resultLabel');
@@ -700,12 +700,12 @@ async function gerarLink() {
 }
 
 // ===================== HISTÓRICO =====================
-function salvarNoHistorico(id, dados, cloudId, link, isCloud) {
+function salvarNoHistorico(id, dados, binId, link, isCloud) {
   let historico = JSON.parse(localStorage.getItem('minilink_historico') || '[]');
 
   historico.unshift({
     id: id,
-    cloudId: cloudId,
+    binId: binId,
     titulo: dados.t,
     imagem: dados.i,
     data: Date.now(),
@@ -837,23 +837,28 @@ function atualizarStats() {
 // ===================== VERIFICAR NUVEM =====================
 async function checkCloud() {
   try {
-    // Testa com um payload mínimo
-    const testResponse = await fetch(CONFIG.cloudBase, {
+    // Testa criando um bin de teste
+    const testResponse = await fetch(CONFIG.baseUrl + '/b', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ test: true })
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': CONFIG.apiKey,
+        'X-Bin-Private': 'false'
+      },
+      body: JSON.stringify({ test: true, timestamp: Date.now() })
     });
 
     if (testResponse.ok) {
       cloudAvailable = true;
-      updateCloudStatus('ok', '☁️ Nuvem online (jsonstorage.net) — links funcionam em qualquer dispositivo');
-      // Limpa o teste
+      updateCloudStatus('ok', '☁️ JSONBin.io online — links funcionam em qualquer dispositivo');
+      
+      // Limpa o bin de teste
       const testResult = await testResponse.json();
-      if (testResult.uri) {
-        const parts = testResult.uri.split('/');
-        const testId = parts[parts.length - 1];
-        const testUser = parts[parts.length - 2];
-        fetch(CONFIG.cloudBase + '/' + testUser + '/' + testId, { method: 'DELETE' }).catch(()=>{});
+      if (testResult.metadata && testResult.metadata.id) {
+        fetch(CONFIG.baseUrl + '/b/' + testResult.metadata.id, {
+          method: 'DELETE',
+          headers: { 'X-Master-Key': CONFIG.apiKey }
+        }).catch(()=>{});
       }
     } else {
       throw new Error('HTTP ' + testResponse.status);
