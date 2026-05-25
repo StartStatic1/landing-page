@@ -59,11 +59,28 @@ body {
   text-align: left;
 }
 
-.app-info img {
+.app-img-wrap {
   width: 70px;
   height: 70px;
   border-radius: 18px;
+  overflow: hidden;
+  background: #0f172a;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-img-wrap img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+}
+
+.app-img-fallback {
+  width: 40px;
+  height: 40px;
+  opacity: 0.4;
 }
 
 .app-info-text h2 {
@@ -336,6 +353,19 @@ body {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+
+/* Error page */
+.error-page {
+  text-align: center;
+  padding: 60px 20px;
+}
+.error-page h2 {
+  color: #ef4444;
+  margin-bottom: 10px;
+}
+.error-page p {
+  color: #94a3b8;
+}
 </style>
 </head>
 
@@ -348,9 +378,11 @@ body {
 <div class="container">
   <a class="back-btn" href="javascript:history.back()">← Voltar</a>
 
-  <div class="card">
+  <div class="card" id="mainCard">
     <div class="app-info" id="appInfo">
-      <img id="appImg" src="" alt="App">
+      <div class="app-img-wrap" id="appImgWrap">
+        <svg class="app-img-fallback" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+      </div>
       <div class="app-info-text">
         <h2 id="appTitle">Carregando...</h2>
         <p id="appSize">Preparando seu download</p>
@@ -358,7 +390,7 @@ body {
     </div>
 
     <!-- Steps -->
-    <div class="steps">
+    <div class="steps" id="stepsArea">
       <div class="step active" id="step1">
         <div class="step-dot">1</div>
         <span class="step-label">Verificar</span>
@@ -459,28 +491,62 @@ function getParam(name) {
   return new URLSearchParams(location.search).get(name);
 }
 
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.innerText = text;
+  return div.innerHTML;
+}
+
 // ===================== CARREGAR DADOS =====================
 const id = getParam('id');
 let downloadURL = '';
 
 if (!id) {
-  document.querySelector('.card').innerHTML = '<h2 style="color:#ef4444">❌ Link inválido</h2>';
+  showError('❌ Link inválido', 'O ID do app não foi fornecido na URL.');
 } else {
-  const dados = localStorage.getItem('app_' + id);
+  try {
+    const dados = localStorage.getItem('app_' + id);
 
-  if (!dados) {
-    document.querySelector('.card').innerHTML = '<h2 style="color:#ef4444">⏰ Link expirado. Gere um novo.</h2>';
-  } else {
-    const app = JSON.parse(dados);
-    downloadURL = app.u;
+    if (!dados) {
+      showError('⏰ Link expirado', 'Gere um novo link no painel admin. Os dados são salvos apenas neste navegador.');
+    } else {
+      const app = JSON.parse(dados);
 
-    document.getElementById('appTitle').innerText = app.t || 'App';
-    document.getElementById('appSize').innerText = (app.s || 'Unknown size') + ' • ' + (app.v || '');
-    document.getElementById('appImg').src = app.i || '';
-    document.title = 'Download: ' + (app.t || 'App');
+      // Valida dados essenciais
+      if (!app.u) {
+        throw new Error('Link de download não encontrado nos dados');
+      }
 
-    startCountdown();
+      downloadURL = app.u;
+
+      document.getElementById('appTitle').innerText = app.t || 'App';
+      document.getElementById('appSize').innerText = (app.s || 'Unknown size') + ' • ' + (app.v || '');
+      document.title = 'Download: ' + (app.t || 'App');
+
+      // Imagem com fallback
+      const hasImage = app.i && app.i.length > 100 && app.i.startsWith('data:image');
+      const imgWrap = document.getElementById('appImgWrap');
+      if (hasImage) {
+        imgWrap.innerHTML = `<img src="${app.i}" alt="${escapeHtml(app.t || 'App')}" onerror="this.style.display='none'; this.parentElement.querySelector('.app-img-fallback').style.display='block';">` +
+          `<svg class="app-img-fallback" style="display:none" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>`;
+      }
+
+      startCountdown();
+    }
+  } catch(e) {
+    console.error(e);
+    showError('❌ Erro ao carregar', escapeHtml(e.message));
   }
+}
+
+function showError(title, desc) {
+  document.getElementById('mainCard').innerHTML = `
+    <div class="error-page">
+      <h2>${title}</h2>
+      <p>${desc}</p>
+    </div>
+  `;
 }
 
 // ===================== COUNTDOWN =====================
@@ -507,21 +573,15 @@ function startCountdown() {
 }
 
 function onCountdownComplete() {
-  // Esconde timer
   document.getElementById('timerSection').style.display = 'none';
-
-  // Mostra success
   document.getElementById('successCheck').classList.add('show');
 
-  // Atualiza steps
   document.getElementById('step1').classList.remove('active');
   document.getElementById('step2').classList.add('active');
 
-  // Mostra captcha (engaja usuário = mais tempo na página = mais ads)
   setTimeout(() => {
     document.getElementById('captchaBox').classList.add('show');
 
-    // Popunder aleatório
     const randomLink = ADS_CONFIG.directLinks[Math.floor(Math.random() * ADS_CONFIG.directLinks.length)];
     window.open(randomLink, '_blank');
   }, 800);
@@ -529,31 +589,25 @@ function onCountdownComplete() {
 
 // ===================== CAPTCHA =====================
 function selectCaptcha(el, correct) {
-  // Remove seleção anterior
   document.querySelectorAll('.captcha-item').forEach(item => item.classList.remove('selected'));
   el.classList.add('selected');
 
-  // Sempre "acerta" - é só para engajar
   setTimeout(() => {
     document.getElementById('captchaBox').style.display = 'none';
     document.getElementById('successCheck').style.display = 'none';
 
-    // Atualiza steps
     document.getElementById('step2').classList.remove('active');
     document.getElementById('step3').classList.add('active');
 
-    // Mostra botão de download
     const btn = document.getElementById('btnDownload');
     btn.style.display = 'flex';
     btn.disabled = false;
     btn.onclick = startDownload;
 
-    // Também mostra botão de assistir anúncio (opcional extra)
     document.getElementById('btnWatchAd').style.display = 'flex';
 
     toast('✓ Verificação completa!');
 
-    // Auto click em ad após 2s
     setTimeout(() => {
       const link = ADS_CONFIG.directLinks[Math.floor(Math.random() * ADS_CONFIG.directLinks.length)];
       window.open(link, '_blank');
@@ -569,25 +623,19 @@ function startDownload() {
     return;
   }
 
-  // Abre mais um ad antes do download
   window.open(ADS_CONFIG.directLinks[2], '_blank');
 
-  // Delay para não bloquear popup
   setTimeout(() => {
     window.open(downloadURL, '_blank');
     toast('✓ Download iniciado!');
-
-    // Analytics simples
     console.log('Download iniciado:', downloadURL);
   }, 500);
 }
 
 function watchAd() {
-  // Abre ad em nova aba
   window.open(ADS_CONFIG.directLinks[1], '_blank');
   toast('Obrigado por apoiar! ❤️');
 
-  // Depois de 5s libera download
   setTimeout(() => {
     document.getElementById('btnWatchAd').style.display = 'none';
     document.getElementById('btnDownload').style.background = '#10b981';
@@ -595,11 +643,10 @@ function watchAd() {
 }
 
 // ===================== ADS AUTO =====================
-// Popunder a cada interação
 let lastClick = 0;
 document.addEventListener('click', function() {
   const now = Date.now();
-  if (now - lastClick > 10000) { // Mínimo 10s entre pops
+  if (now - lastClick > 10000) {
     lastClick = now;
     const link = ADS_CONFIG.directLinks[Math.floor(Math.random() * ADS_CONFIG.directLinks.length)];
     window.open(link, '_blank');
